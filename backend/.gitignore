@@ -29,3 +29,5 @@ config/master.key
 # Config file
 config/config.properties.rb
 
+# Google App Engine config file 
+app.yaml
