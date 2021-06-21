@@ -14,17 +14,12 @@ db/*.sqlite3-*
 # Ignore all logfiles and tempfiles.
 log/*
 tmp/*
-!log/.keep
-!tmp/.keep
 
 # Ignore pidfiles, but keep the directory.
 tmp/pids/*
-!tmp/pids/
-!tmp/pids/.keep
 
 # Ignore uploaded files in development.
 storage/*
-!storage/.keep
 .byebug_history
 
 # Ignore master key for decrypting credentials and more.
@@ -33,3 +28,4 @@ config/master.key
 
 # Config file
 config/config.properties.rb
+
