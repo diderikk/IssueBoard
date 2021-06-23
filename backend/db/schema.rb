@@ -43,7 +43,7 @@ ActiveRecord::Schema.define(version: 2021_06_21_182357) do
 
   create_table "issue_labels", force: :cascade do |t|
     t.string "name", null: false
-    t.string "color", null: false
+    t.string "color"
     t.bigint "issue_board_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

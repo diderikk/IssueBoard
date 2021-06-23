@@ -1,5 +1,6 @@
 class Schema < GraphQL::Schema
 	query(Types::QueryType)
+	mutation(Types::MutationType)
 
 
 	def self.unauthorized_object(error)

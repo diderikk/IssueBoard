@@ -2,7 +2,7 @@ class CreateIssueLabels < ActiveRecord::Migration[6.1]
   def change
     create_table :issue_labels do |t|
       t.string :name, null: false
-      t.string :color, null: false
+      t.string :color, null: true
       t.belongs_to :issue_board, null: false, foreign_key: "issue_board_id"
 
       t.timestamps
