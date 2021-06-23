@@ -10,12 +10,61 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_20_144358) do
+ActiveRecord::Schema.define(version: 2021_06_21_182357) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "groups", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "logo"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "groups_users", id: false, force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "group_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["group_id"], name: "index_groups_users_on_group_id"
+    t.index ["user_id"], name: "index_groups_users_on_user_id"
+  end
+
+  create_table "issue_boards", force: :cascade do |t|
+    t.string "name"
+    t.bigint "user_id"
+    t.bigint "group_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["group_id"], name: "index_issue_boards_on_group_id"
+    t.index ["user_id"], name: "index_issue_boards_on_user_id"
+  end
+
+  create_table "issue_labels", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "color", null: false
+    t.bigint "issue_board_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["issue_board_id"], name: "index_issue_labels_on_issue_board_id"
+    t.index ["name", "issue_board_id"], name: "index_issue_labels_on_name_and_issue_board_id", unique: true
+  end
+
+  create_table "issues", force: :cascade do |t|
+    t.integer "issue_id", null: false
+    t.string "title", null: false
+    t.string "description"
+    t.datetime "due_date"
+    t.bigint "issue_label_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["issue_id", "issue_label_id"], name: "index_issues_on_issue_id_and_issue_label_id", unique: true
+    t.index ["issue_label_id"], name: "index_issues_on_issue_label_id"
+  end
+
   create_table "users", force: :cascade do |t|
+    t.string "name", null: false
     t.string "email", null: false
     t.string "password_digest"
     t.integer "token_version", default: 0
@@ -24,4 +73,8 @@ ActiveRecord::Schema.define(version: 2021_06_20_144358) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "issue_boards", "groups"
+  add_foreign_key "issue_boards", "users"
+  add_foreign_key "issue_labels", "issue_boards"
+  add_foreign_key "issues", "issue_labels"
 end

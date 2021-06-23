@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  id: 
+  title: MyString
+  description: MyString
+  due_date: 2021-06-21 20:23:57
+
+two:
+  id: 
+  title: MyString
+  description: MyString
+  due_date: 2021-06-21 20:23:57

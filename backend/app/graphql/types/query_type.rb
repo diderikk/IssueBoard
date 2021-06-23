@@ -2,7 +2,6 @@ module Types
 	class QueryType < GraphQL::Schema::Object
 		include Authentication
 
-		field :users, [Types::UserType], null:true
 		field :login, String, null: false do
 			description "Login user return tokens"
 
@@ -14,13 +13,39 @@ module Types
 			description "Returns currently logged in user"
 		end
 
+		field :group, Types::GroupType, null:false do
+			description "Returns a single Group that a user is a part of"
 
-		def users
-			User.all
+			argument :group_id, ID, required: true
 		end
 
+		field :issue_board, Types::IssueBoardType, null:false do
+			description "Returns a single IssueBoardType that the user is a part of"
+
+			argument :issue_board_id, ID, required: true
+		end
+
+		field :issue, Types::IssueType, null: false do
+			description "Returns a single Issue from a IssueBoard that a user i a part of"
+
+			argument :issue_id, ID, required: true
+		end
+
+
 		def current_user
-			logged_in_user(context[:request])
+			context[:current_user]
+		end
+
+		def group(group_id:)
+			Group.find(group_id)
+		end
+
+		def issue_board(issue_board_id:)
+			IssueBoard.find(issue_board_id)
+		end
+
+		def issue(issue_id:)
+			Issue.find(issue_id)
 		end
 
 		def login(email:, password:)
