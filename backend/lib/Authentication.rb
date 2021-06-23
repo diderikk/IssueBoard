@@ -4,7 +4,7 @@ module Authentication
 	def authenticate(email, password)
 		user = User.find_by(email: email)
 		if user and user.authenticate(password)
-			context[:cookies].encrypted[:refresh_token] = {:value => encode_refresh_token(user.id, user.token_version), :httponly => true}
+			cookies.encrypted[:refresh_token] = {:value => encode_refresh_token(user), :httponly => true}
 			return encode_access_token(user.id, user.email)
 		end
 		return nil
