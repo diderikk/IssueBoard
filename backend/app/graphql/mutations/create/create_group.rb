@@ -9,6 +9,7 @@ module Mutations
 
 		def resolve(attributes:)
 			group = Group.new(name: attributes)
+			group.users << context[:current_user]
 			if group.save!
 				{
 					group: group,
