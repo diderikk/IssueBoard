@@ -32,7 +32,7 @@ jobs:
         with:
           bundler-cache: true
           ruby-version: '2.7'
-      - name: Setup test database
+      - name: Setup test database and run tests
         working-directory: backend
         env:
           RAILS_ENV: test
@@ -47,6 +47,4 @@ jobs:
           bundle install --jobs 4 --retry 3
           bundle exec rails db:create RAILS_ENV=test
           bundle exec rails db:migrate RAILS_ENV=test
-      - name: Run tests
-        working-directory: backend
-        run: rails test
+          bundle exec rails test
