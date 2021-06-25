@@ -15,7 +15,6 @@ jobs:
       postgres:
         image: postgres:11
         env:
-          POSTGRES_USER: myapp
           POSTGRES_DB: myapp_test
           POSTGRES_PASSWORD: ""
         ports: ["5432:5432"]
@@ -32,9 +31,9 @@ jobs:
           RAILS_ENV: test
           DB_HOST: localhost
           DB_TEST_NAME: myapp_test
-          DB_NAME: myapp_test
+          # DB_NAME: myapp_test
           DB_PASSWORD: ""
-          DB_USERNAME: myapp
+          DB_USERNAME: postgres
         run: |
           sudo apt-get -yqq install libpq-dev
           gem install bundler
