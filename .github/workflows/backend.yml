@@ -14,9 +14,6 @@ jobs:
     services:
       postgres:
         image: postgres:11
-        env:
-          POSTGRES_DB: myapp_test
-          POSTGRES_PASSWORD: ""
         ports: ["5432:5432"]
     steps:
       - uses: actions/checkout@v2
