@@ -32,6 +32,7 @@ jobs:
           RAILS_ENV: test
           DB_HOST: localhost
           DB_TEST_NAME: myapp_test
+          DB_NAME: myapp_test
           DB_PASSWORD: ""
           DB_USERNAME: myapp
         run: |
