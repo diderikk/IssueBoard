@@ -1,0 +1,50 @@
+name: backend-CI
+
+on: push
+  # pull_request:
+  #   paths:
+  #     - 'backend/**'
+  #     - '.github/workflows/backend.yml'
+
+jobs:
+
+  tests:
+    name: Application tests
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:11
+        env:
+          POSTGRES_USER: admin
+          POSTGRES_DB: myapp_test
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Ruby and install gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          ruby-version: '2.7'
+      - name: Setup test database and run tests
+        working-directory: backend
+        env:
+          RAILS_ENV: test
+          DB_HOST: localhost
+          DB_TEST_NAME: myapp_test
+          DB_NAME: myapp_test
+          DB_PASSWORD: postgres
+          DB_USERNAME: admin
+        run: |
+          sudo apt-get -yqq install libpq-dev
+          gem install bundler
+          bundle install --jobs 4 --retry 3
+          bundle exec rails db:create RAILS_ENV=test
+          bundle exec rails db:migrate RAILS_ENV=test
+          bundle exec rails test

@@ -1,7 +1,7 @@
 class IssueBoard < ApplicationRecord
 	belongs_to :user, optional: true
 	belongs_to :group, optional: true
-	has_many :issue_labels
+	has_many :issue_labels, dependent: :destroy
 
 	validates :name, presence: true
 	validate :either_user_or_group?

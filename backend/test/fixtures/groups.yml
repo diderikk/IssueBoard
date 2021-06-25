@@ -1,9 +1,9 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
+group1:
   name: MyString
   logo: MyString
 
-two:
+group2:
   name: MyString
   logo: MyString

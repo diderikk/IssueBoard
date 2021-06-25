@@ -31,3 +31,5 @@ config/config.properties.rb
 
 # Google App Engine config file 
 app.yaml
+
+.idea/
