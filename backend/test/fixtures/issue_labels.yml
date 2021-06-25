@@ -1,9 +1,11 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
+issue_label1:
   name: MyString
   color: MyString
+  issue_board: issue_board1
 
-two:
-  name: MyString
+issue_label2:
+  name: MyString1
   color: MyString
+  issue_board: issue_board1

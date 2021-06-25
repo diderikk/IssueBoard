@@ -1,13 +1,15 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  id: 
+issue1:
+  issue_id: 1
   title: MyString
   description: MyString
-  due_date: 2021-06-21 20:23:57
+  due_date: 2022-06-21 20:23:57
+  issue_label: issue_label1
 
 two:
-  id: 
+  issue_id: 2
   title: MyString
   description: MyString
-  due_date: 2021-06-21 20:23:57
+  due_date: 2022-06-21 20:23:57
+  issue_label: issue_label1
