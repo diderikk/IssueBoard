@@ -17,7 +17,7 @@ jobs:
         env:
           POSTGRES_USER: admin
           POSTGRES_DB: myapp_test
-          POSTGRES_PASSWORD: ""
+          POSTGRES_PASSWORD: postgres
         ports:
           - 5432:5432
         options: >-
@@ -39,7 +39,7 @@ jobs:
           DB_HOST: localhost
           DB_TEST_NAME: myapp_test
           DB_NAME: myapp_test
-          DB_PASSWORD: ""
+          DB_PASSWORD: postgres
           DB_USERNAME: admin
         run: |
           sudo apt-get -yqq install libpq-dev
