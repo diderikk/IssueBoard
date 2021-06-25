@@ -26,7 +26,6 @@ jobs:
         with:
           bundler-cache: true
           ruby-version: '2.7'
-        working-directory: backend
       - name: Setup test database
         working-directory: backend
         env:
@@ -36,7 +35,11 @@ jobs:
           DB_PASSWORD: ""
           DB_USERNAME: myapp
         run: |
-          bin/rails db:setup
+          sudo apt-get -yqq install libpq-dev
+          gem install bundler
+          bundle install --jobs 4 --retry 3
+          bundle exec rails db:create
+          bundle exec rails db:migrate
       - name: Run tests
         working-directory: backend
         run: rails test
