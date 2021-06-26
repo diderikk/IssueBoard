@@ -15,5 +15,6 @@ module Types
 		field :delete_issue_board, mutation: Mutations::Delete::DeleteIssueBoard
 		field :delete_issue_label, mutation: Mutations::Delete::DeleteIssueLabel
 		field :delete_issue, mutation: Mutations::Delete::DeleteIssue
+		field :login, mutation: Mutations::Login
 	end
 end

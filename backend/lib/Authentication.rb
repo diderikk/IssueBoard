@@ -1,7 +1,7 @@
 module Authentication
 	include Jwt
 
-	def authenticate(email, password)
+	def authenticate(email, password, cookies)
 		user = User.find_by(email: email)
 		if user and user.authenticate(password)
 			cookies.encrypted[:refresh_token] = {:value => encode_refresh_token(user), :httponly => true}
