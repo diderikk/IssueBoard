@@ -1,5 +1,7 @@
 module Mutations
 	class Create::CreateUser < GraphQL::Schema::Mutation
+		include Jwt
+
 		graphql_name "CreateUser"
 		argument :attributes, Types::Input::UserInputType, required: true
 
@@ -10,9 +12,11 @@ module Mutations
 		def resolve(attributes:)
 			user = User.new(name: attributes.name, email: attributes.email, password: attributes.password)
 			if user.save!
+				context[:current_user] = user
+				context[:cookies].encrypted[:refresh_token] = {:value => encode_refresh_token(user), :httponly => true}
 				{
 					user: user,
-					access_token: nil,
+					access_token: encode_access_token(user.id, user.email),
 					errors: nil,
 				}
 			else

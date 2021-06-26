@@ -31,6 +31,11 @@ module Types
 			argument :issue_id, ID, required: true
 		end
 
+		field :hello, String, null: false
+
+		def hello
+			"Hello"
+		end
 
 		def current_user
 			context[:current_user]
@@ -48,11 +53,11 @@ module Types
 			Issue.find(issue_id)
 		end
 
-		def login(email:, password:)
-			access_token = authenticate(email, password)
-			return access_token unless access_token.nil?
+		# def login(email:, password:)
+		# 	access_token = authenticate(email, password)
+		# 	return access_token unless access_token.nil?
 
-			raise GraphQL::ExecutionError.new "Email or password wrong"
-		end
+		# 	raise GraphQL::ExecutionError.new "Email or password wrong"
+		# end
 	end
 end
