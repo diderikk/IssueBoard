@@ -1,5 +1,5 @@
 class IssueBoard < ApplicationRecord
-	belongs_to :user, optional: true
+	has_and_belongs_to_many :users
 	belongs_to :group, optional: true
 	has_many :issue_labels, dependent: :destroy
 
@@ -11,6 +11,6 @@ class IssueBoard < ApplicationRecord
 
 	def either_user_or_group?
 		errors.add("either group or user must be defined, not both") if 
-		((user.nil? && group.nil?) || (user.present? && group.present?))
+		((users.length() == 0 && group.nil?) || (users.length() > 0 && group.present?))
 	end
 end

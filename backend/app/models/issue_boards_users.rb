@@ -1,0 +1,2 @@
+class UsersIssueBoard < ApplicationRecord
+end

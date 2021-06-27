@@ -19,6 +19,10 @@ module Types
 			argument :group_id, ID, required: true
 		end
 
+		field :groups, [Types::GroupType], null: false do
+			description "Returns a scoped list of all groups a member is a part of"
+		end
+
 		field :issue_board, Types::IssueBoardType, null:false do
 			description "Returns a single IssueBoardType that the user is a part of"
 
@@ -43,6 +47,10 @@ module Types
 
 		def group(group_id:)
 			Group.find(group_id)
+		end
+
+		def groups
+			Group.all
 		end
 
 		def issue_board(issue_board_id:)

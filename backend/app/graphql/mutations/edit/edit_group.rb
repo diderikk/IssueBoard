@@ -31,7 +31,7 @@ module Mutations
 		private
 
 		def authorized?(attributes:, group:)
-			group.users.include? context[:current_user]
+			group.users.where(members: {accepted: true}).include? context[:current_user])
 		end
 	end
 end

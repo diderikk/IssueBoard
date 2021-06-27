@@ -20,7 +20,7 @@ module Mutations
 		private
 
 		def authorized?(group_id:)
-			Group.where(id: group_id).joins(:users).exists?(context[:current_user].id)
+			Group.find(group_id).users.where(members: {accepted: true}).include? context[:current_user])
 		end
 
 	end
