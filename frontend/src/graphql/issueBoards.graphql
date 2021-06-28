@@ -1,0 +1,6 @@
+query IssueBoards{
+  notGroupIssueBoards{
+    name
+    id
+  }
+}

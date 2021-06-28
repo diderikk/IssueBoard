@@ -139,7 +139,7 @@ export type IssueBoard = {
   id: Scalars['ID'];
   issueLabels: Array<IssueLabel>;
   name: Scalars['String'];
-  user?: Maybe<User>;
+  users?: Maybe<Array<User>>;
 };
 
 /** Input object for IssueBoard */
@@ -305,6 +305,8 @@ export type Query = {
   currentUser?: Maybe<User>;
   /** Returns a single Group that a user is a part of */
   group: Group;
+  /** Returns a scoped list of all groups a member is a part of */
+  groups: Array<Group>;
   hello: Scalars['String'];
   /** Returns a single Issue from a IssueBoard that a user i a part of */
   issue: Issue;
@@ -312,6 +314,8 @@ export type Query = {
   issueBoard: IssueBoard;
   /** Login user return tokens */
   login: Scalars['String'];
+  /** Returns all issueboards a user is a part of that is not in a group */
+  notGroupIssueBoards: Array<IssueBoard>;
 };
 
 
@@ -377,6 +381,38 @@ export type HelloQueryVariables = Exact<{ [key: string]: never; }>;
 export type HelloQuery = (
   { __typename?: 'Query' }
   & Pick<Query, 'hello'>
+);
+
+export type IssueBoardQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type IssueBoardQuery = (
+  { __typename?: 'Query' }
+  & { issueBoard: (
+    { __typename?: 'IssueBoard' }
+    & Pick<IssueBoard, 'name'>
+    & { issueLabels: Array<(
+      { __typename?: 'IssueLabel' }
+      & Pick<IssueLabel, 'id' | 'name' | 'color'>
+      & { issues: Array<(
+        { __typename?: 'Issue' }
+        & Pick<Issue, 'id' | 'title'>
+      )> }
+    )> }
+  ) }
+);
+
+export type IssueBoardsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type IssueBoardsQuery = (
+  { __typename?: 'Query' }
+  & { notGroupIssueBoards: Array<(
+    { __typename?: 'IssueBoard' }
+    & Pick<IssueBoard, 'name' | 'id'>
+  )> }
 );
 
 export type LoginMutationVariables = Exact<{
@@ -465,6 +501,85 @@ export function useHelloLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Hell
 export type HelloQueryHookResult = ReturnType<typeof useHelloQuery>;
 export type HelloLazyQueryHookResult = ReturnType<typeof useHelloLazyQuery>;
 export type HelloQueryResult = Apollo.QueryResult<HelloQuery, HelloQueryVariables>;
+export const IssueBoardDocument = gql`
+    query IssueBoard($id: ID!) {
+  issueBoard(issueBoardId: $id) {
+    name
+    issueLabels {
+      id
+      name
+      color
+      issues {
+        id
+        title
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useIssueBoardQuery__
+ *
+ * To run a query within a React component, call `useIssueBoardQuery` and pass it any options that fit your needs.
+ * When your component renders, `useIssueBoardQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useIssueBoardQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useIssueBoardQuery(baseOptions: Apollo.QueryHookOptions<IssueBoardQuery, IssueBoardQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<IssueBoardQuery, IssueBoardQueryVariables>(IssueBoardDocument, options);
+      }
+export function useIssueBoardLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<IssueBoardQuery, IssueBoardQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<IssueBoardQuery, IssueBoardQueryVariables>(IssueBoardDocument, options);
+        }
+export type IssueBoardQueryHookResult = ReturnType<typeof useIssueBoardQuery>;
+export type IssueBoardLazyQueryHookResult = ReturnType<typeof useIssueBoardLazyQuery>;
+export type IssueBoardQueryResult = Apollo.QueryResult<IssueBoardQuery, IssueBoardQueryVariables>;
+export const IssueBoardsDocument = gql`
+    query IssueBoards {
+  notGroupIssueBoards {
+    name
+    id
+  }
+}
+    `;
+
+/**
+ * __useIssueBoardsQuery__
+ *
+ * To run a query within a React component, call `useIssueBoardsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useIssueBoardsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useIssueBoardsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useIssueBoardsQuery(baseOptions?: Apollo.QueryHookOptions<IssueBoardsQuery, IssueBoardsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<IssueBoardsQuery, IssueBoardsQueryVariables>(IssueBoardsDocument, options);
+      }
+export function useIssueBoardsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<IssueBoardsQuery, IssueBoardsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<IssueBoardsQuery, IssueBoardsQueryVariables>(IssueBoardsDocument, options);
+        }
+export type IssueBoardsQueryHookResult = ReturnType<typeof useIssueBoardsQuery>;
+export type IssueBoardsLazyQueryHookResult = ReturnType<typeof useIssueBoardsLazyQuery>;
+export type IssueBoardsQueryResult = Apollo.QueryResult<IssueBoardsQuery, IssueBoardsQueryVariables>;
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {

@@ -1,0 +1,26 @@
+.issue-label-container{
+	display: flex;
+	flex-direction: row;
+	gap: 5px;
+	height: 100%;
+	width: 100%;
+}
+
+#issue-label-header{
+	display: flex;
+	flex-direction: row;
+	height: 5vh;
+	gap: 10px;
+	margin: 1% 0;
+}
+
+
+.issue-label{
+	border: 2px solid grey;
+	height: 70vh;
+	width: 50%;
+}
+
+.container{
+
+}

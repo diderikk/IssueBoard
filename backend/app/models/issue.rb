@@ -19,6 +19,8 @@ class Issue < ApplicationRecord
 	end
 
 	def issue_id_unique?
+		
+		return if id
 		exists = Issue.joins(issue_label: :issue_board).exists?(issue_id: issue_id)
 		errors.add(:issue_id, "needs to be unique for the board") if exists
 	end

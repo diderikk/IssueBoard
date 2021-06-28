@@ -24,5 +24,12 @@ module Mutations
 				}
 			end
 		end
+
+		private
+
+		def authorized?(attributes:s)
+			issue_board = IssueBoard.joins(:issue_labels).where(issue_labels: {id: attributes.issue_label_id }).take
+			super && Types::IssueBoardType.authorized?(issue_board, context)
+		end
 	end
 end

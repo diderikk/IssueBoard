@@ -29,6 +29,10 @@ module Types
 			argument :issue_board_id, ID, required: true
 		end
 
+		field :not_group_issue_boards, [Types::IssueBoardType], null: false do
+			description "Returns all issueboards a user is a part of that is not in a group"
+		end
+
 		field :issue, Types::IssueType, null: false do
 			description "Returns a single Issue from a IssueBoard that a user i a part of"
 
@@ -55,6 +59,10 @@ module Types
 
 		def issue_board(issue_board_id:)
 			IssueBoard.find(issue_board_id)
+		end
+
+		def not_group_issue_boards
+			context[:current_user].issue_boards
 		end
 
 		def issue(issue_id:)

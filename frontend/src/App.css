@@ -1,6 +1,7 @@
 body{
 	margin: 65px 0 0 0;
 	width: 100%;
+	font-family: 'Roboto Mono', monospace;
 }
 
 #navBar{
@@ -18,4 +19,8 @@ body{
 	margin: 2px 0 10px 0;
 	color: red;
 	font-size: 0.8rem;
+}
+
+.button-transform{
+	box-shadow: rgba(25,25,25,.04) 0 0 1px 0,rgba(0,0,0,.1) 0 3px 4px 0;
 }

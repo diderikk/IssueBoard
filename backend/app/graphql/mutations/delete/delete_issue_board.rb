@@ -20,9 +20,9 @@ module Mutations
 		private
 
 		def authorized?(issue_board_id:)
-			if User.joins(groups: :issue_boards).where(issue_boards: { id: issue_board_id }).exists?(context[:current_user].id)
+			if User.joins(groups: :issue_boards).where(issue_boards: { id: issue_board_id }, members: { accepted: true }).exists?(context[:current_user].id)
 				super
-			elsif User.joins(:issue_boards).where(issue_boards: { id: issue_board_id }).exists?(context[:current_user].id)
+			elsif User.joins(:issue_boards).where(issue_boards: {id: issue_board_id }).exists?(context[:current_user].id)
 				super
 			end
 		end

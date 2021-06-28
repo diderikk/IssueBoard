@@ -1,0 +1,14 @@
+query IssueBoard($id: ID!){
+  issueBoard(issueBoardId:$id){
+    name
+    issueLabels{
+      id
+      name
+      color
+      issues{
+        id
+        title
+      }
+    }
+  }
+}

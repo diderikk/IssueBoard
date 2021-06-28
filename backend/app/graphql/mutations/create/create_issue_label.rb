@@ -21,5 +21,12 @@ module Mutations
 				}
 			end
 		end
+
+		private
+		
+		def authorized?(attributes:)
+			issue_board = IssueBoard.find(attributes.issue_board_id)
+			Types::IssueBoardType.authorized?(issue_board, context)
+		end
 	end
 end
