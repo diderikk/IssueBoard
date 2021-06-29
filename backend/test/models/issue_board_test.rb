@@ -10,7 +10,8 @@ class IssueBoardTest < ActiveSupport::TestCase
 
   test "should not save issue board with both user and group" do
 
-    issue_board = IssueBoard.new(name: "TestBoard", user_id: users(:one).id, group_id: groups(:group1).id)
+    issue_board = IssueBoard.new(name: "TestBoard", group_id: groups(:group1).id)
+    issue_board.users << users(:one)
     assert_not issue_board.save, "Issue board not saved"
   end
 
