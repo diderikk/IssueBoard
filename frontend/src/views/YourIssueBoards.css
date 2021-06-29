@@ -1,0 +1,46 @@
+:root{
+	--columns: 3;
+}
+
+.issue-board{
+	font-size: 1.2em;
+	border: 2px solid grey;
+	border-radius: 7px;
+	width: 100%;
+	height: 14vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+}
+
+.issue-board:hover{
+	background-color: rgb(56, 101, 128);
+	box-shadow: 5px 5px 15px 5px #000000;
+	border-color: rgb(115, 166, 233);
+}
+
+.issue-boards-container{
+	display: grid;
+	grid-template-columns: repeat(var(--columns), 1fr);
+	gap: 5%;
+	width: 90%;
+	height: 100%;
+	align-items: center;
+	justify-content: center;
+}
+
+.container{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin: 0 3%;
+}
+
+
+@media screen and (max-width: 600px) {
+	:root{
+		--columns: 2
+	}
+}

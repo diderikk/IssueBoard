@@ -1,5 +1,6 @@
 module Mutations
 	class Delete::DeleteIssueLabel < GraphQL::Schema::Mutation
+		include Authorize
 		graphql_name "DeleteIssueLabel"
 		argument :issue_label_id, ID, required: true
 
@@ -20,7 +21,7 @@ module Mutations
 		private
 
 		def authorized?(issue_label_id:)
-			Types::IssueLabelType.authorized?(IssueLabel.find(issue_label_id), context)
+			issue_label_authorized?(nil, issue_label_id, context);
 		end
 
 	end

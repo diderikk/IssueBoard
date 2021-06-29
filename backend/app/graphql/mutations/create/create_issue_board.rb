@@ -7,7 +7,11 @@ module Mutations
 		field :errors, [String], null: true
 
 		def resolve(attributes:)
-			issue_board = IssueBoard.new(name: attributes.name, group_id: attributes.group_id, user_id: attributes.user_id)
+			issue_board = IssueBoard.new(name: attributes.name, group_id: attributes.group_id)
+			
+			if(attributes.user_id)
+				issue_board.users << context[:current_user]
+			end
 
 			if issue_board.save!
 				{
@@ -20,6 +24,15 @@ module Mutations
 					errors: issue_board.errors.full_messages,
 				}
 			end
+		end
+
+		private
+
+		def authorized?(attributes:)
+			if(attributes.group_id)
+				return super && User.joins(:groups).where(groups: {id: attributes.group_id}, members: { accepted: true }).exists?(context[:current_user].id)
+			end
+			return true
 		end
 	end
 end

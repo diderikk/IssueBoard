@@ -1,5 +1,6 @@
 class Group < ApplicationRecord
-	has_and_belongs_to_many :users
+	has_many :members
+	has_many :users, through: :members
 	has_many :issue_boards, dependent: :destroy
 
 	validates :name, presence: true

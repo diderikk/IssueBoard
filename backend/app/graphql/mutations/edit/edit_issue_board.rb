@@ -1,5 +1,6 @@
 module Mutations
 	class Edit::EditIssueBoard < GraphQL::Schema::Mutation
+		include Authorize
 		graphql_name "EditIssueBoard"
 		argument :attributes, Types::Input::IssueBoardInputType, required: true
 		argument :issue_board_id, ID, required: true, loads: IssueBoard
@@ -30,7 +31,7 @@ module Mutations
 		private
 
 		def authorized?(attributes:, issue_board:)
-			Types::IssueBoardType.authorized?(issue_board, context)
+			issue_board_authorized?(issue_board.id, context);
 		end
 	end
 end

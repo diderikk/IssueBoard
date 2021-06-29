@@ -1,5 +1,6 @@
 module Mutations
 	class Edit::EditIssueLabel < GraphQL::Schema::Mutation
+		include Authorize
 		graphql_name "EditIssueLabel"
 		argument :attributes, Types::Input::IssueLabelInputType, required: true
 		argument :issue_label_id, ID, required: true, loads: IssueLabel
@@ -30,7 +31,7 @@ module Mutations
 		private
 
 		def authorized?(attributes:,  issue_label:)
-			Types::IssueLabelType.authorized?(issue_label, context)
+			issue_label_authorized?(issue_label, nil, context);
 		end
 	end
 end

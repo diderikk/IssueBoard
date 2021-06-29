@@ -1,5 +1,6 @@
 module Mutations
 	class Edit::EditGroup < GraphQL::Schema::Mutation
+		include Authorize
 		graphql_name "EditGroup"
 
 		argument :attributes, Types::Input::GroupInputType, required: true
@@ -31,7 +32,7 @@ module Mutations
 		private
 
 		def authorized?(attributes:, group:)
-			group.users.include? context[:current_user]
+			group_authorized?(group, nil, context);
 		end
 	end
 end

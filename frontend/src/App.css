@@ -1,6 +1,12 @@
+:root{
+	--font-size: 1.1rem
+}
+
 body{
 	margin: 65px 0 0 0;
 	width: 100%;
+	font-family: 'Roboto Mono', monospace;
+	font-size: 0.9em;
 }
 
 #navBar{
@@ -18,4 +24,24 @@ body{
 	margin: 2px 0 10px 0;
 	color: red;
 	font-size: 0.8rem;
+}
+
+button{
+	font-family: 'Roboto Mono', monospace;
+	font-size: var(--font-size);
+	cursor: pointer;
+	padding: 9px;
+}
+
+input[type=text]{
+	font-size: var(--font-size);
+	padding: 10px;
+}
+
+@media screen and (max-width: 500px) {
+
+   :root{
+	   --font-size: 0.9rem;
+   }
+
 }

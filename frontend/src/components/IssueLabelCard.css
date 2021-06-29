@@ -1,0 +1,30 @@
+#issue-label-card-header{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	border-bottom: 1px solid grey;
+}
+
+#issue-label-card-header-right{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 2px;
+}
+
+#card-img{
+	width: 1.5rem;
+	height: 1.5rem;
+}
+
+#plus-button{
+	width: 1.7rem;
+	height: 1.7rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-left: 8px;
+	font-size: 1.4rem;
+	color: rgb(77, 77, 77);
+}

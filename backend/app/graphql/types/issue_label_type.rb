@@ -6,9 +6,5 @@ module Types
 		field :issue_board, Types::IssueBoardType, null: false
 		field :issues, [Types::IssueType], null: false
 
-
-		def self.authorized?(object, context)
-			super && Types::IssueBoardType.authorized?(object.issue_board, context)
-		end
 	end
 end
