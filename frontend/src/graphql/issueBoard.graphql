@@ -8,6 +8,8 @@ query IssueBoard($id: ID!){
       issues{
         id
         title
+        issueId
+        dueDate
       }
     }
   }

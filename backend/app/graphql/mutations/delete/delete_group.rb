@@ -1,5 +1,6 @@
 module Mutations
 	class Delete::DeleteGroup < GraphQL::Schema::Mutation
+		include Authorize
 		graphql_name "DeleteGroup"
 		argument :group_id, ID, required: true
 
@@ -20,7 +21,7 @@ module Mutations
 		private
 
 		def authorized?(group_id:)
-			Group.find(group_id).users.where(members: {accepted: true}).include? context[:current_user]
+			group_authorized?(nil, group_id, context);
 		end
 
 	end

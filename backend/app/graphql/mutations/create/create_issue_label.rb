@@ -1,5 +1,6 @@
 module Mutations
 	class Create::CreateIssueLabel < GraphQL::Schema::Mutation
+		include Authorize
 		graphql_name "CreateIssueLabel"
 		argument :attributes, Types::Input::IssueLabelInputType, required: true
 
@@ -25,8 +26,7 @@ module Mutations
 		private
 		
 		def authorized?(attributes:)
-			issue_board = IssueBoard.find(attributes.issue_board_id)
-			Types::IssueBoardType.authorized?(issue_board, context)
+			issue_board_authorized?(attributes.issue_board_id, context);
 		end
 	end
 end

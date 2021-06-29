@@ -1,14 +1,13 @@
 .issue-label-container{
-	display: flex;
-	flex-direction: row;
-	gap: 5px;
-	height: 100%;
 	width: 100%;
+	white-space: nowrap;
+	overflow-x: auto;
 }
 
 #issue-label-header{
 	display: flex;
 	flex-direction: row;
+	align-items: center;
 	height: 5vh;
 	gap: 10px;
 	margin: 1% 0;
@@ -16,11 +15,25 @@
 
 
 .issue-label{
+	/* position: absolute; */
+	display: inline-block;
+	vertical-align: top;
 	border: 2px solid grey;
-	height: 70vh;
-	width: 50%;
+	height: 80vh;
+	width: 22em;
+	margin: 5px;
+	padding: 10px;
+	overflow-y: auto;
 }
 
-.container{
+#issue-board-container{
+	margin: 0 3%;
+}
+
+@media screen and (max-width: 500px) {
+
+	#issue_label_search{
+		width: 35%;
+	}
 
 }

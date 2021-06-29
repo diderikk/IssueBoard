@@ -3,6 +3,7 @@ import "./IssueBoard.css";
 import { RouteComponentProps, useHistory } from "react-router-dom";
 import { IssueBoardTitle } from "../components/IssueBoardTitle";
 import { useIssueBoardQuery } from "../generated/graphql";
+import { IssueLabelCard } from "../components/IssueLabelCard";
 
 interface Params {
   issueBoardId: string;
@@ -26,21 +27,17 @@ export const IssueBoard: React.FC<Props> = ({ match }) => {
   return (
     <div className="container">
       <div id="issue-label-header">
-        <input type="text"/>
+        <input id="issue-label-search" type="text" placeholder="Search or filter results..."/>
         <IssueBoardTitle issueBoardTitle={issueBoard?.name!} />
-        <button>Create list</button>
+        <button>Add label</button>
       </div>
       <div className="issue-label-container">
         {issueBoard?.issueLabels.map((issueLabel) => {
           return (
-            <div className="issue-label" key={issueLabel.id}>
-              <h2>{issueLabel.name}</h2>
-              <p>{issueLabel.color}</p>
-            </div>
+            <IssueLabelCard issueLabel={issueLabel} key={issueLabel.id} />
           );
         })}
       </div>
-      {/* <IssueBoardTitle issueBoardTitle={issueBoard?.name!} /> */}
     </div>
   );
 };

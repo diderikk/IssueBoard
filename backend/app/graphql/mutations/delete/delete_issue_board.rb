@@ -1,5 +1,6 @@
 module Mutations
 	class Delete::DeleteIssueBoard < GraphQL::Schema::Mutation
+		include Authorize
 		graphql_name "DeleteIssueBoard"
 		argument :issue_board_id, ID, required: true
 
@@ -20,11 +21,7 @@ module Mutations
 		private
 
 		def authorized?(issue_board_id:)
-			if User.joins(groups: :issue_boards).where(issue_boards: { id: issue_board_id }, members: { accepted: true }).exists?(context[:current_user].id)
-				super
-			elsif User.joins(:issue_boards).where(issue_boards: {id: issue_board_id }).exists?(context[:current_user].id)
-				super
-			end
+			issue_board_authorized?(issue_board_id, context);
 		end
 
 	end

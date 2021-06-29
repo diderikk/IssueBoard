@@ -1,0 +1,45 @@
+.issue-card-container{
+	margin-top: 10px;
+	border: 1px solid grey;
+	border-radius: 5px;
+	padding: 0 10px
+}
+
+#issue-card-input-container{
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding-bottom: 19px;
+}
+
+.issue-card-container h4{
+	margin-bottom: 0;
+}
+
+#issue-card-meta{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	font-size: 0.85rem;
+}
+
+#calendar-icon{
+	width: 1.2rem;
+	height: 1.2rem;
+	margin: 0 6px;
+}
+
+#issue-card-input{
+	font-size: 1rem;
+	padding: 3px;
+}
+
+#issue-card-form-buttons{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.issue-card-button{
+	padding: 4px;
+}

@@ -1,6 +1,7 @@
 module Types
 	class QueryType < GraphQL::Schema::Object
 		include Authentication
+		include Authorize
 
 		field :login, String, null: false do
 			description "Login user return tokens"
@@ -50,15 +51,24 @@ module Types
 		end
 
 		def group(group_id:)
-			Group.find(group_id)
+
+			if group_authorized?(nil, group_id, context)
+				Group.find(group_id);
+			else
+				raise GraphQL::ExecutionError, "Not authorized for group whit id: #{group_id}"
+			end
 		end
 
 		def groups
-			Group.all
+			context[:current_user].groups.where(members: {accepted: true});
 		end
 
 		def issue_board(issue_board_id:)
-			IssueBoard.find(issue_board_id)
+			if issue_board_authorized?(issue_board_id, context)
+				IssueBoard.find(issue_board_id);
+			else
+				raise GraphQL::ExecutionError, "Not authorized for issue board with id: #{issue_board_id}"	
+			end
 		end
 
 		def not_group_issue_boards
@@ -66,7 +76,11 @@ module Types
 		end
 
 		def issue(issue_id:)
-			Issue.find(issue_id)
+			if issue_authorized?(issue_id, context)
+				Issue.find(issue_id)
+			else
+				raise GraphQL::ExecutionError, "Not authorized for issue with id: #{issue_id}"
+			end
 		end
 
 		# def login(email:, password:)

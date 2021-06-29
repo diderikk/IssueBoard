@@ -398,7 +398,7 @@ export type IssueBoardQuery = (
       & Pick<IssueLabel, 'id' | 'name' | 'color'>
       & { issues: Array<(
         { __typename?: 'Issue' }
-        & Pick<Issue, 'id' | 'title'>
+        & Pick<Issue, 'id' | 'title' | 'issueId' | 'dueDate'>
       )> }
     )> }
   ) }
@@ -512,6 +512,8 @@ export const IssueBoardDocument = gql`
       issues {
         id
         title
+        issueId
+        dueDate
       }
     }
   }

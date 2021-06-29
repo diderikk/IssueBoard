@@ -11,6 +11,8 @@ export const YourIssueBoards: React.FC = () => {
     history.push(`/issue-board/${issueBoardId}`);
   };
 
+  console.log(data)
+
   return (
     <div className="container">
 		<h1>Your issue boards:</h1>

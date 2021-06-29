@@ -1,3 +1,7 @@
+:root{
+	--columns: 3;
+}
+
 .issue-board{
 	font-size: 1.2em;
 	border: 2px solid grey;
@@ -18,7 +22,7 @@
 
 .issue-boards-container{
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: repeat(var(--columns), 1fr);
 	gap: 5%;
 	width: 90%;
 	height: 100%;
@@ -34,3 +38,9 @@
 	margin: 0 3%;
 }
 
+
+@media screen and (max-width: 600px) {
+	:root{
+		--columns: 2
+	}
+}
