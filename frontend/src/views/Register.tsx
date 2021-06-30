@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useCreateUserMutation } from "../generated/graphql";
-import { useForm } from "../hooks/useForm";
+import { useForm } from "../util/useForm";
 import {
   validateEmail,
   validatePassword,
   validateUsername,
 } from "../util/registerValidation";
+import { useSnackBar } from "../util/SnackBarContext";
 
 interface RegisterForm {
   username: string;
@@ -20,11 +21,11 @@ export const Register: React.FC = () => {
     email: "",
     password: "",
   });
+  const {dispatch} = useSnackBar();
 
   const [usernameError, setUsernameError] = useState<string>("");
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordErrror] = useState<string>("");
-	const [submitError, setSubmitError] = useState<string>("");
   const history = useHistory();
 	const [register] = useCreateUserMutation();
 
@@ -32,6 +33,7 @@ export const Register: React.FC = () => {
     event.preventDefault();
     if (!validateAll()) return;
 		
+    dispatch({ type: "loading" });
 		const response = await register({
 			variables: {
 				attributes: {
@@ -46,12 +48,12 @@ export const Register: React.FC = () => {
 		console.log(response.data?.createUser)
 
 		if(errors){
-			setSubmitError(errors.join(", "))
+      dispatch({type: 'error', error: errors.join(", ")})
 			return;
 		}
 
 		
-
+    dispatch({type: 'successful'});
     history.push("/");
   };
 
@@ -112,7 +114,6 @@ export const Register: React.FC = () => {
           <p className="error">{passwordError}</p>
         </div>
         <button type="submit">Register</button>
-				<p className="error">{submitError}</p>
       </form>
     </div>
   );

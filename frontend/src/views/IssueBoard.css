@@ -14,17 +14,7 @@
 }
 
 
-.issue-label{
-	/* position: absolute; */
-	display: inline-block;
-	vertical-align: top;
-	border: 2px solid grey;
-	height: 80vh;
-	width: 22em;
-	margin: 5px;
-	padding: 10px;
-	overflow-y: auto;
-}
+
 
 #issue-board-container{
 	margin: 0 3%;
