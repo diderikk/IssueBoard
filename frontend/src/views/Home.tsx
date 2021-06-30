@@ -1,9 +1,20 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useSnackBar } from "../util/SnackBarContext";
 
 export const Home: React.FC = () => {
-	const history = useHistory();
+	const {state, dispatch} = useSnackBar();
+
+	const handleClick = () => {
+		dispatch({type: 'error', error: "SOmething went wrong"})
+	}
+
+
 	return (
-		<button onClick={() => history.push("/about")}>Home</button>
+		<div>
+			{state.description}
+			<div>
+				<button onClick={handleClick}>Click</button>
+			</div>
+		</div>
 	)
 }

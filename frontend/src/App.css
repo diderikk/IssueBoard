@@ -1,47 +1,69 @@
-:root{
-	--font-size: 1.1rem
+:root {
+  --font-size: 1.1rem;
 }
 
-body{
-	margin: 65px 0 0 0;
-	width: 100%;
-	font-family: 'Roboto Mono', monospace;
-	font-size: 0.9em;
+body {
+  margin: 65px 0 0 0;
+  width: 100%;
+  font-family: "Roboto Mono", monospace;
+  font-size: 0.9em;
 }
 
-#navBar{
-	display: flex;
-	flex-direction: row;
-	position: fixed;
-	top: 0;
-	height: 50px;
-	width: 100%;
-	background-color: #303130;
+#navBar {
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  top: 0;
+  height: 50px;
+  width: 100%;
+  background-color: #303130;
 }
 
-
-.error{
-	margin: 2px 0 10px 0;
-	color: red;
-	font-size: 0.8rem;
+.error {
+  margin: 2px 0 10px 0;
+  color: red;
+  font-size: 0.8rem;
 }
 
-button{
-	font-family: 'Roboto Mono', monospace;
-	font-size: var(--font-size);
-	cursor: pointer;
-	padding: 9px;
+button {
+  font-family: "Roboto Mono", monospace;
+  font-size: var(--font-size);
+  cursor: pointer;
+  padding: 9px;
 }
 
-input[type=text]{
-	font-size: var(--font-size);
-	padding: 10px;
+input[type="text"] {
+  font-size: var(--font-size);
+  padding: 10px;
+}
+
+#snackbar {
+  border-radius: 10px;
+  padding: 20px;
+  z-index: 420;
+  position: fixed;
+  width: 65%;
+  height: 7%;
+  background: black;
+  color: white;
+  bottom: 3%;
+  left: 50%;
+  margin-left: -32.5%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+
+.snackbar-fade {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 12s, opacity 12s linear;
 }
 
 @media screen and (max-width: 500px) {
-
-   :root{
-	   --font-size: 0.9rem;
-   }
-
+  :root {
+    --font-size: 0.9rem;
+  }
 }

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useLoginMutation } from "../generated/graphql";
-import { useForm } from "../hooks/useForm";
+import { useSnackBar } from "../util/SnackBarContext";
+import { useForm } from "../util/useForm";
 
 interface Credentials {
   email: string;
@@ -14,51 +15,51 @@ export const Login: React.FC = () => {
     password: "",
   });
   const history = useHistory();
+  const { dispatch } = useSnackBar();
 
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
-	const [submitError, setSubmitError] = useState<string>("");
-	const [login] = useLoginMutation();
+  const [login] = useLoginMutation();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-		if(validateForm()){
-			const response = await login({
-				variables: {
-					email: credentials.email,
-					password: credentials.password
-				}
-			});
+    if (validateForm()) {
+      dispatch({ type: "loading" });
+      const response = await login({
+        variables: {
+          email: credentials.email,
+          password: credentials.password,
+        },
+      });
 
- 			const errors = response.data?.login?.errors
+      const errors = response.data?.login?.errors;
 
-			if(errors){
-				setSubmitError(errors.join(", "))
-				return;
-			}
+      if (errors) {
+        dispatch({ type: "error", error: "Wrong email or password" });
+        return;
+      }
 
-			localStorage.setItem("token", response.data?.login?.accessToken!);
+      dispatch({ type: "successful" });
+      localStorage.setItem("token", response.data?.login?.accessToken!);
 
-			history.push("/");
-		}
+      history.push("/");
+    }
   };
 
-  const validateForm = ():boolean => {
-		let valid = true;
+  const validateForm = (): boolean => {
+    let valid = true;
 
-    if (credentials.email.trim().length === 0){
-			setEmailError("Email field is empty")
-			valid = false;
-		}
-    else setEmailError("");
-    if (credentials.password.trim().length === 0){
+    if (credentials.email.trim().length === 0) {
+      setEmailError("Email field is empty");
+      valid = false;
+    } else setEmailError("");
+    if (credentials.password.trim().length === 0) {
       setPasswordError("Password field is empty");
-			valid = false;
-		}
-    else setPasswordError("");
+      valid = false;
+    } else setPasswordError("");
 
-		return valid;
+    return valid;
   };
 
   return (
@@ -86,7 +87,6 @@ export const Login: React.FC = () => {
           <p className="error">{passwordError}</p>
         </div>
         <button type="submit">Log in</button>
-				<p className="error">{submitError}</p>
       </form>
     </div>
   );
