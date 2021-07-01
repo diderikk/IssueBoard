@@ -9,14 +9,57 @@ body {
   font-size: 0.9em;
 }
 
-#navBar {
+#nav-bar {
+  z-index: 100;
   display: flex;
   flex-direction: row;
   position: fixed;
+  align-items: center;
+  justify-content: space-between;
   top: 0;
   height: 50px;
   width: 100%;
-  background-color: #303130;
+  background-color: #5e615e;
+}
+
+.nav-bar-link {
+  margin: 0 15px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  height: 40px;
+  width: 3rem;
+  background: rgb(95, 91, 83);
+  border-radius: 7px;
+}
+
+.nav-bar-icons{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#home-icon{
+  width: 2rem;
+  height: 2rem;
+}
+
+#about-icon{
+  width: 2.3rem;
+  height: 2.3rem;
+}
+
+#board-icon{
+  width: 2.3rem;
+  height: 2.3rem;
+}
+
+#link{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .error {
@@ -60,6 +103,21 @@ input[type="text"] {
   visibility: hidden;
   opacity: 0;
   transition: visibility 0s 12s, opacity 12s linear;
+}
+
+.form-buttons{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.form-button{
+	padding: 4px;
+}
+
+.form-input{
+	font-size: 1rem;
+	padding: 3px;
 }
 
 @media screen and (max-width: 500px) {

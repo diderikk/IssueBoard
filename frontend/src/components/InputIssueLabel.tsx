@@ -44,9 +44,9 @@ export const InputIssueLabel: React.FC<Props> = ({setShowLabelForm}) => {
         </div>
         <ColorPicker labelColor={labelColor} setLabelColor={setLabelColor} />
       </div>
-      <div id="issue-form-buttons">
-        <button className="issue-label-button">Add to board</button>
-        <button className="issue-label-button" onClick={handleCancel}>Cancel</button>
+      <div id="label-form-buttons" className="form-buttons">
+        <button className="form-button">Add to board</button>
+        <button className="form-button" onClick={handleCancel}>Cancel</button>
       </div>
     </div>
   );

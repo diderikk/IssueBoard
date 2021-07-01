@@ -6,10 +6,13 @@ import { useIssueBoardQuery } from "../generated/graphql";
 import { IssueLabelCard } from "../components/IssueLabelCard";
 import { useSnackBar } from "../util/SnackBarContext";
 import { InputIssueLabel } from "../components/InputIssueLabel";
+import { Sidebar } from "../components/Sidebar";
+import { IssueResultType } from "../types/IssueResultType.type";
 
 interface Params {
   issueBoardId: string;
 }
+
 
 type Props = RouteComponentProps<Params>;
 
@@ -22,6 +25,7 @@ export const IssueBoard: React.FC<Props> = ({ match }) => {
   const history = useHistory();
   const { dispatch } = useSnackBar();
   const [showLabelForm, setShowLabelForm] = useState<boolean>(false);
+  const [selectedIssue, setSelectedIssue] = useState<IssueResultType | null>(null);
 
   const handleAddLabel = () => {
     setShowLabelForm(true);
@@ -30,7 +34,7 @@ export const IssueBoard: React.FC<Props> = ({ match }) => {
   useEffect(() => {
     if (loading) dispatch({ type: "loading" });
     else if (data) dispatch({ type: "successful" });
-    else if (error) dispatch({ type: "error", error: error.message });
+    else if (error) dispatch({ type: "error", error: "Could not load issue board" });
   }, [data, loading, error, dispatch]);
 
   if (error) history.push("/404");
@@ -39,6 +43,7 @@ export const IssueBoard: React.FC<Props> = ({ match }) => {
 
   return (
     <div className="container">
+      <Sidebar setSelectedIssue={setSelectedIssue} issue={selectedIssue} />
       <div id="issue-label-header">
         <input
           id="issue-label-search"
@@ -50,7 +55,7 @@ export const IssueBoard: React.FC<Props> = ({ match }) => {
       </div>
       <div className="issue-label-container">
         {issueBoard?.issueLabels.map((issueLabel) => {
-          return <IssueLabelCard issueLabel={issueLabel} key={issueLabel.id} />;
+          return <IssueLabelCard setSelectedIssue={setSelectedIssue} issueLabel={issueLabel} key={issueLabel.id} />;
         })}
         {showLabelForm && <InputIssueLabel setShowLabelForm={setShowLabelForm} />}
       </div>

@@ -1,27 +1,16 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import "./IssueLabelCard.css";
-import { Issue, IssueLabel } from "../generated/graphql";
 import cards from "../assets/issue-cards.png";
 import { IssueCard } from "./IssueCard";
 import { InputIssueCard } from "./InputIssueCard";
-
-type IssueLabelResultType = { __typename?: "IssueLabel" } & Pick<
-  IssueLabel,
-  "id" | "name" | "color"
-> & {
-    issues: Array<
-      { __typename?: "Issue" } & Pick<
-        Issue,
-        "id" | "title" | "issueId" | "dueDate"
-      >
-    >;
-  };
-
+import { IssueResultType } from "../types/IssueResultType.type";
+import { IssueLabelResultType } from "../types/IssueLabelResultTyoe.type";
 interface Props {
   issueLabel: IssueLabelResultType;
+  setSelectedIssue: Dispatch<SetStateAction<IssueResultType | null>>;
 }
 
-export const IssueLabelCard: React.FC<Props> = ({ issueLabel }) => {
+export const IssueLabelCard: React.FC<Props> = ({ issueLabel, setSelectedIssue }) => {
   const [showIssueForm, setShowIssueForm] = useState<boolean>(false)
   const addIssue = () => {
     setShowIssueForm(true);
@@ -40,7 +29,7 @@ export const IssueLabelCard: React.FC<Props> = ({ issueLabel }) => {
       <div>
         {(showIssueForm) && <InputIssueCard setShowIssueForm={setShowIssueForm}/>}
         {issueLabel.issues.map((issue) => {
-          return <IssueCard issue={issue} key={issue.id} />;
+          return <IssueCard setSelectedIssue={setSelectedIssue} issue={issue} key={issue.id} />;
         })}
       </div>
     </div>

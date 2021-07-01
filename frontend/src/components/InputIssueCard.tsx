@@ -23,12 +23,12 @@ export const InputIssueCard: React.FC<Props> = ({setShowIssueForm}) => {
 	},[])
 
 	return (
-		<div id="issue-card-input-container" className="issue-card-container">
+		<div className="issue-card-container card-form-container">
 			<h4>Title</h4>
-			<input value={titleInput} ref={inputRef} id="issue-card-input" type="text" onChange={handleChange}/>
-			<div id="issue-card-form-buttons">
-				<button className="issue-card-button" disabled={titleInput.trim().length === 0}>Create</button>
-				<button className="issue-card-button" onClick={handleCancel}>Cancel</button>
+			<input value={titleInput} ref={inputRef} className="form-input" type="text" onChange={handleChange}/>
+			<div className="form-buttons">
+				<button className="form-button" disabled={titleInput.trim().length === 0}>Create</button>
+				<button className="form-button" onClick={handleCancel}>Cancel</button>
 			</div>
 		</div>
 	)

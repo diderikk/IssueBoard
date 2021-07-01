@@ -1,0 +1,41 @@
+#sidebar{
+	top: 50px;
+	position: fixed;
+	height: 100%;
+	right: 0;
+	width: 18em;
+	background: rgb(59, 59, 59);
+	padding: 0 15px;
+	color: white
+}
+
+#sidebar h4{
+	margin-bottom: 0;
+}
+
+#sidebar-button{
+	padding: 3px;
+	color: white;
+	font-size: 1.5rem;
+	background-color: red;
+	border-radius: 70%;
+	border: none;
+}
+
+#sidebar-exit{
+	background-color: red;
+	border-radius: 50%;
+	height: 3rem;
+	width: 3rem;
+	text-align: center;
+}
+
+
+
+#sidebar-header{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom: 1px solid grey;
+}

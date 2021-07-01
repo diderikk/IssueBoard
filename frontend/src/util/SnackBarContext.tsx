@@ -7,14 +7,15 @@ type Action =
   | { type: "error"; error: string }
   | { type: "disabled" };
 type Dispatch = (action: Action) => void;
-type State = { show: boolean; loading: boolean; description: string; color?: string};
+type State = { show: boolean; fadeOut?: boolean; loading: boolean; description: string; color?: string};
 type SnackBarProviderProps = { children: React.ReactNode };
 
 const initialState = {
   show: false,
   loading: false,
   description: "",
-};
+  fadeOut: false
+} as State;
 
 const SnackBarContext = createContext<
   { state: State; dispatch: Dispatch } | undefined
@@ -36,7 +37,8 @@ const snackBarReducer = (state: State, action: Action): State => {
         show: false,
         description: "Successful",
         color: "#5cb85c",
-        loading: false
+        loading: false,
+        fadeOut: true
       };
     }
     case "error": {
@@ -44,7 +46,8 @@ const snackBarReducer = (state: State, action: Action): State => {
         show: false,
         description: "Error: " + action.error,
         color: "#dc3545",
-        loading: false
+        loading: false,
+        fadeOut: true
       };
     }
     case "disabled": {
