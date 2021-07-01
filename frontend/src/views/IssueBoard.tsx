@@ -43,7 +43,7 @@ export const IssueBoard: React.FC<Props> = ({ match }) => {
 
   return (
     <div className="container">
-      <Sidebar setSelectedIssue={setSelectedIssue} issue={selectedIssue} />
+      {selectedIssue && <Sidebar setSelectedIssue={setSelectedIssue} issue={selectedIssue} />}
       <div id="issue-label-header">
         <input
           id="issue-label-search"

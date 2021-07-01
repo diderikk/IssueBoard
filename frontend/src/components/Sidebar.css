@@ -1,3 +1,7 @@
+:root{
+	--information-font-size: 0.8rem;
+}
+
 #sidebar{
 	top: 50px;
 	position: fixed;
@@ -13,26 +17,54 @@
 	margin-bottom: 0;
 }
 
-#sidebar-button{
-	padding: 3px;
-	color: white;
-	font-size: 1.5rem;
-	background-color: red;
-	border-radius: 70%;
-	border: none;
-}
-
 #sidebar-exit{
 	background-color: red;
 	border-radius: 50%;
-	height: 3rem;
-	width: 3rem;
+	font-size: 1.75rem;
+	height: 2rem;
+	width: 2rem;
+	line-height: 1.75rem;
 	text-align: center;
+	cursor: pointer;
+	user-select: none;
+}
+
+.button-link{
+	border: none;
+	background: none;
+	color: white;
+	font-size: 0.9rem;
+
+}
+
+#sidebar-remove-date{
+	font-size: var(--information-font-size);
+	color:rgb(134, 134, 134)
+}
+
+.button-link:hover{
+	text-decoration: underline;
+}
+
+#due-date-picker{
+	width: 100px;
+}
+
+#datepicker-container{
+	text-align: center;
+}
+
+#datepicker-button{
+	width: 93%;
+	color: white;
+	background-color: red;
+	border: none;
+	border-radius: 5px;
 }
 
 
 
-#sidebar-header{
+.sidebar-item{
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
