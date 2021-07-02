@@ -1,7 +1,7 @@
 Add assigning of issues and connect them to users
 A page for all your assigned issues
-Fix header
 Add API calls
-Sidebar
-Fix issue board header
 User info in header icon
+Styling
+Authentication
+Fix delete label, and remove issues

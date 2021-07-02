@@ -1,13 +1,9 @@
 import React, { Dispatch, SetStateAction } from "react";
 import "./IssueCard.css";
 import calendar from "../assets/calendar.png";
-import { Issue } from "../generated/graphql";
 import { formattedDueDate } from "../util/formattedDueDate";
+import { IssueResultType } from "../types/IssueResultType.type";
 
-type IssueResultType = { __typename?: "Issue" } & Pick<
-  Issue,
-  "id" | "title" | "issueId" | "dueDate"
->;
 
 interface Props {
   issue: IssueResultType;

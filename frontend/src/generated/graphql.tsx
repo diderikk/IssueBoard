@@ -148,8 +148,6 @@ export type IssueBoardInputType = {
   name: Scalars['String'];
   /** Group ID */
   groupId?: Maybe<Scalars['ID']>;
-  /** User ID */
-  userId?: Maybe<Scalars['ID']>;
 };
 
 /** Input object for Issue */
@@ -171,7 +169,7 @@ export type IssueLabel = {
 };
 
 /** Input object for IssueLabel */
-export type IssueLabelInputLabel = {
+export type IssueLabelInputType = {
   /** IssueLabel name */
   name: Scalars['String'];
   /** Color of IssueLabel */
@@ -230,7 +228,7 @@ export type MutationCreateIssueBoardArgs = {
 
 
 export type MutationCreateIssueLabelArgs = {
-  attributes: IssueLabelInputLabel;
+  attributes: IssueLabelInputType;
 };
 
 
@@ -283,7 +281,7 @@ export type MutationEditIssueBoardArgs = {
 
 
 export type MutationEditIssueLabelArgs = {
-  attributes: IssueLabelInputLabel;
+  attributes: IssueLabelInputType;
   issueLabelId: Scalars['ID'];
 };
 
@@ -358,6 +356,39 @@ export type UserInputType = {
   password: Scalars['String'];
 };
 
+export type CreateIssueBoardMutationVariables = Exact<{
+  attributes: IssueBoardInputType;
+}>;
+
+
+export type CreateIssueBoardMutation = (
+  { __typename?: 'Mutation' }
+  & { createIssueBoard?: Maybe<(
+    { __typename?: 'CreateIssueBoardPayload' }
+    & { issueBoard?: Maybe<(
+      { __typename?: 'IssueBoard' }
+      & Pick<IssueBoard, 'id' | 'name'>
+    )> }
+  )> }
+);
+
+export type CreateIssueLabelMutationVariables = Exact<{
+  attributes: IssueLabelInputType;
+}>;
+
+
+export type CreateIssueLabelMutation = (
+  { __typename?: 'Mutation' }
+  & { createIssueLabel?: Maybe<(
+    { __typename?: 'CreateIssueLabelPayload' }
+    & Pick<CreateIssueLabelPayload, 'errors'>
+    & { issueLabel?: Maybe<(
+      { __typename?: 'IssueLabel' }
+      & Pick<IssueLabel, 'id'>
+    )> }
+  )> }
+);
+
 export type CreateUserMutationVariables = Exact<{
   attributes: UserInputType;
 }>;
@@ -372,6 +403,32 @@ export type CreateUserMutation = (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'name' | 'email'>
     )> }
+  )> }
+);
+
+export type DeleteIssueBoardMutationVariables = Exact<{
+  issueBoardId: Scalars['ID'];
+}>;
+
+
+export type DeleteIssueBoardMutation = (
+  { __typename?: 'Mutation' }
+  & { deleteIssueBoard?: Maybe<(
+    { __typename?: 'DeleteIssueBoardPayload' }
+    & Pick<DeleteIssueBoardPayload, 'success'>
+  )> }
+);
+
+export type DeleteIssueLabelMutationVariables = Exact<{
+  issueLabelId: Scalars['ID'];
+}>;
+
+
+export type DeleteIssueLabelMutation = (
+  { __typename?: 'Mutation' }
+  & { deleteIssueLabel?: Maybe<(
+    { __typename?: 'DeleteIssueLabelPayload' }
+    & Pick<DeleteIssueLabelPayload, 'success'>
   )> }
 );
 
@@ -392,7 +449,7 @@ export type IssueBoardQuery = (
   { __typename?: 'Query' }
   & { issueBoard: (
     { __typename?: 'IssueBoard' }
-    & Pick<IssueBoard, 'name'>
+    & Pick<IssueBoard, 'id' | 'name'>
     & { issueLabels: Array<(
       { __typename?: 'IssueLabel' }
       & Pick<IssueLabel, 'id' | 'name' | 'color'>
@@ -430,6 +487,78 @@ export type LoginMutation = (
 );
 
 
+export const CreateIssueBoardDocument = gql`
+    mutation CreateIssueBoard($attributes: IssueBoardInputType!) {
+  createIssueBoard(attributes: $attributes) {
+    issueBoard {
+      id
+      name
+    }
+  }
+}
+    `;
+export type CreateIssueBoardMutationFn = Apollo.MutationFunction<CreateIssueBoardMutation, CreateIssueBoardMutationVariables>;
+
+/**
+ * __useCreateIssueBoardMutation__
+ *
+ * To run a mutation, you first call `useCreateIssueBoardMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateIssueBoardMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createIssueBoardMutation, { data, loading, error }] = useCreateIssueBoardMutation({
+ *   variables: {
+ *      attributes: // value for 'attributes'
+ *   },
+ * });
+ */
+export function useCreateIssueBoardMutation(baseOptions?: Apollo.MutationHookOptions<CreateIssueBoardMutation, CreateIssueBoardMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateIssueBoardMutation, CreateIssueBoardMutationVariables>(CreateIssueBoardDocument, options);
+      }
+export type CreateIssueBoardMutationHookResult = ReturnType<typeof useCreateIssueBoardMutation>;
+export type CreateIssueBoardMutationResult = Apollo.MutationResult<CreateIssueBoardMutation>;
+export type CreateIssueBoardMutationOptions = Apollo.BaseMutationOptions<CreateIssueBoardMutation, CreateIssueBoardMutationVariables>;
+export const CreateIssueLabelDocument = gql`
+    mutation createIssueLabel($attributes: IssueLabelInputType!) {
+  createIssueLabel(attributes: $attributes) {
+    issueLabel {
+      id
+    }
+    errors
+  }
+}
+    `;
+export type CreateIssueLabelMutationFn = Apollo.MutationFunction<CreateIssueLabelMutation, CreateIssueLabelMutationVariables>;
+
+/**
+ * __useCreateIssueLabelMutation__
+ *
+ * To run a mutation, you first call `useCreateIssueLabelMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateIssueLabelMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createIssueLabelMutation, { data, loading, error }] = useCreateIssueLabelMutation({
+ *   variables: {
+ *      attributes: // value for 'attributes'
+ *   },
+ * });
+ */
+export function useCreateIssueLabelMutation(baseOptions?: Apollo.MutationHookOptions<CreateIssueLabelMutation, CreateIssueLabelMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateIssueLabelMutation, CreateIssueLabelMutationVariables>(CreateIssueLabelDocument, options);
+      }
+export type CreateIssueLabelMutationHookResult = ReturnType<typeof useCreateIssueLabelMutation>;
+export type CreateIssueLabelMutationResult = Apollo.MutationResult<CreateIssueLabelMutation>;
+export type CreateIssueLabelMutationOptions = Apollo.BaseMutationOptions<CreateIssueLabelMutation, CreateIssueLabelMutationVariables>;
 export const CreateUserDocument = gql`
     mutation createUser($attributes: UserInputType!) {
   createUser(attributes: $attributes) {
@@ -469,6 +598,72 @@ export function useCreateUserMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>;
 export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>;
 export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
+export const DeleteIssueBoardDocument = gql`
+    mutation DeleteIssueBoard($issueBoardId: ID!) {
+  deleteIssueBoard(issueBoardId: $issueBoardId) {
+    success
+  }
+}
+    `;
+export type DeleteIssueBoardMutationFn = Apollo.MutationFunction<DeleteIssueBoardMutation, DeleteIssueBoardMutationVariables>;
+
+/**
+ * __useDeleteIssueBoardMutation__
+ *
+ * To run a mutation, you first call `useDeleteIssueBoardMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteIssueBoardMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteIssueBoardMutation, { data, loading, error }] = useDeleteIssueBoardMutation({
+ *   variables: {
+ *      issueBoardId: // value for 'issueBoardId'
+ *   },
+ * });
+ */
+export function useDeleteIssueBoardMutation(baseOptions?: Apollo.MutationHookOptions<DeleteIssueBoardMutation, DeleteIssueBoardMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteIssueBoardMutation, DeleteIssueBoardMutationVariables>(DeleteIssueBoardDocument, options);
+      }
+export type DeleteIssueBoardMutationHookResult = ReturnType<typeof useDeleteIssueBoardMutation>;
+export type DeleteIssueBoardMutationResult = Apollo.MutationResult<DeleteIssueBoardMutation>;
+export type DeleteIssueBoardMutationOptions = Apollo.BaseMutationOptions<DeleteIssueBoardMutation, DeleteIssueBoardMutationVariables>;
+export const DeleteIssueLabelDocument = gql`
+    mutation DeleteIssueLabel($issueLabelId: ID!) {
+  deleteIssueLabel(issueLabelId: $issueLabelId) {
+    success
+  }
+}
+    `;
+export type DeleteIssueLabelMutationFn = Apollo.MutationFunction<DeleteIssueLabelMutation, DeleteIssueLabelMutationVariables>;
+
+/**
+ * __useDeleteIssueLabelMutation__
+ *
+ * To run a mutation, you first call `useDeleteIssueLabelMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteIssueLabelMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteIssueLabelMutation, { data, loading, error }] = useDeleteIssueLabelMutation({
+ *   variables: {
+ *      issueLabelId: // value for 'issueLabelId'
+ *   },
+ * });
+ */
+export function useDeleteIssueLabelMutation(baseOptions?: Apollo.MutationHookOptions<DeleteIssueLabelMutation, DeleteIssueLabelMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteIssueLabelMutation, DeleteIssueLabelMutationVariables>(DeleteIssueLabelDocument, options);
+      }
+export type DeleteIssueLabelMutationHookResult = ReturnType<typeof useDeleteIssueLabelMutation>;
+export type DeleteIssueLabelMutationResult = Apollo.MutationResult<DeleteIssueLabelMutation>;
+export type DeleteIssueLabelMutationOptions = Apollo.BaseMutationOptions<DeleteIssueLabelMutation, DeleteIssueLabelMutationVariables>;
 export const HelloDocument = gql`
     query Hello {
   hello
@@ -504,6 +699,7 @@ export type HelloQueryResult = Apollo.QueryResult<HelloQuery, HelloQueryVariable
 export const IssueBoardDocument = gql`
     query IssueBoard($id: ID!) {
   issueBoard(issueBoardId: $id) {
+    id
     name
     issueLabels {
       id

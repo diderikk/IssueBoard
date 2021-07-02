@@ -1,0 +1,8 @@
+mutation CreateIssueBoard($attributes: IssueBoardInputType!){
+  createIssueBoard(attributes: $attributes){
+    issueBoard{
+      id
+      name
+    }
+  }
+}

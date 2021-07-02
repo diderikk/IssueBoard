@@ -1,0 +1,5 @@
+mutation DeleteIssueBoard($issueBoardId: ID!){
+  deleteIssueBoard(issueBoardId: $issueBoardId){
+    success
+  }
+}

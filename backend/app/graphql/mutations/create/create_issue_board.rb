@@ -9,7 +9,7 @@ module Mutations
 		def resolve(attributes:)
 			issue_board = IssueBoard.new(name: attributes.name, group_id: attributes.group_id)
 			
-			if(attributes.user_id)
+			if(!attributes.group_id)
 				issue_board.users << context[:current_user]
 			end
 

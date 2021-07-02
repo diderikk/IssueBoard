@@ -6,7 +6,7 @@
   border-bottom: 1px solid grey;
 }
 
-#issue-label-card-header-right {
+.issue-label-card-header-part {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -18,7 +18,7 @@
   height: 1.5rem;
 }
 
-#plus-button {
+.label-card-button{
   width: 1.7rem;
   height: 1.7rem;
   display: flex;

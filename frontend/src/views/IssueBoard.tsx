@@ -13,11 +13,10 @@ interface Params {
   issueBoardId: string;
 }
 
-
 type Props = RouteComponentProps<Params>;
 
 export const IssueBoard: React.FC<Props> = ({ match }) => {
-  const { data, error, loading } = useIssueBoardQuery({
+  const { data, error, loading, refetch } = useIssueBoardQuery({
     variables: {
       id: match.params.issueBoardId,
     },
@@ -25,17 +24,27 @@ export const IssueBoard: React.FC<Props> = ({ match }) => {
   const history = useHistory();
   const { dispatch } = useSnackBar();
   const [showLabelForm, setShowLabelForm] = useState<boolean>(false);
-  const [selectedIssue, setSelectedIssue] = useState<IssueResultType | null>(null);
+  const [selectedIssue, setSelectedIssue] = useState<IssueResultType | null>(
+    null
+  );
+  const [runDispatch, setRunDispatch] = useState<boolean>(true);
 
   const handleAddLabel = () => {
     setShowLabelForm(true);
   };
 
   useEffect(() => {
-    if (loading) dispatch({ type: "loading" });
-    else if (data) dispatch({ type: "successful" });
-    else if (error) dispatch({ type: "error", error: "Could not load issue board" });
-  }, [data, loading, error, dispatch]);
+    if (runDispatch) {
+      if (loading) dispatch({ type: "loading" });
+      else if (data) {
+        dispatch({ type: "disabled" });
+        setRunDispatch(false);
+      } else if (error) {
+        dispatch({ type: "error", error: "Could not load issue board" });
+        setRunDispatch(false);
+      }
+    }
+  }, [data, loading, error, dispatch, runDispatch]);
 
   if (error) history.push("/404");
 
@@ -43,7 +52,9 @@ export const IssueBoard: React.FC<Props> = ({ match }) => {
 
   return (
     <div className="container">
-      {selectedIssue && <Sidebar setSelectedIssue={setSelectedIssue} issue={selectedIssue} />}
+      {selectedIssue && (
+        <Sidebar setSelectedIssue={setSelectedIssue} issue={selectedIssue} />
+      )}
       <div id="issue-label-header">
         <input
           id="issue-label-search"
@@ -55,9 +66,25 @@ export const IssueBoard: React.FC<Props> = ({ match }) => {
       </div>
       <div className="issue-label-container">
         {issueBoard?.issueLabels.map((issueLabel) => {
-          return <IssueLabelCard setSelectedIssue={setSelectedIssue} issueLabel={issueLabel} key={issueLabel.id} />;
+          return (
+            <IssueLabelCard
+              refetch={refetch}
+              setSelectedIssue={setSelectedIssue}
+              issueLabel={issueLabel}
+              key={issueLabel.id}
+            />
+          );
         })}
-        {showLabelForm && <InputIssueLabel setShowLabelForm={setShowLabelForm} />}
+        {showLabelForm && (
+          <InputIssueLabel
+            refetch={refetch}
+            issueBoardId={data?.issueBoard.id!}
+            setShowLabelForm={setShowLabelForm}
+            labelNames={
+              data?.issueBoard.issueLabels.map((label) => label.name)!
+            }
+          />
+        )}
       </div>
     </div>
   );

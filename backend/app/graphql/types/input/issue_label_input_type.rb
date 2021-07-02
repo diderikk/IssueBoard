@@ -1,6 +1,6 @@
 module Types
 	class Input::IssueLabelInputType < GraphQL::Schema::InputObject
-		graphql_name "IssueLabelInputLabel"
+		graphql_name "IssueLabelInputType"
 		
 		description "Input object for IssueLabel"
 		argument :name, String, "IssueLabel name", required: true

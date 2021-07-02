@@ -72,7 +72,7 @@ module Types
 		end
 
 		def not_group_issue_boards
-			context[:current_user].issue_boards
+			context[:current_user].issue_boards.order(created_at: :desc)
 		end
 
 		def issue(issue_id:)

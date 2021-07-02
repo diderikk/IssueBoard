@@ -1,0 +1,8 @@
+mutation createIssueLabel($attributes: IssueLabelInputType!) {
+  createIssueLabel(attributes: $attributes) {
+    issueLabel {
+      id
+    }
+    errors
+  }
+}

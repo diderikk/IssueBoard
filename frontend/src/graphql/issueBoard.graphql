@@ -1,5 +1,6 @@
 query IssueBoard($id: ID!){
   issueBoard(issueBoardId:$id){
+    id
     name
     issueLabels{
       id

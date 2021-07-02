@@ -49,6 +49,7 @@ function App() {
                 round="20px"
                 size="2.2rem"
                 textSizeRatio={2.2}
+                color="grey"
               />
             </Link>
           </div>
@@ -64,7 +65,7 @@ function App() {
           <Route render={() => <h1>404: Page not found</h1>} />
         </Switch>
       </Router>
-      {state.show && 
+      {(state.show || state.fadeOut) && 
         <div
           id="snackbar"
           style={{ color: state.color }}
