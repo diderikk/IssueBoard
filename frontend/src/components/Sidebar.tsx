@@ -4,22 +4,27 @@ import { IssueResultType } from "../types/IssueResultType.type";
 import { formattedDueDate } from "../util/formattedDueDate";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useEditIssueMutation } from "../generated/graphql";
 
 interface Props {
   issue: IssueResultType | null;
   setSelectedIssue: Dispatch<SetStateAction<IssueResultType | null>>;
+  // Fix refetch
 }
 
 export const Sidebar: React.FC<Props> = ({ issue, setSelectedIssue }) => {
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
+  const [editIssue] = useEditIssueMutation();
   const [dueDate, setDueDate] = useState<string>("");
   const handleExitClick = () => {
     setSelectedIssue(null);
   };
 
-  const handleDateChange = (date: Date) => {
+  const handleDateChange = async (date: Date) => {
     setDueDate(date.toUTCString());
-    // issue?.dueDate = date.toUTCString();
+    await editIssue({
+      variables: { issueID: issue?.id!, attributes: {title: "", dueDate: dueDate } },
+    });
     setShowDatePicker(false);
   };
 

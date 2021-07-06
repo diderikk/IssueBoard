@@ -6,3 +6,9 @@ mutation createIssueLabel($attributes: IssueLabelInputType!) {
     errors
   }
 }
+
+mutation DeleteIssueLabel($issueLabelId: ID!){
+	deleteIssueLabel(issueLabelId: $issueLabelId){
+		success
+	}
+}

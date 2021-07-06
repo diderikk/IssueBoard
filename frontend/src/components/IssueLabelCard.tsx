@@ -17,7 +17,7 @@ interface Props {
 export const IssueLabelCard: React.FC<Props> = ({
   issueLabel,
   setSelectedIssue,
-  refetch
+  refetch,
 }) => {
   const [showIssueForm, setShowIssueForm] = useState<boolean>(false);
   const [deleteIssueLabel] = useDeleteIssueLabelMutation();
@@ -29,9 +29,7 @@ export const IssueLabelCard: React.FC<Props> = ({
   const handleDeleteLabel = async () => {
     if (
       // eslint-disable-next-line no-restricted-globals
-      confirm(
-        `Are you sure you want to delete issue label ${issueLabel.name}?`
-      )
+      confirm(`Are you sure you want to delete issue label ${issueLabel.name}?`)
     ) {
       dispatch({ type: "loading" });
       const response = await deleteIssueLabel({
@@ -66,7 +64,11 @@ export const IssueLabelCard: React.FC<Props> = ({
       </div>
       <div>
         {showIssueForm && (
-          <InputIssueCard setShowIssueForm={setShowIssueForm} />
+          <InputIssueCard
+            setShowIssueForm={setShowIssueForm}
+            issueLabelId={issueLabel.id}
+            refetch={refetch}
+          />
         )}
         {issueLabel.issues.map((issue) => {
           return (

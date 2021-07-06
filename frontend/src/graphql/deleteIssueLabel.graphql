@@ -1,5 +1,0 @@
-mutation DeleteIssueLabel($issueLabelId: ID!){
-	deleteIssueLabel(issueLabelId: $issueLabelId){
-		success
-	}
-}

@@ -1,4 +1,6 @@
 export const formattedDueDate = (dueDate: string) => {
+  if(!dueDate) return "None"
+
   const date = new Date(dueDate);
 
   const monthNames = [

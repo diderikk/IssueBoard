@@ -1,0 +1,45 @@
+query IssueBoards{
+  notGroupIssueBoards{
+    name
+    id
+  }
+}
+
+query IssueBoard($id: ID!){
+  issueBoard(issueBoardId:$id){
+    id
+    name
+    issueLabels{
+      id
+      name
+      color
+      issues{
+        id
+        title
+        issueId
+        dueDate
+      }
+    }
+  }
+}
+
+mutation CreateIssueBoard($attributes: IssueBoardInputType!){
+  createIssueBoard(attributes: $attributes){
+    issueBoard{
+      id
+      name
+    }
+  }
+}
+
+mutation EditIssueBoard($attributes: IssueBoardInputType!, $issueBoardId: ID!){
+  editIssueBoard(attributes: $attributes, issueBoardId: $issueBoardId){
+    errors
+  }
+}
+
+mutation DeleteIssueBoard($issueBoardId: ID!){
+  deleteIssueBoard(issueBoardId: $issueBoardId){
+    success
+  }
+}

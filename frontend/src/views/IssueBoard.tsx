@@ -61,7 +61,10 @@ export const IssueBoard: React.FC<Props> = ({ match }) => {
           type="text"
           placeholder="Search or filter results..."
         />
-        <IssueBoardTitle issueBoardTitle={issueBoard?.name!} />
+        <IssueBoardTitle
+          issueBoardTitle={issueBoard?.name!}
+          issueBoardId={match.params.issueBoardId}
+        />
         <button onClick={handleAddLabel}>Add label</button>
       </div>
       <div className="issue-label-container">
