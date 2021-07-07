@@ -34,6 +34,7 @@ body {
   width: 3rem;
   background: rgb(95, 91, 83);
   border-radius: 7px;
+  border: none;
 }
 
 .nav-bar-icons{

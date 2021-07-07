@@ -11,7 +11,10 @@
 	background: rgb(59, 59, 59);
 	padding: 0 15px;
 	border-radius: 10px 0 0 10px;
-	color: white
+	color: white;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 
 #sidebar h4{
@@ -47,11 +50,8 @@
 	text-decoration: underline;
 }
 
-#due-date-picker{
-	width: 100px;
-}
-
 #datepicker-container{
+	margin-top: 4%;
 	text-align: center;
 }
 
@@ -61,6 +61,16 @@
 	background-color: red;
 	border: none;
 	border-radius: 5px;
+}
+
+#sidebar-delete-button{
+	color: white;
+	width: 200px;
+	background-color: red;
+	border: none;
+	border-radius: 5px;
+	margin: 10px;
+	text-align: center;
 }
 
 

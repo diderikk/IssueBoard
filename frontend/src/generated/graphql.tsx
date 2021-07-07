@@ -387,6 +387,19 @@ export type EditIssueMutation = (
   )> }
 );
 
+export type DeleteIssueMutationVariables = Exact<{
+  issueId: Scalars['ID'];
+}>;
+
+
+export type DeleteIssueMutation = (
+  { __typename?: 'Mutation' }
+  & { deleteIssue?: Maybe<(
+    { __typename?: 'DeleteIssuePayload' }
+    & Pick<DeleteIssuePayload, 'success'>
+  )> }
+);
+
 export type IssueBoardsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -603,6 +616,39 @@ export function useEditIssueMutation(baseOptions?: Apollo.MutationHookOptions<Ed
 export type EditIssueMutationHookResult = ReturnType<typeof useEditIssueMutation>;
 export type EditIssueMutationResult = Apollo.MutationResult<EditIssueMutation>;
 export type EditIssueMutationOptions = Apollo.BaseMutationOptions<EditIssueMutation, EditIssueMutationVariables>;
+export const DeleteIssueDocument = gql`
+    mutation DeleteIssue($issueId: ID!) {
+  deleteIssue(issueId: $issueId) {
+    success
+  }
+}
+    `;
+export type DeleteIssueMutationFn = Apollo.MutationFunction<DeleteIssueMutation, DeleteIssueMutationVariables>;
+
+/**
+ * __useDeleteIssueMutation__
+ *
+ * To run a mutation, you first call `useDeleteIssueMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteIssueMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteIssueMutation, { data, loading, error }] = useDeleteIssueMutation({
+ *   variables: {
+ *      issueId: // value for 'issueId'
+ *   },
+ * });
+ */
+export function useDeleteIssueMutation(baseOptions?: Apollo.MutationHookOptions<DeleteIssueMutation, DeleteIssueMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteIssueMutation, DeleteIssueMutationVariables>(DeleteIssueDocument, options);
+      }
+export type DeleteIssueMutationHookResult = ReturnType<typeof useDeleteIssueMutation>;
+export type DeleteIssueMutationResult = Apollo.MutationResult<DeleteIssueMutation>;
+export type DeleteIssueMutationOptions = Apollo.BaseMutationOptions<DeleteIssueMutation, DeleteIssueMutationVariables>;
 export const IssueBoardsDocument = gql`
     query IssueBoards {
   notGroupIssueBoards {

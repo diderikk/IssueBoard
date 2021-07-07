@@ -13,3 +13,9 @@ mutation EditIssue($attributes: IssueInputType!, $issueID: ID!){
     errors
   }
 } 
+
+mutation DeleteIssue($issueId: ID!){
+  deleteIssue(issueId: $issueId){
+    success
+  }
+}

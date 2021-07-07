@@ -52,9 +52,9 @@ export const InputIssueLabel: React.FC<Props> = ({
     if (response.errors || response.data?.createIssueLabel?.errors) {
       dispatch({ type: "error", error: "Could not create issue label" });
     } else {
+      await refetch();
       dispatch({ type: "successful", description: "Issue label created" });
       setShowLabelForm(false);
-      refetch();
     }
   };
 

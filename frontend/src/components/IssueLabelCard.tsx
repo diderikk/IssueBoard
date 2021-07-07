@@ -40,7 +40,7 @@ export const IssueLabelCard: React.FC<Props> = ({
         dispatch({ type: "error", error: "Could not delete issue label" });
       else {
         dispatch({ type: "successful", description: "Issue label deleted" });
-        refetch();
+        await refetch();
       }
     }
   };

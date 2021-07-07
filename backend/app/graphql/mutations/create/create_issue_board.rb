@@ -14,7 +14,9 @@ module Mutations
 			end
 
 			if issue_board.save!
-				IssueLabel.create([{name: "Open", issue_board_id: issue_board.id}, {name: "Closed", issue_board_id: issue_board.id} ])
+				IssueLabel.transaction do
+					IssueLabel.create([{name: "Open", issue_board_id: issue_board.id}, {name: "Closed", issue_board_id: issue_board.id} ])
+				end
 				{
 					issue_board: issue_board,
 					errors: nil,

@@ -10,12 +10,18 @@ module Mutations
 			issue_label = IssueLabel.includes(:issue_board, :issues).find(issue_label_id);
 			open_issue_label = issue_label.issue_board.issue_labels.find_by(name: "Open");
 
-			Issue.transaction do
-				issue_label.issues.each do |issue|
-					issue.issue_label = open_issue_label;
-					issue.save!
-				end
-			end;
+			if !open_issue_label
+				open_issue_label = issue_label.issue_board.issue_labels.find_by(name: "Closed");
+			end
+
+			if open_issue_label
+				Issue.transaction do
+					issue_label.issues.each do |issue|
+						issue.issue_label = open_issue_label;
+						issue.save!
+					end
+				end;
+			end
 
 			issue_label.issues.clear;
 

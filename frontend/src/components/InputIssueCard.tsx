@@ -44,7 +44,7 @@ export const InputIssueCard: React.FC<Props> = ({
     if (response.errors || response.data?.createIssue?.errors)
       dispatch({ type: "error", error: "Could not create issue" });
     else {
-	  refetch();
+      refetch();
       dispatch({ type: "successful", description: "Issue created" });
       setShowIssueForm(false);
     }
@@ -68,7 +68,7 @@ export const InputIssueCard: React.FC<Props> = ({
         <button
           className="form-button"
           disabled={titleInput.trim().length === 0}
-		  onClick={handelCreate}
+          onClick={handelCreate}
         >
           Create
         </button>

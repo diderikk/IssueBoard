@@ -45,9 +45,9 @@ export const InputIssueBoardCard: React.FC<Props> = ({ refetch }) => {
     if (response.errors)
       dispatch({ type: "error", error: "Could not create issue board" });
     else {
+      await refetch();
       dispatch({ type: "successful", description: "Issue board created" });
       handleCancel();
-      refetch();
     }
   };
 

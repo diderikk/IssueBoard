@@ -48,7 +48,7 @@ export const YourIssueBoards: React.FC = () => {
         dispatch({ type: "error", error: "Could not delete board" });
       else {
         dispatch({ type: "successful", description: "Issue board deleted" });
-        refetch();
+        await refetch();
       }
     }
   };

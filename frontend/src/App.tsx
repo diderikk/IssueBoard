@@ -12,9 +12,13 @@ import { Register } from "./views/Register";
 import { YourIssueBoards } from "./views/YourIssueBoards";
 import { PacmanLoader } from "react-spinners";
 import Avatar from "react-avatar";
+import { useState } from "react";
+import { UserMenu } from "./components/UserMenu";
 
 function App() {
   const { state } = useSnackBar();
+  const [showUserMenu, setShowUserMenu] = useState<boolean>(false);
+  console.log(showUserMenu)
 
   return (
     <div>
@@ -42,7 +46,7 @@ function App() {
               />
             </Link>
 
-            <Link className="nav-bar-link" to="/about">
+            <button className="nav-bar-link" onClick={() => setShowUserMenu(!showUserMenu)}>
               <Avatar
                 name="Diderik Kramer"
                 email="diderik.kramer@gmail.com"
@@ -51,9 +55,10 @@ function App() {
                 textSizeRatio={2.2}
                 color="grey"
               />
-            </Link>
+            </button>
           </div>
         </nav>
+        {showUserMenu && <UserMenu />}
 
         <Switch>
           <Route path="/" exact component={Home} />
