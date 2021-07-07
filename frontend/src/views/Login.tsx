@@ -1,8 +1,13 @@
 import React, { useState } from "react";
+import "./Login.css";
+import userIcon from "../assets/user.png";
+import lockIcon from "../assets/lock.png";
 import { useHistory } from "react-router-dom";
 import { useLoginMutation } from "../generated/graphql";
 import { useSnackBar } from "../util/SnackBarContext";
 import { useForm } from "../util/useForm";
+import { useApolloClient } from "@apollo/client";
+import { writeToken } from "../util/readAndWriteToken";
 
 interface Credentials {
   email: string;
@@ -16,6 +21,8 @@ export const Login: React.FC = () => {
   });
   const history = useHistory();
   const { dispatch } = useSnackBar();
+  const client = useApolloClient();
+  console.log(client.cache)
 
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
@@ -33,19 +40,24 @@ export const Login: React.FC = () => {
         },
       });
 
-      const errors = response.data?.login?.errors;
+      // const errors = response.data?.login?.errors;
+      // console.log(response.errors)
 
-      if (errors) {
-        dispatch({ type: "error", error: "Wrong email or password" });
-        return;
-      }
+      // if (errors) {
+      //   dispatch({ type: "error", error: "Wrong email or password" });
+      //   return;
+      // }
 
       dispatch({ type: "successful" });
-      localStorage.setItem("token", response.data?.login?.accessToken!);
 
+      writeToken(client, response.data?.login?.accessToken!);
+
+      
       history.push("/");
     }
   };
+
+  
 
   const validateForm = (): boolean => {
     let valid = true;
@@ -63,30 +75,40 @@ export const Login: React.FC = () => {
   };
 
   return (
-    <div>
+    <div id="login-container" className="container">
       <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
+      <form id="login-form" onSubmit={handleSubmit}>
         <div>
-          <input
-            name="email"
-            value={credentials.email}
-            type="text"
-            placeholder="Email..."
-            onChange={setCredentials}
-          />
+          <div className="icon-input-container">
+            <img className="input-icon" src={userIcon} alt="user icon" />
+            <input
+              name="email"
+              value={credentials.email}
+              type="text"
+              placeholder="Email..."
+              onChange={setCredentials}
+            />
+          </div>
+
           <p className="error">{emailError}</p>
         </div>
         <div>
-          <input
-            name="password"
-            value={credentials.password}
-            type="password"
-            placeholder="Password..."
-            onChange={setCredentials}
-          />
+          <div className="icon-input-container">
+            <img className="input-icon" src={lockIcon} alt="lock icon" />
+            <input
+              name="password"
+              value={credentials.password}
+              type="password"
+              placeholder="Password..."
+              onChange={setCredentials}
+            />
+          </div>
+
           <p className="error">{passwordError}</p>
         </div>
-        <button type="submit">Log in</button>
+        <button id="login-button" type="submit" className="form-button">
+          Log in
+        </button>
       </form>
     </div>
   );

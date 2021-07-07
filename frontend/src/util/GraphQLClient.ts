@@ -1,14 +1,22 @@
-import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
+import {
+  ApolloClient,
+  createHttpLink,
+  gql,
+  InMemoryCache,
+} from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { IssueBoardResultType } from "../types/IssueBoardResultType.type";
 import { IssueLabelResultType } from "../types/IssueLabelResultTyoe.type";
+import { readToken } from "./readAndWriteToken";
 
 const httpLink = createHttpLink({
   uri: "http://localhost:4000/graphql",
+  credentials: "include",
 });
 
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem("token");
+  const token = readToken(client);
+  console.log(token);
 
   return {
     headers: {
@@ -40,6 +48,15 @@ const cache = new InMemoryCache({
         },
       },
     },
+  },
+});
+
+cache.writeQuery({
+  query: gql(`query WriteToken {
+		token
+	}`),
+  data: {
+    token: "",
   },
 });
 
