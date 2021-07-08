@@ -1,4 +1,4 @@
-import { Issue, IssueLabel } from "../generated/graphql";
+import { Issue, IssueLabel } from "../graphql/generated/graphql";
 
 export type IssueLabelResultType = { __typename?: "IssueLabel" } & Pick<
   IssueLabel,

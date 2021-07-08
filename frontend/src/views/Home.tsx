@@ -1,5 +1,5 @@
 import React from "react";
-import { useSnackBar } from "../util/SnackBarContext";
+import { useSnackBar } from "../context/SnackBarContext";
 
 export const Home: React.FC = () => {
 	const {state, dispatch} = useSnackBar();

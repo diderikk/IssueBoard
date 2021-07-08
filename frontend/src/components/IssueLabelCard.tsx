@@ -5,8 +5,8 @@ import { IssueCard } from "./IssueCard";
 import { InputIssueCard } from "./InputIssueCard";
 import { IssueResultType } from "../types/IssueResultType.type";
 import { IssueLabelResultType } from "../types/IssueLabelResultTyoe.type";
-import { useDeleteIssueLabelMutation } from "../generated/graphql";
-import { useSnackBar } from "../util/SnackBarContext";
+import { useDeleteIssueLabelMutation } from "../graphql/generated/graphql";
+import { useSnackBar } from "../context/SnackBarContext";
 import { IssueBoardRefetch } from "../types/IssueBoardRefetch.type";
 interface Props {
   issueLabel: IssueLabelResultType;

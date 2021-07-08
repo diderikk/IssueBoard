@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./Login.css";
 import userIcon from "../assets/user.png";
 import lockIcon from "../assets/lock.png";
 import { useHistory } from "react-router-dom";
-import { useLoginMutation } from "../generated/graphql";
-import { useSnackBar } from "../util/SnackBarContext";
+import { useLoginMutation } from "../graphql/generated/graphql";
+import { useSnackBar } from "../context/SnackBarContext";
 import { useForm } from "../util/useForm";
 import { useApolloClient } from "@apollo/client";
 import { writeToken } from "../util/readAndWriteToken";
+import { UserContext } from "../context/UserContext";
 
 interface Credentials {
   email: string;
@@ -22,7 +23,7 @@ export const Login: React.FC = () => {
   const history = useHistory();
   const { dispatch } = useSnackBar();
   const client = useApolloClient();
-  console.log(client.cache)
+  const {setUser} = useContext(UserContext);
 
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
@@ -40,18 +41,21 @@ export const Login: React.FC = () => {
         },
       });
 
-      // const errors = response.data?.login?.errors;
-      // console.log(response.errors)
+      const errors = response.data?.login?.errors;
+      console.log(response.errors)
 
-      // if (errors) {
-      //   dispatch({ type: "error", error: "Wrong email or password" });
-      //   return;
-      // }
+      if (errors) {
+        dispatch({ type: "error", error: "Wrong email or password" });
+        return;
+      }
 
       dispatch({ type: "successful" });
 
       writeToken(client, response.data?.login?.accessToken!);
 
+      console.log(client.cache);
+
+      setUser!(response.data?.login?.user!);
       
       history.push("/");
     }

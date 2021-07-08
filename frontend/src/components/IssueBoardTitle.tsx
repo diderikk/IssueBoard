@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useEditIssueBoardMutation } from "../generated/graphql";
+import { useEditIssueBoardMutation } from "../graphql/generated/graphql";
 
 interface Props {
   issueBoardId: string;

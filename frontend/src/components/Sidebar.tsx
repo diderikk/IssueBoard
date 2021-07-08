@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useMemo, useState } from "react";
 import "./Sidebar.css";
 import { IssueResultType } from "../types/IssueResultType.type";
 import { formattedDueDate } from "../util/formattedDueDate";
@@ -7,8 +7,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import {
   useDeleteIssueMutation,
   useEditIssueMutation,
-} from "../generated/graphql";
-import { useSnackBar } from "../util/SnackBarContext";
+} from "../graphql/generated/graphql";
+import { useSnackBar } from "../context/SnackBarContext";
 
 interface Props {
   issue: IssueResultType | null;
@@ -60,7 +60,7 @@ export const Sidebar: React.FC<Props> = ({ issue, setSelectedIssue }) => {
     else dispatch({ type: "error", error: "Could not delete issue" });
   };
 
-  const formattedDate = formattedDueDate(issue?.dueDate!);
+  const formattedDate = useMemo(() => formattedDueDate(issue?.dueDate!), [issue?.dueDate]);
   const currentDate = new Date();
   return (
     <div id="sidebar">

@@ -93,7 +93,7 @@ button {
   padding: 9px;
 }
 
-input[type="text"] input[type="password"] {
+input[type="text"], input[type="password"] {
   font-size: var(--font-size);
   padding: 10px;
 }
