@@ -1,0 +1,84 @@
+:root{
+	--information-font-size: 0.8rem;
+}
+
+#sidebar{
+	top: 50px;
+	position: fixed;
+	height: 75%;
+	right: 0;
+	width: 18em;
+	background: rgb(59, 59, 59);
+	padding: 0 15px;
+	border-radius: 10px 0 0 10px;
+	color: white;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+#sidebar h4{
+	margin-bottom: 0;
+}
+
+#sidebar-exit{
+	background-color: red;
+	border-radius: 50%;
+	font-size: 1.75rem;
+	height: 2rem;
+	width: 2rem;
+	line-height: 1.75rem;
+	text-align: center;
+	cursor: pointer;
+	user-select: none;
+}
+
+.button-link{
+	border: none;
+	background: none;
+	color: white;
+	font-size: 0.9rem;
+
+}
+
+#sidebar-remove-date{
+	font-size: var(--information-font-size);
+	color:rgb(134, 134, 134)
+}
+
+.button-link:hover{
+	text-decoration: underline;
+}
+
+#datepicker-container{
+	margin-top: 4%;
+	text-align: center;
+}
+
+#datepicker-button{
+	width: 93%;
+	color: white;
+	background-color: red;
+	border: none;
+	border-radius: 5px;
+}
+
+#sidebar-delete-button{
+	color: white;
+	width: 200px;
+	background-color: red;
+	border: none;
+	border-radius: 5px;
+	margin: 10px;
+	text-align: center;
+}
+
+
+
+.sidebar-item{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom: 1px solid grey;
+}

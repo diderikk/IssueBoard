@@ -65,14 +65,14 @@ module Types
 
 		def issue_board(issue_board_id:)
 			if issue_board_authorized?(issue_board_id, context)
-				IssueBoard.find(issue_board_id);
+				IssueBoard.includes(issue_labels: :issues).find(issue_board_id);
 			else
 				raise GraphQL::ExecutionError, "Not authorized for issue board with id: #{issue_board_id}"	
 			end
 		end
 
 		def not_group_issue_boards
-			context[:current_user].issue_boards
+			context[:current_user].issue_boards.order(created_at: :desc)
 		end
 
 		def issue(issue_id:)

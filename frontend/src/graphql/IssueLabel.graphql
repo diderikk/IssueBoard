@@ -1,0 +1,14 @@
+mutation createIssueLabel($attributes: IssueLabelInputType!) {
+  createIssueLabel(attributes: $attributes) {
+    issueLabel {
+      id
+    }
+    errors
+  }
+}
+
+mutation DeleteIssueLabel($issueLabelId: ID!){
+	deleteIssueLabel(issueLabelId: $issueLabelId){
+		success
+	}
+}

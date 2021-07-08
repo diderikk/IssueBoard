@@ -11,7 +11,7 @@ module Mutations
 		def resolve(attributes:, issue:)
 			(raise GraphQL::ExecutionError.new "No group with that id") if issue.nil?
 			
-			if issue.update(title: attributes.title, description: attributes.description, due_date: attributes.due_date)
+			if issue.update(due_date: attributes.due_date)
 				{
 					issue: issue,
 					errors: nil,

@@ -1,0 +1,35 @@
+#user-menu {
+  z-index: 420;
+  position: fixed;
+  right: 0.85rem;
+  top: 45px;
+  background: rgb(190, 190, 190);
+  width: 10rem;
+  height: 30vh;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.user-menu-item {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	width: 100%;
+	border-radius: 10px;
+	padding: 10px 0;
+	cursor: pointer;
+	user-select: none;
+}
+
+.user-menu-item:hover{
+	background-color: rgb(110, 110, 110);
+}
+
+.user-menu-icon {
+	width: 1.5rem;
+	height: 1.5rem;
+	margin-right: 5px;
+	margin-left: 10px;
+}

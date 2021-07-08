@@ -5,7 +5,10 @@ module Authentication
 		user = User.find_by(email: email)
 		if user and user.authenticate(password)
 			cookies.encrypted[:refresh_token] = {:value => encode_refresh_token(user), :httponly => true}
-			return encode_access_token(user.id, user.email)
+			return {
+				"access_token" =>  encode_access_token(user.id, user.email),
+				"user" => user
+			}
 		end
 		return nil
 	end	

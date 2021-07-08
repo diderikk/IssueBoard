@@ -9,11 +9,14 @@ module Mutations
 		def resolve(attributes:)
 			issue_board = IssueBoard.new(name: attributes.name, group_id: attributes.group_id)
 			
-			if(attributes.user_id)
+			if(!attributes.group_id)
 				issue_board.users << context[:current_user]
 			end
 
 			if issue_board.save!
+				IssueLabel.transaction do
+					IssueLabel.create([{name: "Open", issue_board_id: issue_board.id}, {name: "Closed", issue_board_id: issue_board.id} ])
+				end
 				{
 					issue_board: issue_board,
 					errors: nil,

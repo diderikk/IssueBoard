@@ -39,7 +39,10 @@ export const ColorPicker: React.FC<Props> = ({ labelColor, setLabelColor }) => {
       {colors.map((color) => {
         return (
           <div
-            className={`color-block ${(color === labelColor) ? "color-block-selected": ""}`}
+            key={color}
+            className={`color-block ${
+              color === labelColor ? "color-block-selected" : ""
+            }`}
             style={{ background: color }}
             onClick={() => handleClick(color)}
           ></div>

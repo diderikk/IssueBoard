@@ -1,86 +1,80 @@
-#issue-label-card-header{
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
-	border-bottom: 1px solid grey;
+#issue-label-card-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid grey;
 }
 
-#issue-label-card-header-right{
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	gap: 2px;
+.issue-label-card-header-part {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2px;
 }
 
-#card-img{
-	width: 1.5rem;
-	height: 1.5rem;
+#card-img {
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
-#plus-button{
-	width: 1.7rem;
-	height: 1.7rem;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	margin-left: 8px;
-	font-size: 1.4rem;
-	color: rgb(77, 77, 77);
+.label-card-button{
+  width: 1.7rem;
+  height: 1.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+  font-size: 1.4rem;
+  color: rgb(77, 77, 77);
 }
 
-.issue-label{
-	display: inline-block;
-	vertical-align: top;
-	border: 2px solid grey;
-	height: 80vh;
-	width: 22em;
-	margin: 5px;
-	padding: 10px;
-	overflow-y: auto;
+.issue-label {
+  display: inline-block;
+  vertical-align: top;
+  border: 2px solid grey;
+  height: 80vh;
+  width: 22em;
+  margin: 5px;
+  padding: 10px;
+  overflow-y: auto;
 }
 
-#label-form{
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	height: 85%;
+#label-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 85%;
 }
 
-#label-color-picker{
-	display: grid;
-	grid-template-columns: repeat(6, 1fr);
-	grid-template-rows: repeat(4, 50px);
-	/* row-gap: 2vh; */
+#label-color-picker {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(4, 50px);
+  /* row-gap: 2vh; */
 }
 
-.color-block{
-	border-radius: 5px;
-	width: 1.7rem;
-	height: 1.7rem;
-	cursor: pointer;
+.color-block {
+  border-radius: 5px;
+  width: 1.7rem;
+  height: 1.7rem;
+  cursor: pointer;
 }
 
-.color-block-selected{
-	border: 3px solid grey;
+.color-block-selected {
+  border: 3px solid grey;
 }
 
-#color-label-block{
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	gap: 10px;
+#color-label-block {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
 }
 
-#issue-form-buttons{
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-	border-top: 1px solid grey;
-	height: 7%;
+#issue-form-buttons {
+  align-items: center;
+  border-top: 1px solid grey;
+  height: 7%;
 }
 
-.issue-label-button{
-	padding: 4px;
-}

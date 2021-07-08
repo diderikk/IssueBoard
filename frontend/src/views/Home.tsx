@@ -7,6 +7,7 @@ export const Home: React.FC = () => {
 	const handleClick = () => {
 		dispatch({type: 'error', error: "SOmething went wrong"})
 	}
+	
 
 
 	return (

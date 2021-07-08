@@ -1,0 +1,21 @@
+mutation CreateIssue($attributes: IssueInputType!) {
+  createIssue(attributes: $attributes){
+    issue{
+      id
+      title
+    }
+    errors
+  }
+}
+
+mutation EditIssue($attributes: IssueInputType!, $issueID: ID!){
+  editIssue(attributes: $attributes, issueId: $issueID){
+    errors
+  }
+} 
+
+mutation DeleteIssue($issueId: ID!){
+  deleteIssue(issueId: $issueId){
+    success
+  }
+}

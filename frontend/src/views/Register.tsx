@@ -48,7 +48,7 @@ export const Register: React.FC = () => {
 		console.log(response.data?.createUser)
 
 		if(errors){
-      dispatch({type: 'error', error: errors.join(", ")})
+      dispatch({type: 'error', error: "Could not register"})
 			return;
 		}
 

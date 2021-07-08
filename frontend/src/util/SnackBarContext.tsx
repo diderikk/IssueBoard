@@ -3,23 +3,29 @@ import { createContext, useContext, useMemo, useReducer } from "react";
 
 type Action =
   | { type: "loading" }
-  | { type: "successful" }
+  | { type: "successful"; description?: string }
   | { type: "error"; error: string }
   | { type: "disabled" };
 type Dispatch = (action: Action) => void;
-type State = { show: boolean; loading: boolean; description: string; color?: string};
+type State = {
+  show: boolean;
+  fadeOut?: boolean;
+  loading: boolean;
+  description: string;
+  color?: string;
+};
 type SnackBarProviderProps = { children: React.ReactNode };
 
 const initialState = {
   show: false,
   loading: false,
   description: "",
-};
+  fadeOut: false,
+} as State;
 
 const SnackBarContext = createContext<
   { state: State; dispatch: Dispatch } | undefined
 >(undefined);
-
 
 const snackBarReducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -28,15 +34,16 @@ const snackBarReducer = (state: State, action: Action): State => {
         show: true,
         description: "",
         loading: true,
-        color: "#f2d648"
+        color: "#f2d648",
       };
     }
     case "successful": {
       return {
         show: false,
-        description: "Successful",
+        description: action.description ? action.description : "Successful",
         color: "#5cb85c",
-        loading: false
+        loading: false,
+        fadeOut: true,
       };
     }
     case "error": {
@@ -44,7 +51,8 @@ const snackBarReducer = (state: State, action: Action): State => {
         show: false,
         description: "Error: " + action.error,
         color: "#dc3545",
-        loading: false
+        loading: false,
+        fadeOut: true,
       };
     }
     case "disabled": {
@@ -70,13 +78,12 @@ const SnackBarProvider = ({ children }: SnackBarProviderProps) => {
   );
 };
 
-
 const useSnackBar = () => {
   const context = useContext(SnackBarContext);
   if (context === undefined) {
-    throw new Error('useSnackBar must be used within a SnackBarContext')
+    throw new Error("useSnackBar must be used within a SnackBarContext");
   }
   return context;
-}
+};
 
-export {useSnackBar, SnackBarProvider}
+export { useSnackBar, SnackBarProvider };
