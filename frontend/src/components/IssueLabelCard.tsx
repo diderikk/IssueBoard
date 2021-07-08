@@ -65,6 +65,7 @@ export const IssueLabelCard: React.FC<Props> = ({
       <div>
         {showIssueForm && (
           <InputIssueCard
+            setSelectedIssue={setSelectedIssue}
             setShowIssueForm={setShowIssueForm}
             issueLabelId={issueLabel.id}
             refetch={refetch}

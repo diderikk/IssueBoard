@@ -9,11 +9,13 @@ import { useCreateIssueMutation } from "../graphql/generated/graphql";
 import { IssueBoardRefetch } from "../types/IssueBoardRefetch.type";
 import { useSnackBar } from "../context/SnackBarContext";
 import "./IssueCard.css";
+import { IssueResultType } from "../types/IssueResultType.type";
 
 interface Props {
   setShowIssueForm: Dispatch<SetStateAction<boolean>>;
   issueLabelId: string;
   refetch: IssueBoardRefetch;
+  setSelectedIssue: Dispatch<SetStateAction<IssueResultType | null>>;
 }
 
 export const InputIssueCard: React.FC<Props> = ({

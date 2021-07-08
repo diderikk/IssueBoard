@@ -16,7 +16,7 @@ const httpLink = createHttpLink({
 });
 
 const errorLink = onError(
-  ({ graphQLErrors, networkError, operation, forward }) => {
+  ({ graphQLErrors, operation, forward })=> {
     if (graphQLErrors && graphQLErrors[0]) {
       const message = graphQLErrors[0].message;
 
@@ -33,7 +33,6 @@ const errorLink = onError(
         return forward(operation);
       }
     }
-    if (networkError) console.log(`[Network error]: ${networkError}`);
   }
 );
 const authLink = setContext((_, { headers }) => {

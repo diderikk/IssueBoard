@@ -1,4 +1,9 @@
-import React, { Dispatch, SetStateAction, useMemo, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useMemo,
+  useState,
+} from "react";
 import "./Sidebar.css";
 import { IssueResultType } from "../types/IssueResultType.type";
 import { formattedDueDate } from "../util/formattedDueDate";
@@ -18,32 +23,39 @@ interface Props {
 
 export const Sidebar: React.FC<Props> = ({ issue, setSelectedIssue }) => {
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
+  const [dueDate, setDueDate] = useState<string>(issue?.dueDate!);
   const [editIssue] = useEditIssueMutation();
   const [deleteIssue] = useDeleteIssueMutation();
   const handleExitClick = () => {
     setSelectedIssue(null);
   };
   const { dispatch } = useSnackBar();
+  const formattedDate = useMemo(
+    () => formattedDueDate(dueDate),
+    [dueDate]
+  );
 
   const handleDateChange = async (date: Date) => {
     dispatch({ type: "loading" });
-    const dueDate = date.toUTCString();
+    setDueDate(date.toUTCString());
+    const seletedDate = date.toUTCString();
     const response = await editIssue({
-      variables: { issueID: issue?.id!, attributes: { title: "", dueDate } },
+      variables: { issueID: issue?.id!, attributes: { title: "", dueDate: seletedDate } },
       update: (cache) => {
         cache.modify({
           id: `Issue:${issue?.id}`,
           fields: {
             dueDate() {
-              return dueDate;
+              return seletedDate;
             },
           },
         });
       },
     });
-    setShowDatePicker(false);
+    setDueDate(date.toUTCString());
     if (!response.data?.editIssue?.errors) dispatch({ type: "disabled" });
     else dispatch({ type: "error", error: "Could not update due date" });
+    setShowDatePicker(false);
   };
 
   const handleDelete = async () => {
@@ -60,7 +72,6 @@ export const Sidebar: React.FC<Props> = ({ issue, setSelectedIssue }) => {
     else dispatch({ type: "error", error: "Could not delete issue" });
   };
 
-  const formattedDate = useMemo(() => formattedDueDate(issue?.dueDate!), [issue?.dueDate]);
   const currentDate = new Date();
   return (
     <div id="sidebar">
