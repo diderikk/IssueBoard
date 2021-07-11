@@ -24,12 +24,10 @@ ActiveRecord::Schema.define(version: 2021_06_27_144151) do
 
   create_table "issue_boards", force: :cascade do |t|
     t.string "name"
-    t.bigint "user_id"
     t.bigint "group_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["group_id"], name: "index_issue_boards_on_group_id"
-    t.index ["user_id"], name: "index_issue_boards_on_user_id"
   end
 
   create_table "issue_boards_users", id: false, force: :cascade do |t|
@@ -44,6 +42,7 @@ ActiveRecord::Schema.define(version: 2021_06_27_144151) do
   create_table "issue_labels", force: :cascade do |t|
     t.string "name", null: false
     t.string "color"
+    t.integer "order", null: false
     t.bigint "issue_board_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -56,6 +55,7 @@ ActiveRecord::Schema.define(version: 2021_06_27_144151) do
     t.string "title", null: false
     t.string "description"
     t.datetime "due_date"
+    t.integer "order", null: false
     t.bigint "issue_label_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -85,7 +85,6 @@ ActiveRecord::Schema.define(version: 2021_06_27_144151) do
   end
 
   add_foreign_key "issue_boards", "groups"
-  add_foreign_key "issue_boards", "users"
   add_foreign_key "issue_boards_users", "issue_boards"
   add_foreign_key "issue_boards_users", "users"
   add_foreign_key "issue_labels", "issue_boards"

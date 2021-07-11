@@ -23,6 +23,19 @@ module Mutations
 				end;
 			end
 
+			issue_labels = issue_label.issue_board.issue_labels.select { |label| label.order > issue_label.order };
+			puts issue_labels.size
+
+			if issue_labels
+				IssueLabel.transaction do
+					issue_labels.each do |label|
+						label.order -= 1;
+						label.save
+					end
+				end
+			end
+
+
 			issue_label.issues.clear;
 
 

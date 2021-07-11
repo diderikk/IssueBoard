@@ -5,6 +5,7 @@ module Types
 		field :title, String, null: false
 		field :description, String, null: true
 		field :due_date, String, null: true
+		field :order, Int, null: false
 		field :issue_label, Types::IssueLabelType, null: false
 
 	end
