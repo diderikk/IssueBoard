@@ -3,9 +3,11 @@
 issue_label1:
   name: MyString
   color: MyString
+  order: 1
   issue_board: issue_board1
 
 issue_label2:
   name: MyString1
   color: MyString
+  order: 2
   issue_board: issue_board1
