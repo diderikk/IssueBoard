@@ -130,6 +130,7 @@ export type Issue = {
   id: Scalars['ID'];
   issueId: Scalars['ID'];
   issueLabel: IssueLabel;
+  order: Scalars['Int'];
   title: Scalars['String'];
 };
 
@@ -166,6 +167,7 @@ export type IssueLabel = {
   issueBoard: IssueBoard;
   issues: Array<Issue>;
   name: Scalars['String'];
+  order: Scalars['Int'];
 };
 
 /** Input object for IssueLabel */
@@ -451,10 +453,10 @@ export type IssueBoardQuery = (
     & Pick<IssueBoard, 'id' | 'name'>
     & { issueLabels: Array<(
       { __typename?: 'IssueLabel' }
-      & Pick<IssueLabel, 'id' | 'name' | 'color'>
+      & Pick<IssueLabel, 'id' | 'name' | 'color' | 'order'>
       & { issues: Array<(
         { __typename?: 'Issue' }
-        & Pick<Issue, 'id' | 'title' | 'issueId' | 'dueDate'>
+        & Pick<Issue, 'id' | 'title' | 'issueId' | 'dueDate' | 'order'>
       )> }
     )> }
   ) }
@@ -762,11 +764,13 @@ export const IssueBoardDocument = gql`
       id
       name
       color
+      order
       issues {
         id
         title
         issueId
         dueDate
+        order
       }
     }
   }

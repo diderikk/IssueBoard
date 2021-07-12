@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
 import "./IssueLabelCard.css";
 import cards from "../assets/issue-cards.png";
 import { IssueCard } from "./IssueCard";
@@ -13,6 +13,8 @@ import { useSnackBar } from "../context/SnackBarContext";
 import { IssueBoardRefetch } from "../types/IssueBoardRefetch.type";
 import { useDrop } from "react-dnd";
 import { DragItem } from "../types/dragItem.interface";
+import update from "immutability-helper";
+
 interface Props {
   issueLabel: IssueLabelResultType;
   setSelectedIssue: Dispatch<SetStateAction<IssueResultType | null>>;
@@ -27,83 +29,79 @@ export const IssueLabelCard: React.FC<Props> = ({
   const [showIssueForm, setShowIssueForm] = useState<boolean>(false);
   const [deleteIssueLabel] = useDeleteIssueLabelMutation();
   const [moveIssue] = useMoveIssueMutation();
-  const [issues, setIssues] = useState<IssueResultType[]>(() => []);
-  const [hoveringIssue, setHoveringIssue] = useState<
-    IssueResultType | undefined
-  >(undefined);
+  const [issues, setIssues] = useState<IssueResultType[]>(issueLabel.issues);
+  const [hoveringIssue, setHoveringIssue] = useState<IssueResultType | null>(
+    null
+  );
   const { dispatch } = useSnackBar();
   const addIssue = () => {
     setShowIssueForm(true);
   };
 
   useEffect(() => {
-    if(issueLabel) setIssues(issueLabel.issues);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[issueLabel.issues])
+    setIssues(issueLabel.issues);
+  }, [issueLabel.issues])
 
-
-  console.log(issues, issueLabel.name)
-
-  const moveIssueCard = async (
-    issue: IssueResultType,
-    previousIssueLabelId: string
-  ) => {
-    console.log(issues, "Hello1")
-    setIssues([issue, ...issues]);
+  const moveIssueCard = async (issue: IssueResultType) => {
     await moveIssue({
       variables: {
         issueId: issue.id,
         issueLabelId: issueLabel.id,
       },
-      update: (cache) => {
-        cache.modify({
-          id: `IssueLabel:${previousIssueLabelId}`,
-          fields: {
-            issues(existingIssues, { readField }) {
-              console.log(existingIssues);
-              return existingIssues.filter(
-                (exIssue: IssueResultType) =>
-                  issue.id !== readField("id", exIssue)
-              );
-            },
-          },
-        });
-        cache.modify({
-          id: `IssueLabel:${issueLabel.id}`,
-          fields: {
-            issues(existingIssues: IssueResultType[]) {
-              return [issue, ...existingIssues];
-            },
-          },
-        });
-      },
     });
   };
 
-  const removeIssue = (issueIdBeingRemoved: string) => {
-    console.log("Called")
-    setIssues(issues.filter((issue) => issue.id !== issueIdBeingRemoved));
+  const removeIssue = (issueId: string) => {
+    setIssues((stateIssues) =>
+      stateIssues.filter((issueTemp) => {
+        if (!issueTemp) return false;
+        return issueTemp.id !== issueId;
+      })
+    );
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [{ isOver }, drop] = useDrop<DragItem, void, DragItem>(() => ({
     accept: "IssueCard",
-    drop: ({ issue, issueLabelId, removeIssue }): void => {
-      console.log(issues)
-      removeIssue!(issue?.id!)
-      moveIssueCard(issue!, issueLabelId!);
+    drop: ({ issueItem, issueLabelId, removeIssueFromPreviousLabel }): void => {
+      if (issueLabel.id === issueLabelId) return;
+      moveIssueCard(issueItem!);
+      removeIssueFromPreviousLabel!(issueItem!.id);
+      setIssues((stateIssues) => {
+        if (stateIssues.includes(issueItem!)) return stateIssues;
+        return [issueItem!, ...stateIssues];
+      });
     },
-    hover: ({ issue }) => {
-      setHoveringIssue(issue);
+    hover: ({ issueItem, issueLabelId }) => {
+      if (issueLabel.id === issueLabelId) return;
+      setHoveringIssue(issueItem!);
     },
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-    }),
+    collect(monitor) {
+      return {
+        isOver: monitor.isOver(),
+      };
+    },
   }));
 
   useEffect(() => {
-    if (!isOver) setHoveringIssue(undefined);
+    if (!isOver) setHoveringIssue(null);
   }, [isOver]);
 
+  const moveIssue1 = useCallback(
+    (dragIndex: number, hoverIndex: number) => {
+      if (issues.length === 0) return;
+      const dragIssue = issues[dragIndex];
+      setIssues(
+        update(issues, {
+          $splice: [
+            [dragIndex, 1],
+            [hoverIndex, 0, dragIssue],
+          ],
+        })
+      );
+    },
+    [issues]
+  );
   const handleDeleteLabel = async () => {
     if (
       // eslint-disable-next-line no-restricted-globals
@@ -151,17 +149,22 @@ export const IssueLabelCard: React.FC<Props> = ({
         )}
         {isOver && hoveringIssue && (
           <IssueCard
+            index={0}
             removeIssue={removeIssue}
+            moveIssue={moveIssue1}
             setSelectedIssue={setSelectedIssue}
             issue={hoveringIssue}
             issueLabelId={issueLabel.id}
-            key={hoveringIssue.id}
           />
         )}
-        {issues.map((issue) => {
+        {issues.map((issue, index) => {
+          if (!issue) return <div key={index}></div>;
+
           return (
             <IssueCard
+              index={index}
               removeIssue={removeIssue}
+              moveIssue={moveIssue1}
               setSelectedIssue={setSelectedIssue}
               issue={issue}
               issueLabelId={issueLabel.id}

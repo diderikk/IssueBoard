@@ -14,6 +14,12 @@ module Mutations
 			last_issue = Issue.joins(:issue_label).where(issue_label: {issue_board_id: issue_board_id}).last
 			issue.issue_id = (last_issue.nil?) ? 1 : last_issue.issue_id+1;
 
+			issue_label = IssueLabel.includes(:issues).find(attributes.issue_label_id);
+			order_issue = issue_label.issues.min_by{ |issueItem| issueItem.order }
+
+
+			issue.order = order_issue ? order_issue.order+1 : 1;
+
 			if issue.save!
 				{
 					issue: issue,

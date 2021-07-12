@@ -1,8 +1,9 @@
 import { IssueResultType } from "./IssueResultType.type";
 
 export interface DragItem {
-  issue?: IssueResultType;
-  removeIssue?: (issueIdBeingRemoved: string) => void;
+  issueItem?: IssueResultType;
+  index?: number;
+  removeIssueFromPreviousLabel?: (issueIdBeingRemoved: string) => void;
   issueLabelId?: string;
   isOver?: boolean;
 }
