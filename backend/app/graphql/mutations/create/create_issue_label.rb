@@ -8,7 +8,10 @@ module Mutations
 		field :errors, [String], null: true
 
 		def resolve(attributes:)
-			issue_label =IssueLabel.new(name: attributes.name, color: attributes.color, issue_board_id: attributes.issue_board_id)
+			issue_label = IssueLabel.new(name: attributes.name, color: attributes.color, issue_board_id: attributes.issue_board_id)
+
+			last_issue_label_order = IssueBoard.includes(:issue_labels).find(attributes.issue_board_id).issue_labels.max_by{ |label| label.order }.order
+			issue_label.order = last_issue_label_order+1;
 
 			if issue_label.save!
 				{

@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { useCreateUserMutation } from "../generated/graphql";
+import { useCreateUserMutation } from "../graphql/generated/graphql";
 import { useForm } from "../util/useForm";
 import {
   validateEmail,
   validatePassword,
   validateUsername,
 } from "../util/registerValidation";
-import { useSnackBar } from "../util/SnackBarContext";
+import { useSnackBar } from "../context/SnackBarContext";
 
 interface RegisterForm {
   username: string;

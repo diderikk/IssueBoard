@@ -1,9 +1,9 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import {
   useCreateIssueBoardMutation,
-} from "../generated/graphql";
+} from "../graphql/generated/graphql";
 import { IssueBoardsRefetch } from "../types/IssueBoardsRefetch.type";
-import { useSnackBar } from "../util/SnackBarContext";
+import { useSnackBar } from "../context/SnackBarContext";
 
 interface Props {
   refetch: IssueBoardsRefetch

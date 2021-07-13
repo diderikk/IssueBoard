@@ -1,6 +1,6 @@
-import { Issue } from "../generated/graphql";
+import { Issue } from "../graphql/generated/graphql";
 
 export type IssueResultType = { __typename?: "Issue" } & Pick<
   Issue,
-  "id" | "title" | "issueId" | "dueDate"
+  "id" | "title" | "issueId" | "dueDate" | "order"
 >;

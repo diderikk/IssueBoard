@@ -1,100 +1,38 @@
-import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 import "./App.css";
-import homeIcon from "./assets/home.png";
-import boardIcon from "./assets/board.png";
-import informationIcon from "./assets/information.png";
-import { useSnackBar } from "./util/SnackBarContext";
-import { About } from "./views/About";
-import { Home } from "./views/Home";
-import { IssueBoard } from "./views/IssueBoard";
-import { Login } from "./views/Login";
-import { Register } from "./views/Register";
-import { YourIssueBoards } from "./views/YourIssueBoards";
+import { useSnackBar } from "./context/SnackBarContext";
 import { PacmanLoader } from "react-spinners";
-import Avatar from "react-avatar";
 import { useEffect, useState } from "react";
-import { UserMenu } from "./components/UserMenu";
-import { useCurrentUserQuery } from "./generated/graphql";
+import { useCurrentUserQuery } from "./graphql/generated/graphql";
 import { UserResultType } from "./types/UserResultType.type";
+import { UserContext } from "./context/UserContext";
+import { AuthenticatedRouter } from "./components/AuthenticatedRouter";
+import { NonAuthenticatedRouter } from "./components/NonAuthenticatedRouter";
 
 function App() {
   const { state } = useSnackBar();
-  const [showUserMenu, setShowUserMenu] = useState<boolean>(false);
-  const [user, setUser] = useState<UserResultType | null>(null);
-  const { data, loading, error } = useCurrentUserQuery();
-  const authenticated: boolean = data?.currentUser?.name ? true: false;
-  console.log(authenticated, error)
+  const [user, setUser] = useState<UserResultType | undefined>(undefined);
+  // const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { data, loading } = useCurrentUserQuery();
+  const authenticated: boolean = user ? true : false;
 
   useEffect(() => {
-    if(data?.currentUser) setUser(data.currentUser);
-  }, [data?.currentUser])
-  
+    if (data?.currentUser) {
+      setUser(data.currentUser);
+    }
+    // setIsLoading(loading)
+  }, [data?.currentUser, loading]);
+
+  if(loading) return <div></div>
 
   return (
     <div>
-      <Router>
-        {!loading && (
-          <nav id="nav-bar">
-            <div className="nav-bar-icons">
-              <Link className="nav-bar-link" to="/">
-                <img id="home-icon" src={homeIcon} alt="home icon" />
-              </Link>
-              { authenticated &&
-                <Link className="nav-bar-link" to="/issue-boards">
-                  <img id="board-icon" src={boardIcon} alt="board icon" />
-                </Link>
-              }
-            </div>
-            <h1>Issue Board</h1>
-            { authenticated ? (
-              <div className="nav-bar-icons">
-                <Link className="nav-bar-link" to="/about">
-                  <img
-                    id="about-icon"
-                    src={informationIcon}
-                    alt="information icon"
-                  />
-                </Link>
-
-                <button
-                  className="nav-bar-link"
-                  onClick={() => setShowUserMenu(!showUserMenu)}
-                >
-                  <Avatar
-                    name={user!.name}
-                    email={user!.email}
-                    round="20px"
-                    size="2.2rem"
-                    textSizeRatio={2.2}
-                    color="grey"
-                  />
-                </button>
-              </div>
-            ) : (
-              <div className="nav-bar-icons">
-                <Link className="nav-bar-link-text" to="/login">
-                  Login
-                </Link>
-
-                <Link className="nav-bar-link-text" to="/register">
-                  Register
-                </Link>
-              </div>
-            )}
-          </nav>
+      <UserContext.Provider value={{ user, setUser }}>
+        {authenticated ? (
+          <AuthenticatedRouter loading={loading} user={user} />
+        ) : (
+          <NonAuthenticatedRouter loading={loading} />
         )}
-        {showUserMenu && <UserMenu />}
-
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/about" component={About} />
-          <Route path="/login" component={Login} />
-          <Route path="/register" component={Register} />
-          <Route path="/issue-boards" component={YourIssueBoards} />
-          <Route path="/issue-board/:issueBoardId" component={IssueBoard} />
-          <Route render={() => <h1>404: Page not found</h1>} />
-        </Switch>
-      </Router>
+      </UserContext.Provider>
       {(state.show || state.fadeOut) && (
         <div
           id="snackbar"

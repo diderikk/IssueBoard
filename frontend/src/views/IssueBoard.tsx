@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./IssueBoard.css";
 import { RouteComponentProps, useHistory } from "react-router-dom";
 import { IssueBoardTitle } from "../components/IssueBoardTitle";
-import { useIssueBoardQuery } from "../generated/graphql";
+import { useIssueBoardQuery } from "../graphql/generated/graphql";
 import { IssueLabelCard } from "../components/IssueLabelCard";
-import { useSnackBar } from "../util/SnackBarContext";
+import { useSnackBar } from "../context/SnackBarContext";
 import { InputIssueLabel } from "../components/InputIssueLabel";
 import { Sidebar } from "../components/Sidebar";
 import { IssueResultType } from "../types/IssueResultType.type";
+import { IssueLabelResultType } from "../types/IssueLabelResultTyoe.type";
+import update from "immutability-helper";
 
 interface Params {
   issueBoardId: string;
@@ -27,6 +29,11 @@ export const IssueBoard: React.FC<Props> = ({ match }) => {
   const [selectedIssue, setSelectedIssue] = useState<IssueResultType | null>(
     null
   );
+  const [issueLabels, setIssueLabels] = useState<IssueLabelResultType[]>(() => {
+    if (data?.issueBoard.issueLabels!)
+      return data.issueBoard.issueLabels.sort((a, b) => a.order - b.order);
+    return [];
+  });
   const [runDispatch, setRunDispatch] = useState<boolean>(true);
 
   const handleAddLabel = () => {
@@ -46,7 +53,28 @@ export const IssueBoard: React.FC<Props> = ({ match }) => {
     }
   }, [data, loading, error, dispatch, runDispatch]);
 
+  useEffect(() => {
+      setIssueLabels(data?.issueBoard.issueLabels!.slice().sort((a,b) => a.order - b.order)!);
+  }, [data?.issueBoard.issueLabels]);
+
   if (error) history.push("/404");
+
+  const moveIssueLabel = useCallback(
+    (dragIndex: number, hoverIndex: number) => {
+      if (issueLabels.length === 0) return;
+      const dragIssueLabel = issueLabels[dragIndex];
+      console.log(dragIssueLabel);
+      setIssueLabels(
+        update(issueLabels, {
+          $splice: [
+            [dragIndex, 1],
+            [hoverIndex, 0, dragIssueLabel],
+          ],
+        })
+      );
+    },
+    [issueLabels]
+  );
 
   const issueBoard = data?.issueBoard;
 
@@ -68,16 +96,19 @@ export const IssueBoard: React.FC<Props> = ({ match }) => {
         <button onClick={handleAddLabel}>Add label</button>
       </div>
       <div className="issue-label-container">
-        {issueBoard?.issueLabels.map((issueLabel) => {
-          return (
-            <IssueLabelCard
-              refetch={refetch}
-              setSelectedIssue={setSelectedIssue}
-              issueLabel={issueLabel}
-              key={issueLabel.id}
-            />
-          );
-        })}
+        {issueLabels &&
+          issueLabels.map((issueLabel, index) => {
+            return (
+              <IssueLabelCard
+                refetch={refetch}
+                index={index}
+                moveIssueLabel={moveIssueLabel}
+                setSelectedIssue={setSelectedIssue}
+                issueLabel={issueLabel}
+                key={issueLabel.id}
+              />
+            );
+          })}
         {showLabelForm && (
           <InputIssueLabel
             refetch={refetch}

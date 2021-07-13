@@ -4,8 +4,8 @@ import { useHistory } from "react-router-dom";
 import {
   useDeleteIssueBoardMutation,
   useIssueBoardsQuery,
-} from "../generated/graphql";
-import { useSnackBar } from "../util/SnackBarContext";
+} from "../graphql/generated/graphql";
+import { useSnackBar } from "../context/SnackBarContext";
 import { InputIssueBoardCard } from "../components/InputIssueBoardCard";
 import { IssueBoardResultType } from "../types/IssueBoardResultType.type";
 

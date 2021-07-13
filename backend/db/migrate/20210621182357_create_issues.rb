@@ -5,6 +5,7 @@ class CreateIssues < ActiveRecord::Migration[6.1]
       t.string :title, null: false
       t.string :description, null: true
       t.datetime :due_date, null: true
+      t.integer :order, null: false
       t.belongs_to :issue_label, null: false, foreign_key: "issue_label_id"
 
       t.timestamps

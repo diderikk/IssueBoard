@@ -5,6 +5,7 @@ issue1:
   title: MyString
   description: MyString
   due_date: 2022-06-21 20:23:57
+  order: 1
   issue_label: issue_label1
 
 two:
@@ -12,4 +13,5 @@ two:
   title: MyString
   description: MyString
   due_date: 2022-06-21 20:23:57
+  order: 2
   issue_label: issue_label1

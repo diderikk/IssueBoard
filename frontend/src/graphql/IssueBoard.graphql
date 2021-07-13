@@ -13,11 +13,13 @@ query IssueBoard($id: ID!){
       id
       name
       color
+      order
       issues{
         id
         title
         issueId
         dueDate
+        order
       }
     }
   }

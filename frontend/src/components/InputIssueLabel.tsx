@@ -6,9 +6,9 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { useCreateIssueLabelMutation } from "../generated/graphql";
+import { useCreateIssueLabelMutation } from "../graphql/generated/graphql";
 import { IssueBoardRefetch } from "../types/IssueBoardRefetch.type";
-import { useSnackBar } from "../util/SnackBarContext";
+import { useSnackBar } from "../context/SnackBarContext";
 import { ColorPicker } from "./ColorPicker";
 
 interface Props {

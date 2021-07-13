@@ -5,7 +5,7 @@ module Jwt
 
 	def encode_access_token(user_id, user_email = "")
 		iat = Time.now.to_i # Issued at
-		exp = Time.now.to_i + 60*60 # Expiration 5 minutes
+		exp = Time.now.to_i + 5*60 # Expiration 5 minutes
 		payload = {user_id: user_id, iat: iat, exp: exp, sub: user_email}
 		JWT.encode payload, Jwt::ACCESS_TOKEN_SECRET, 'HS512'
 	end
@@ -44,7 +44,7 @@ module Jwt
 			cookies.encrypted[:refresh_token] = {:value => new_refresh_token,:httponly => true}
 		end
 
-		raise JWT::ExpiredSignature.new encode_access_token(user.id, user.email)
+		raise JWT::ExpiredSignature.new "new_token: #{encode_access_token(user.id, user.email)}"
 	end
 
 end
