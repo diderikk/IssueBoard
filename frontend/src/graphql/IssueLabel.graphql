@@ -7,6 +7,12 @@ mutation createIssueLabel($attributes: IssueLabelInputType!) {
   }
 }
 
+mutation MoveIssueLabel($issueLabelId: ID!, $newOrder:Int!){
+  moveIssueLabel(issueLabelId: $issueLabelId, newOrder: $newOrder){
+    success
+  }
+}
+
 mutation DeleteIssueLabel($issueLabelId: ID!){
 	deleteIssueLabel(issueLabelId: $issueLabelId){
 		success

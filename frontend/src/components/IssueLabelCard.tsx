@@ -1,4 +1,11 @@
-import React, { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import "./IssueLabelCard.css";
 import cards from "../assets/issue-cards.png";
 import { IssueCard } from "./IssueCard";
@@ -7,29 +14,36 @@ import { IssueResultType } from "../types/IssueResultType.type";
 import { IssueLabelResultType } from "../types/IssueLabelResultTyoe.type";
 import {
   useDeleteIssueLabelMutation,
+  useMoveIssueLabelMutation,
   useMoveIssueMutation,
 } from "../graphql/generated/graphql";
 import { useSnackBar } from "../context/SnackBarContext";
 import { IssueBoardRefetch } from "../types/IssueBoardRefetch.type";
-import { useDrop } from "react-dnd";
-import { DragItem } from "../types/dragItem.interface";
+import { useDrag, useDrop } from "react-dnd";
+import { DragIssueItem } from "../types/DragIssueItem.interface";
 import update from "immutability-helper";
+import { DragIssueLabelItem } from "../types/DragIssueLabelItem.interface";
 
 interface Props {
   issueLabel: IssueLabelResultType;
+  index: number;
   setSelectedIssue: Dispatch<SetStateAction<IssueResultType | null>>;
   refetch: IssueBoardRefetch;
+  moveIssueLabel: (dragIndex: number, hoverIndex: number) => void;
 }
 
 export const IssueLabelCard: React.FC<Props> = ({
   issueLabel,
+  index,
   setSelectedIssue,
   refetch,
+  moveIssueLabel,
 }) => {
   const [showIssueForm, setShowIssueForm] = useState<boolean>(false);
   const [deleteIssueLabel] = useDeleteIssueLabelMutation();
+  const [moveIssueLabelMutation] = useMoveIssueLabelMutation();
   const [moveIssue] = useMoveIssueMutation();
-  const [issues, setIssues] = useState<IssueResultType[]>(issueLabel.issues);
+  const [issues, setIssues] = useState<IssueResultType[]>(issueLabel.issues.slice().sort((a,b) => a.order - b.order));
   const [hoveringIssue, setHoveringIssue] = useState<IssueResultType | null>(
     null
   );
@@ -37,10 +51,11 @@ export const IssueLabelCard: React.FC<Props> = ({
   const addIssue = () => {
     setShowIssueForm(true);
   };
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setIssues(issueLabel.issues);
-  }, [issueLabel.issues])
+    setIssues(issueLabel.issues.slice().sort((a,b) => a.order - b.order));
+  }, [issueLabel.issues]);
 
   const moveIssueCard = async (issue: IssueResultType) => {
     await moveIssue({
@@ -61,33 +76,43 @@ export const IssueLabelCard: React.FC<Props> = ({
   };
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [{ isOver }, drop] = useDrop<DragItem, void, DragItem>(() => ({
-    accept: "IssueCard",
-    drop: ({ issueItem, issueLabelId, removeIssueFromPreviousLabel }): void => {
-      if (issueLabel.id === issueLabelId) return;
-      moveIssueCard(issueItem!);
-      removeIssueFromPreviousLabel!(issueItem!.id);
-      setIssues((stateIssues) => {
-        if (stateIssues.includes(issueItem!)) return stateIssues;
-        return [issueItem!, ...stateIssues];
-      });
-    },
-    hover: ({ issueItem, issueLabelId }) => {
-      if (issueLabel.id === issueLabelId) return;
-      setHoveringIssue(issueItem!);
-    },
-    collect(monitor) {
-      return {
-        isOver: monitor.isOver(),
-      };
-    },
-  }));
+  const [{ isOver }, drop] = useDrop<DragIssueItem, void, DragIssueItem>(
+    () => ({
+      accept: "IssueCard",
+      drop: ({
+        issueItem,
+        issueLabelId,
+        removeIssueFromPreviousLabel,
+      }): void => {
+        if (issueLabel.id === issueLabelId) return;
+        moveIssueCard(issueItem!);
+        removeIssueFromPreviousLabel!(issueItem!.id);
+        setIssues((stateIssues) => {
+          if (stateIssues.includes(issueItem!)) return stateIssues;
+          return [issueItem!, ...stateIssues];
+        });
+      },
+      hover: (item) => {
+        if (issueLabel.id === item.issueLabelId) {
+          item.isOverAnotherLabel = false;
+          return;
+        }
+        setHoveringIssue(item.issueItem!);
+        item.isOverAnotherLabel = true;
+      },
+      collect(monitor) {
+        return {
+          isOver: monitor.isOver(),
+        };
+      },
+    })
+  );
 
   useEffect(() => {
     if (!isOver) setHoveringIssue(null);
   }, [isOver]);
 
-  const moveIssue1 = useCallback(
+  const moveIssueLocal = useCallback(
     (dragIndex: number, hoverIndex: number) => {
       if (issues.length === 0) return;
       const dragIssue = issues[dragIndex];
@@ -102,6 +127,7 @@ export const IssueLabelCard: React.FC<Props> = ({
     },
     [issues]
   );
+
   const handleDeleteLabel = async () => {
     if (
       // eslint-disable-next-line no-restricted-globals
@@ -121,8 +147,54 @@ export const IssueLabelCard: React.FC<Props> = ({
     }
   };
 
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: "IssueLabelCard",
+    item: { index, issueLabelId: issueLabel.id } as DragIssueLabelItem,
+
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  }));
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, dropIssueLabel] = useDrop<
+    DragIssueLabelItem,
+    void,
+    DragIssueLabelItem
+  >({
+    accept: "IssueLabelCard",
+    drop({issueLabelId}) {
+      moveIssueLabelMutation({
+        variables: {
+          issueLabelId: issueLabelId!,
+          newOrder: index + 1
+        }
+      })
+    },
+    hover(item) {
+      if (!ref.current) return;
+
+      const dragIndex = item.index;
+      const hoverIndex = index;
+
+      if (dragIndex === hoverIndex) {
+        return;
+      }
+
+      moveIssueLabel(dragIndex!, hoverIndex);
+
+      item.index = hoverIndex;
+    },
+  });
+
+  dropIssueLabel(drag(drop(ref)));
+
   return (
-    <div className="issue-label" ref={drop}>
+    <div
+      className="issue-label"
+      ref={ref}
+      style={{ opacity: isDragging ? 0 : 1 }}
+    >
       <div id="issue-label-card-header">
         <div className="issue-label-card-header-part">
           <h2>{issueLabel.name}</h2>
@@ -151,7 +223,7 @@ export const IssueLabelCard: React.FC<Props> = ({
           <IssueCard
             index={0}
             removeIssue={removeIssue}
-            moveIssue={moveIssue1}
+            moveIssue={moveIssueLocal}
             setSelectedIssue={setSelectedIssue}
             issue={hoveringIssue}
             issueLabelId={issueLabel.id}
@@ -164,7 +236,7 @@ export const IssueLabelCard: React.FC<Props> = ({
             <IssueCard
               index={index}
               removeIssue={removeIssue}
-              moveIssue={moveIssue1}
+              moveIssue={moveIssueLocal}
               setSelectedIssue={setSelectedIssue}
               issue={issue}
               issueLabelId={issueLabel.id}

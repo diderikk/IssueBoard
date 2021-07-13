@@ -14,8 +14,8 @@ mutation EditIssue($attributes: IssueInputType!, $issueID: ID!){
   }
 } 
 
-mutation MoveIssue($issueId: ID!, $issueLabelId: ID!) {
-  moveIssue(issueId: $issueId, issueLabelId: $issueLabelId){
+mutation MoveIssue($issueId: ID!, $issueLabelId: ID!, $newOrder: Int) {
+  moveIssue(issueId: $issueId, issueLabelId: $issueLabelId, newOrder: $newOrder){
     success
   }
 }

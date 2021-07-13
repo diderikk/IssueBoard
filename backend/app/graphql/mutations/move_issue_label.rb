@@ -10,15 +10,20 @@ module Mutations
 		def resolve(issue_label:, new_order:)
 			(raise GraphQL::ExecutionError.new "No label with that id") if issue_label.nil?
 
+			return {success: false} if new_order == issue_label.order
 
 
 			issue_board = IssueBoard.joins(:issue_labels).where(issue_labels: {id: issue_label.id }).take;
-			issue_labels_with_higher_order = issue_board.issue_labels.select { |label| label.order > issue_label.order && label.order <= new_order }
+			issue_labels_in_board = issue_board.issue_labels
 
-			if issue_labels_with_higher_order
+			if issue_labels_in_board
 				IssueLabel.transaction do
-					issue_labels_with_higher_order.each do |label|
-						label.order -= 1;
+					issue_labels_in_board.each do |label|
+						if(label.order < issue_label.order && label.order >= new_order) 
+							label.order += 1;
+						elsif(label.order > issue_label.order && label.order <= new_order) 
+							label.order -= 1;
+						end
 						label.save;
 					end
 				end

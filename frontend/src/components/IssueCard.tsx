@@ -4,7 +4,8 @@ import calendar from "../assets/calendar.png";
 import { formattedDueDate } from "../util/formattedDueDate";
 import { IssueResultType } from "../types/IssueResultType.type";
 import { useDrag, useDrop, XYCoord } from "react-dnd";
-import { DragItem } from "../types/dragItem.interface";
+import { DragIssueItem } from "../types/DragIssueItem.interface";
+import { useMoveIssueMutation } from "../graphql/generated/graphql";
 
 interface Props {
   issue: IssueResultType;
@@ -28,12 +29,24 @@ export const IssueCard: React.FC<Props> = ({
     if (date === "None") return "";
     return date;
   }, [issue.dueDate]);
+  const [moveIssueMutation] = useMoveIssueMutation();
 
   const ref = useRef<HTMLDivElement>(null);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, drop] = useDrop<DragItem, void, DragItem>({
+  const [_, drop] = useDrop<DragIssueItem, void, DragIssueItem>({
     accept: "IssueCard",
+    drop(item){
+      if(!item.isOverAnotherLabel){
+        moveIssueMutation({
+          variables: {
+            issueId: issue.id,
+            issueLabelId,
+            newOrder: index + 1
+          }
+        })
+      }
+    },
     hover(item, monitor){
       if(!ref.current) return;
 
@@ -69,7 +82,7 @@ export const IssueCard: React.FC<Props> = ({
 
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "IssueCard",
-    item: { issueItem: issue, issueLabelId, removeIssueFromPreviousLabel: removeIssue, index } as DragItem,
+    item: { issueItem: issue, issueLabelId, removeIssueFromPreviousLabel: removeIssue, index, isOverAnotherLabel: false } as DragIssueItem,
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
