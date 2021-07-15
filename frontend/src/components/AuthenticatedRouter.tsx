@@ -2,6 +2,7 @@ import { useState } from "react";
 import homeIcon from "../assets/home.png";
 import boardIcon from "../assets/board.png";
 import informationIcon from "../assets/information.png";
+import groupsIcon from "../assets/groups.png"
 import Avatar from "react-avatar";
 import { Link, Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import { UserResultType } from "../types/UserResultType.type";
@@ -10,6 +11,7 @@ import { Home } from "../views/Home";
 import { IssueBoard } from "../views/IssueBoard";
 import { YourIssueBoards } from "../views/YourIssueBoards";
 import { UserMenu } from "./UserMenu";
+import { Groups } from "../views/Groups";
 
 interface Props {
   loading: boolean;
@@ -29,6 +31,10 @@ export const AuthenticatedRouter: React.FC<Props> = ({ loading, user }) => {
 
             <Link className="nav-bar-link" to="/issue-boards">
               <img id="board-icon" src={boardIcon} alt="board icon" />
+            </Link>
+
+            <Link className="nav-bar-link" to="/groups">
+              <img id="groups-icon" src={groupsIcon} alt="groups icon" />
             </Link>
           </div>
           <h1>Issue Board</h1>
@@ -63,8 +69,8 @@ export const AuthenticatedRouter: React.FC<Props> = ({ loading, user }) => {
       <Switch>
         <Route path="/" exact component={Home} />
         <Route path="/about" component={About} />
-
         <Route path="/issue-boards" component={YourIssueBoards} />
+        <Route path="/groups" component={Groups} />
         <Route path="/issue-board/:issueBoardId" component={IssueBoard} />
         {!loading && <Route render={() => <h1>404: Page not found</h1>} />}
       </Switch>

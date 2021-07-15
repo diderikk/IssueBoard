@@ -8,8 +8,9 @@ module Mutations
 		field :errors, [String], null: true
 
 		def resolve(attributes:)
-			group = Group.new(name: attributes)
-			group.users << context[:current_user]
+			group = Group.new(name: attributes.name)
+			group.members << Member.new(accepted: true, user: context[:current_user])
+
 			if group.save!
 				{
 					group: group,

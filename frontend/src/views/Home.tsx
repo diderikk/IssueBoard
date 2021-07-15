@@ -20,7 +20,7 @@ export const Home: React.FC = () => {
       </div>
       <div>
         <h2 className="home-label">Your groups</h2>
-        <button className="home-button">
+        <button className="home-button" onClick={() => history.push("/groups")}>
           <img className="home-icon" src={groupsIcon} alt="board icon" />
         </button>
       </div>

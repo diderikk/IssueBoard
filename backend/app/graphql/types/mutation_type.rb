@@ -18,5 +18,7 @@ module Types
 		field :login, mutation: Mutations::Login
 		field :move_issue, mutation: Mutations::MoveIssue
 		field :move_issue_label, mutation: Mutations::MoveIssueLabel
+		field :decline_invite, mutation: Mutations::DeclineInvite
+		field :accept_invite, mutation: Mutations::AcceptInvite
 	end
 end

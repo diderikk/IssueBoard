@@ -1,0 +1,33 @@
+query UserGroups {
+  groups{
+    id
+    name
+    logo
+  }
+}
+
+query UserInvitedGroups{
+  invitedToGroups{
+    id
+    name
+    logo
+  }
+}
+
+mutation CreateGroup($attributes: GroupInputType!){
+  createGroup(attributes: $attributes){
+    errors
+  }
+}
+
+mutation AcceptInvite($groupId: ID!){
+  acceptInvite(groupId: $groupId){
+    success
+  }
+}
+
+mutation DeclineInvite($groupId: ID!){
+ 	declineInvite(groupId: $groupId){
+    success
+  }
+}

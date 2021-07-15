@@ -24,6 +24,10 @@ module Types
 			description "Returns a scoped list of all groups a member is a part of"
 		end
 
+		field :invited_to_groups, [Types::GroupType], null: false, scope: false do
+			description "Returns all groups a user is invited to"
+		end
+
 		field :issue_board, Types::IssueBoardType, null:false do
 			description "Returns a single IssueBoardType that the user is a part of"
 
@@ -60,7 +64,11 @@ module Types
 		end
 
 		def groups
-			context[:current_user].groups.where(members: {accepted: true});
+			context[:current_user].groups.where(members: {accepted: true}).order(created_at: :desc);
+		end
+
+		def invited_to_groups
+			context[:current_user].groups.where(members: {accepted: false}).order(:created_at);
 		end
 
 		def issue_board(issue_board_id:)
