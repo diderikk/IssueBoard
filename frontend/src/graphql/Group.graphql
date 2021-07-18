@@ -1,0 +1,56 @@
+query UserGroups {
+  groups{
+    id
+    name
+    logo
+  }
+}
+
+query UserInvitedGroups{
+  invitedToGroups{
+    id
+    name
+    logo
+  }
+}
+
+query Group($groupId: ID!){
+  group(groupId: $groupId){
+    id
+    name
+    logo
+    users{
+      name
+      email
+    }
+    issueBoards{
+      id
+      name
+    }
+  }
+}
+
+mutation CreateGroup($attributes: GroupInputType!){
+  createGroup(attributes: $attributes){
+    errors
+  }
+}
+
+mutation Invite($groupId: ID!, $userEmail: String!){
+  invite(groupId: $groupId, userEmail: $userEmail){
+    success
+  }
+}
+
+
+mutation AcceptInvite($groupId: ID!){
+  acceptInvite(groupId: $groupId){
+    success
+  }
+}
+
+mutation DeclineInvite($groupId: ID!){
+ 	declineInvite(groupId: $groupId){
+    success
+  }
+}

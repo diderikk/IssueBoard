@@ -1,21 +1,29 @@
 import React from "react";
-import { useSnackBar } from "../context/SnackBarContext";
+import "./Home.css";
+import boardIcon from "../assets/board.png";
+import groupsIcon from "../assets/groups.png";
+import { useHistory } from "react-router";
 
 export const Home: React.FC = () => {
-	const {state, dispatch} = useSnackBar();
+  const history = useHistory();
 
-	const handleClick = () => {
-		dispatch({type: 'error', error: "SOmething went wrong"})
-	}
-	
-
-
-	return (
-		<div>
-			{state.description}
-			<div>
-				<button onClick={handleClick}>Click</button>
-			</div>
-		</div>
-	)
-}
+  return (
+    <div id="home-container">
+      <div>
+        <h2 className="home-label">Your boards</h2>
+        <button
+          className="home-button"
+          onClick={() => history.push("/issue-boards")}
+        >
+          <img className="home-icon" src={boardIcon} alt="board icon" />
+        </button>
+      </div>
+      <div>
+        <h2 className="home-label">Your groups</h2>
+        <button className="home-button" onClick={() => history.push("/groups")}>
+          <img className="home-icon" src={groupsIcon} alt="board icon" />
+        </button>
+      </div>
+    </div>
+  );
+};

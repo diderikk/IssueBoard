@@ -24,6 +24,10 @@ module Types
 			description "Returns a scoped list of all groups a member is a part of"
 		end
 
+		field :invited_to_groups, [Types::GroupType], null: false, scope: false do
+			description "Returns all groups a user is invited to"
+		end
+
 		field :issue_board, Types::IssueBoardType, null:false do
 			description "Returns a single IssueBoardType that the user is a part of"
 
@@ -53,14 +57,18 @@ module Types
 		def group(group_id:)
 
 			if group_authorized?(nil, group_id, context)
-				Group.find(group_id);
+				group = Group.includes(:users).where(members: {accepted: true}).find(group_id);
 			else
-				raise GraphQL::ExecutionError, "Not authorized for group whit id: #{group_id}"
+				raise GraphQL::ExecutionError, "Not authorized for group with id: #{group_id}"
 			end
 		end
 
 		def groups
-			context[:current_user].groups.where(members: {accepted: true});
+			context[:current_user].groups.where(members: {accepted: true}).order(created_at: :desc);
+		end
+
+		def invited_to_groups
+			context[:current_user].groups.where(members: {accepted: false}).order(:created_at);
 		end
 
 		def issue_board(issue_board_id:)
@@ -83,11 +91,5 @@ module Types
 			end
 		end
 
-		# def login(email:, password:)
-		# 	access_token = authenticate(email, password)
-		# 	return access_token unless access_token.nil?
-
-		# 	raise GraphQL::ExecutionError.new "Email or password wrong"
-		# end
 	end
 end

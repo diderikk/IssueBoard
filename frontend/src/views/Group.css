@@ -1,0 +1,48 @@
+#group-container{
+	display: grid;
+	grid-template-columns: 80% 20%;
+}
+
+#group-member-list{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+.user{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	gap: 10%;
+}
+
+.username-text{
+	font-size: 1rem;
+}
+
+#invite-icon{
+	width: 2rem;
+	height: 2rem;
+}
+
+#input-icon{
+	display: flex;
+	border: 2px solid grey;
+	border-radius: 3px;
+	width: 90%
+}
+
+#invite-button{
+	border: none;
+}
+
+#invite-input{
+	border: none;
+	width: 100%;
+}
+
+#invite-input:focus{
+	outline-width: 0;
+}

@@ -4,13 +4,14 @@ import {
 } from "../graphql/generated/graphql";
 import { IssueBoardsRefetch } from "../types/IssueBoardsRefetch.type";
 import { useSnackBar } from "../context/SnackBarContext";
+import { GroupRefetch } from "../types/GroupRefetch.type";
 
 interface Props {
-  refetch: IssueBoardsRefetch
-    
+  refetch: IssueBoardsRefetch | GroupRefetch
+  groupId?: string 
 }
 
-export const InputIssueBoardCard: React.FC<Props> = ({ refetch }) => {
+export const InputIssueBoardCard: React.FC<Props> = ({ refetch, groupId }) => {
   const [showIssueBoardForm, setShowIssueBoardForm] = useState<boolean>(false);
   const [issueBoardName, setIssueBoardName] = useState<string>("");
   const { dispatch } = useSnackBar();
@@ -39,7 +40,7 @@ export const InputIssueBoardCard: React.FC<Props> = ({ refetch }) => {
     event.preventDefault();
     dispatch({ type: "loading" });
     const response = await createIssueBoard({
-      variables: { attributes: { name: issueBoardName } },
+      variables: { attributes: { name: issueBoardName, groupId } },
     });
 
     if (response.errors)

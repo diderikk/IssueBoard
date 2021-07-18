@@ -53,8 +53,6 @@ export const Login: React.FC = () => {
 
       writeToken(client, response.data?.login?.accessToken!);
 
-      console.log(client.cache);
-
       setUser!(response.data?.login?.user!);
       
       history.push("/");

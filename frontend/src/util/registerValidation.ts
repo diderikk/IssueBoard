@@ -20,7 +20,13 @@ export const validateEmail = (
   if (email.trim().length === 0) {
     setEmailError("Email field is empty");
     return false;
-  } else {
+  } 
+  // eslint-disable-next-line no-useless-escape
+  else if(!(/^[A-Za-z0-9+_.-]+@(.+)$/).test(email)) {
+    setEmailError("This is not an email");
+    return false
+  }
+  else {
     setEmailError("");
     return true;
   }
@@ -40,6 +46,19 @@ export const validatePassword = (
     return false;
   } else {
     setPasswordError("");
-	return true;
+    return true;
   }
+};
+
+export const validateConfirmPassword = (
+  password: string,
+  confirmPassword: string,
+  setConfirmPasswordError: React.Dispatch<React.SetStateAction<string>>
+): boolean => {
+  if(password !== confirmPassword){
+    setConfirmPasswordError("Passwords do not match");
+    return false;
+  }
+  setConfirmPasswordError("");
+  return true;
 };

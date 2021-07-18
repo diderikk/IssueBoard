@@ -64,7 +64,7 @@ ActiveRecord::Schema.define(version: 2021_06_27_144151) do
   end
 
   create_table "members", force: :cascade do |t|
-    t.boolean "accepted"
+    t.boolean "accepted", default: false, null: false
     t.bigint "user_id"
     t.bigint "group_id"
     t.datetime "created_at", precision: 6, null: false

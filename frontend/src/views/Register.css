@@ -1,0 +1,13 @@
+#register-container{
+	height: 70vh;
+}
+
+#register-form input{
+	width: 14rem;
+	padding: 10px;
+	font-size: 1rem;
+}
+
+#register-button{
+	width: 10rem;
+}
