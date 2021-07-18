@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import checkIcon from "../assets/check.png";
 import crossIcon from "../assets/cross.png";
 import { InputGroupCard } from "../components/InputGroupCard";
@@ -26,6 +27,7 @@ export const Groups: React.FC = () => {
   const [runDispatch, setRunDispatch] = useState<boolean>(true);
   const [declineInvite] = useDeclineInviteMutation();
   const [acceptInvite] = useAcceptInviteMutation();
+  const history = useHistory();
 
   useEffect(() => {
     if (runDispatch) {
@@ -77,7 +79,9 @@ export const Groups: React.FC = () => {
       <div className="container">
         <span id="groups-header">
           <h1>Your groups</h1>
-          <button onClick={() => setShowGroupForm(!showGroupForm)}>+ Group</button>
+          <button onClick={() => setShowGroupForm(!showGroupForm)}>
+            + Group
+          </button>
         </span>
         {showGroupForm && (
           <InputGroupCard
@@ -85,21 +89,31 @@ export const Groups: React.FC = () => {
             refetch={groupsResponse.refetch}
           />
         )}
-        {groups && groups.map((groupItem) => (
-          <div className="group-card" key={groupItem.id}>
-            {groupItem.logo && <img src={groupItem.logo} alt="group logo" />}
-            <h1>{groupItem.name}</h1>
-          </div>
-        ))}
+        {groups &&
+          groups.map((groupItem) => (
+            <div
+              className="group-card"
+              key={groupItem.id}
+              onClick={() => history.push(`/group/${groupItem.id}`)}
+            >
+              {groupItem.logo && <img src={groupItem.logo} alt="group logo" />}
+              <h1>{groupItem.name}</h1>
+            </div>
+          ))}
       </div>
       <div id="invites-container">
         <h1>Invites</h1>
         {invitedGroups &&
           invitedGroups.map((invite) => (
-            <div className="invite-card">
+            <div className="invite-card" key={invite.id}>
               <h3>{invite.name}</h3>
               <div className="invite-buttons">
-                <img id="check-icon" src={checkIcon} alt="check icon" onClick={() => handleAccept(invite)}/>
+                <img
+                  id="check-icon"
+                  src={checkIcon}
+                  alt="check icon"
+                  onClick={() => handleAccept(invite)}
+                />
                 <img
                   id="cross-icon"
                   src={crossIcon}

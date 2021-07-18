@@ -30,8 +30,8 @@ export const IssueBoard: React.FC<Props> = ({ match }) => {
     null
   );
   const [issueLabels, setIssueLabels] = useState<IssueLabelResultType[]>(() => {
-    if (data?.issueBoard.issueLabels!)
-      return data.issueBoard.issueLabels.sort((a, b) => a.order - b.order);
+    if (data?.issueBoard.issueLabels)
+      return data.issueBoard.issueLabels.slice().sort((a, b) => a.order - b.order);
     return [];
   });
   const [runDispatch, setRunDispatch] = useState<boolean>(true);
@@ -61,7 +61,7 @@ export const IssueBoard: React.FC<Props> = ({ match }) => {
 
   const moveIssueLabel = useCallback(
     (dragIndex: number, hoverIndex: number) => {
-      if (issueLabels.length === 0) return;
+      if (issueLabels.length <= 1) return;
       const dragIssueLabel = issueLabels[dragIndex];
       console.log(dragIssueLabel);
       setIssueLabels(

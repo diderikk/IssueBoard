@@ -57,9 +57,9 @@ module Types
 		def group(group_id:)
 
 			if group_authorized?(nil, group_id, context)
-				Group.find(group_id);
+				group = Group.includes(:users).where(members: {accepted: true}).find(group_id);
 			else
-				raise GraphQL::ExecutionError, "Not authorized for group whit id: #{group_id}"
+				raise GraphQL::ExecutionError, "Not authorized for group with id: #{group_id}"
 			end
 		end
 
@@ -91,11 +91,5 @@ module Types
 			end
 		end
 
-		# def login(email:, password:)
-		# 	access_token = authenticate(email, password)
-		# 	return access_token unless access_token.nil?
-
-		# 	raise GraphQL::ExecutionError.new "Email or password wrong"
-		# end
 	end
 end

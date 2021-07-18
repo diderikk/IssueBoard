@@ -12,6 +12,7 @@ import { IssueBoard } from "../views/IssueBoard";
 import { YourIssueBoards } from "../views/YourIssueBoards";
 import { UserMenu } from "./UserMenu";
 import { Groups } from "../views/Groups";
+import { Group } from "../views/Group";
 
 interface Props {
   loading: boolean;
@@ -72,6 +73,7 @@ export const AuthenticatedRouter: React.FC<Props> = ({ loading, user }) => {
         <Route path="/issue-boards" component={YourIssueBoards} />
         <Route path="/groups" component={Groups} />
         <Route path="/issue-board/:issueBoardId" component={IssueBoard} />
+        <Route path="/group/:groupId" component={Group} />
         {!loading && <Route render={() => <h1>404: Page not found</h1>} />}
       </Switch>
     </Router>
