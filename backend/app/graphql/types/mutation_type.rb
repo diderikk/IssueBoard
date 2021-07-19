@@ -20,6 +20,7 @@ module Types
 		field :move_issue_label, mutation: Mutations::MoveIssueLabel
 		field :decline_invite, mutation: Mutations::DeclineInvite
 		field :accept_invite, mutation: Mutations::AcceptInvite
+		field :leave_group, mutation: Mutations::LeaveGroup
 		field :invite, mutation: Mutations::Invite
 	end
 end

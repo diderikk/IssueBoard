@@ -10,6 +10,25 @@
 	justify-content: flex-start;
 }
 
+#group-header{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.2rem;
+}
+
+#leave-button{
+	position: absolute;
+	right: 5rem;
+	background-color: red;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	width: 7rem;
+	height: 3.5rem;
+	font-size: 1.4rem;
+}
+
 .user{
 	display: flex;
 	flex-direction: row;

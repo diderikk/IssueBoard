@@ -23,7 +23,7 @@ export const Group: React.FC<Props> = ({ match }) => {
   const [runDispatch, setRunDispatch] = useState<boolean>(true);
   const [inviteEmail, setInviteEmail] = useState<string>("");
   const [memberList, setMemberList] = useState<UserResultType[]>(() => {
-    if(data?.group.users) return data.group.users.slice();
+    if (data?.group.users) return data.group.users.slice();
     return [];
   });
   const { dispatch } = useSnackBar();
@@ -42,8 +42,8 @@ export const Group: React.FC<Props> = ({ match }) => {
   }, [data, loading, error, dispatch, runDispatch]);
 
   useEffect(() => {
-    if(data?.group.users) setMemberList(data.group.users);
-  }, [data?.group.users])
+    if (data?.group.users) setMemberList(data.group.users);
+  }, [data?.group.users]);
 
   const handleInviteChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInviteEmail(event.target.value);
@@ -51,45 +51,31 @@ export const Group: React.FC<Props> = ({ match }) => {
 
   const handleSumbit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if(inviteEmail.trim().length === 0) return;
-    dispatch({type: 'loading'})
+    if (inviteEmail.trim().length === 0) return;
+    dispatch({ type: "loading" });
     const response = await inviteMutation({
       variables: { groupId: match.params.groupId, userEmail: inviteEmail },
     });
 
-    if(!response.data?.invite?.success){
-      dispatch({type: 'error', error: "User not found or user already exists in group"});
+    if (!response.data?.invite?.success) {
+      dispatch({
+        type: "error",
+        error: "User not found or user already exists in group",
+      });
       return;
     }
 
-    dispatch({type: 'successful', description: 'User added to group'});
+    dispatch({ type: "successful", description: "User added to group" });
     setInviteEmail("");
   };
 
   return (
-    <div id="group-container">
-      <div className="container">
-        <h1>Issue boards</h1>
-        <IssueBoardList
-          issueBoardListProps={data?.group.issueBoards}
-          refetch={refetch}
-          groupId={match.params.groupId}
-        />
-      </div>
-      <div id="group-member-list">
-        <h2>Members</h2>
-        {
-          memberList.map((user) => (
-            <div className="user" key={user.email}>
-              <Avatar
-                name={user.email}
-                size="2.2rem"
-                round="20px"
-                textSizeRatio={2.0}
-              />
-              <p className="username-text">{user.name}</p>
-            </div>
-          ))}
+    <div>
+      <div id="group-header">
+        <h1 id="group-title">{data?.group.name}</h1>
+        <button id="leave-button" className="form-button">
+          Leave
+        </button>
         <form onSubmit={handleSumbit}>
           <h3>Invite</h3>
           <div id="input-icon">
@@ -105,6 +91,30 @@ export const Group: React.FC<Props> = ({ match }) => {
             </button>
           </div>
         </form>
+      </div>
+      <div id="group-container">
+        <div className="container">
+          <h1>Issue boards</h1>
+          <IssueBoardList
+            issueBoardListProps={data?.group.issueBoards}
+            refetch={refetch}
+            groupId={match.params.groupId}
+          />
+        </div>
+        <div id="group-member-list">
+          <h2>Members</h2>
+          {memberList.map((user) => (
+            <div className="user" key={user.email}>
+              <Avatar
+                name={user.email}
+                size="2.2rem"
+                round="20px"
+                textSizeRatio={2.0}
+              />
+              <p className="username-text">{user.name}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

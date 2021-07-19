@@ -36,6 +36,12 @@ mutation CreateGroup($attributes: GroupInputType!){
   }
 }
 
+mutation LeaveGroup($groupId: ID!) {
+  leaveGroup(groupId: $groupId) {
+    success
+  }
+}
+
 mutation Invite($groupId: ID!, $userEmail: String!){
   invite(groupId: $groupId, userEmail: $userEmail){
     success
