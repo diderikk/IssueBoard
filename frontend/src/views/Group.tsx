@@ -1,12 +1,17 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import "./Group.css";
 import inviteIcon from "../assets/invite.png";
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps, useHistory } from "react-router-dom";
 import { IssueBoardList } from "../components/IssueBoardList";
 import { useSnackBar } from "../context/SnackBarContext";
-import { useGroupQuery, useInviteMutation } from "../graphql/generated/graphql";
+import {
+  useGroupQuery,
+  useInviteMutation,
+  useLeaveGroupMutation,
+} from "../graphql/generated/graphql";
 import Avatar from "react-avatar";
 import { UserResultType } from "../types/UserResultType.type";
+import { useApolloClient } from "@apollo/client";
 
 interface Params {
   groupId: string;
@@ -20,6 +25,7 @@ export const Group: React.FC<Props> = ({ match }) => {
     variables: { groupId: match.params.groupId },
   });
   const [inviteMutation] = useInviteMutation();
+  const [leaveMutation] = useLeaveGroupMutation();
   const [runDispatch, setRunDispatch] = useState<boolean>(true);
   const [inviteEmail, setInviteEmail] = useState<string>("");
   const [memberList, setMemberList] = useState<UserResultType[]>(() => {
@@ -27,6 +33,10 @@ export const Group: React.FC<Props> = ({ match }) => {
     return [];
   });
   const { dispatch } = useSnackBar();
+  const history = useHistory();
+  const client = useApolloClient()
+  console.log(client.cache);
+  
 
   useEffect(() => {
     if (runDispatch) {
@@ -44,6 +54,22 @@ export const Group: React.FC<Props> = ({ match }) => {
   useEffect(() => {
     if (data?.group.users) setMemberList(data.group.users);
   }, [data?.group.users]);
+
+  const handleLeave = async () => {
+    // eslint-disable-next-line no-restricted-globals
+    if (confirm("Are you sure you want to leave this group?")) {
+      await leaveMutation({
+        variables: { groupId: match.params.groupId },
+        update(cache) {
+          cache.evict({
+            id: "ROOT_QUERY",
+            fieldName: "groups"
+          })
+        },
+      });
+      history.push("/groups");
+    }
+  };
 
   const handleInviteChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInviteEmail(event.target.value);
@@ -73,11 +99,8 @@ export const Group: React.FC<Props> = ({ match }) => {
     <div>
       <div id="group-header">
         <h1 id="group-title">{data?.group.name}</h1>
-        <button id="leave-button" className="form-button">
-          Leave
-        </button>
-        <form onSubmit={handleSumbit}>
-          <h3>Invite</h3>
+
+        <form id="invite-form" onSubmit={handleSumbit}>
           <div id="input-icon">
             <input
               id="invite-input"
@@ -91,6 +114,9 @@ export const Group: React.FC<Props> = ({ match }) => {
             </button>
           </div>
         </form>
+        <button id="leave-button" className="form-button" onClick={handleLeave}>
+          Leave
+        </button>
       </div>
       <div id="group-container">
         <div className="container">

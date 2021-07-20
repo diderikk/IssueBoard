@@ -17,6 +17,17 @@
 	margin: 0 3%;
 }
 
+#user-list{
+	margin-left: 20px;
+	display: flex;
+	align-items: center;
+	position: relative;
+}
+
+.user-avatar{
+	position: absolute;
+}
+
 @media screen and (max-width: 500px) {
 
 	#issue_label_search{

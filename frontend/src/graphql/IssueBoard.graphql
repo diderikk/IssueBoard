@@ -9,6 +9,10 @@ query IssueBoard($id: ID!){
   issueBoard(issueBoardId:$id){
     id
     name
+    users{
+      name
+      email
+    }
     issueLabels{
       id
       name
@@ -37,6 +41,12 @@ mutation CreateIssueBoard($attributes: IssueBoardInputType!){
 mutation EditIssueBoard($attributes: IssueBoardInputType!, $issueBoardId: ID!){
   editIssueBoard(attributes: $attributes, issueBoardId: $issueBoardId){
     errors
+  }
+}
+
+mutation AddUserToBoard($issueBoardId: ID!, $email: String!) {
+  addUserToBoard(issueBoardId: $issueBoardId, email: $email) {
+    success
   }
 }
 

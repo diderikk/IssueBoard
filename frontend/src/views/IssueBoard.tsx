@@ -1,8 +1,18 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+  useMemo,
+  ChangeEvent,
+} from "react";
+import inviteIcon from "../assets/invite.png";
 import "./IssueBoard.css";
 import { RouteComponentProps, useHistory } from "react-router-dom";
 import { IssueBoardTitle } from "../components/IssueBoardTitle";
-import { useIssueBoardQuery } from "../graphql/generated/graphql";
+import {
+  useAddUserToBoardMutation,
+  useIssueBoardQuery,
+} from "../graphql/generated/graphql";
 import { IssueLabelCard } from "../components/IssueLabelCard";
 import { useSnackBar } from "../context/SnackBarContext";
 import { InputIssueLabel } from "../components/InputIssueLabel";
@@ -10,9 +20,12 @@ import { Sidebar } from "../components/Sidebar";
 import { IssueResultType } from "../types/IssueResultType.type";
 import { IssueLabelResultType } from "../types/IssueLabelResultTyoe.type";
 import update from "immutability-helper";
+import { UserResultType } from "../types/UserResultType.type";
+import Avatar from "react-avatar";
 
 interface Params {
   issueBoardId: string;
+  groupId: string | undefined;
 }
 
 type Props = RouteComponentProps<Params>;
@@ -23,17 +36,24 @@ export const IssueBoard: React.FC<Props> = ({ match }) => {
       id: match.params.issueBoardId,
     },
   });
+  const [addUserToBoardMutation] = useAddUserToBoardMutation();
   const history = useHistory();
   const { dispatch } = useSnackBar();
   const [showLabelForm, setShowLabelForm] = useState<boolean>(false);
   const [selectedIssue, setSelectedIssue] = useState<IssueResultType | null>(
     null
   );
+  const [inviteEmail, setInviteEmail] = useState<string>("");
   const [issueLabels, setIssueLabels] = useState<IssueLabelResultType[]>(() => {
     if (data?.issueBoard.issueLabels)
-      return data.issueBoard.issueLabels.slice().sort((a, b) => a.order - b.order);
+      return data.issueBoard.issueLabels
+        .slice()
+        .sort((a, b) => a.order - b.order);
     return [];
   });
+  const [userList, setUserList] = useState<UserResultType[]>(
+    () => data?.issueBoard.users!.slice()!
+  );
   const [runDispatch, setRunDispatch] = useState<boolean>(true);
 
   const handleAddLabel = () => {
@@ -54,7 +74,13 @@ export const IssueBoard: React.FC<Props> = ({ match }) => {
   }, [data, loading, error, dispatch, runDispatch]);
 
   useEffect(() => {
-      setIssueLabels(data?.issueBoard.issueLabels!.slice().sort((a,b) => a.order - b.order)!);
+    if (data?.issueBoard.users) setUserList(data.issueBoard.users.slice());
+  }, [data?.issueBoard.users]);
+
+  useEffect(() => {
+    setIssueLabels(
+      data?.issueBoard.issueLabels!.slice().sort((a, b) => a.order - b.order)!
+    );
   }, [data?.issueBoard.issueLabels]);
 
   if (error) history.push("/404");
@@ -76,7 +102,35 @@ export const IssueBoard: React.FC<Props> = ({ match }) => {
     [issueLabels]
   );
 
-  const issueBoard = data?.issueBoard;
+  const handleSumbit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (inviteEmail.trim().length === 0) return;
+    dispatch({ type: "loading" });
+    const response = await addUserToBoardMutation({
+      variables: {
+        issueBoardId: match.params.issueBoardId,
+        email: inviteEmail,
+      },
+    });
+
+    if (!response.data?.addUserToBoard?.success) {
+      dispatch({
+        type: "error",
+        error: "User not found or user already exists in board",
+      });
+      return;
+    }
+
+    dispatch({ type: "successful", description: "User added to board" });
+    setUserList((prevList) => [...prevList, { name: "", email: inviteEmail }]);
+    setInviteEmail("");
+  };
+
+  const handleInviteChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setInviteEmail(event.target.value);
+  };
+
+  const issueBoard = useMemo(() => data?.issueBoard, [data?.issueBoard]);
 
   return (
     <div className="container">
@@ -94,6 +148,40 @@ export const IssueBoard: React.FC<Props> = ({ match }) => {
           issueBoardId={match.params.issueBoardId}
         />
         <button onClick={handleAddLabel}>Add label</button>
+        {!match.params.groupId && (
+          <div id="user-list">
+            {userList &&
+              userList.map((user, index) => (
+                <div
+                  key={user.email}
+                  className="user-avatar"
+                  style={{ left: 17 * index }}
+                >
+                  <Avatar
+                    name={user.email}
+                    size="2.2rem"
+                    round="20px"
+                    textSizeRatio={2.0}
+                  />
+                </div>
+              ))}
+          </div>
+        )}
+        {!match.params.groupId && <form id="invite-form" onSubmit={handleSumbit}>
+          <div id="input-icon">
+            <input
+              id="invite-input"
+              type="text"
+              value={inviteEmail}
+              placeholder="Email..."
+              onChange={handleInviteChange}
+            />
+            <button id="invite-button" className="form-button" type="submit">
+              <img id="invite-icon" src={inviteIcon} alt="invite icon" />
+            </button>
+          </div>
+        </form>
+}
       </div>
       <div className="issue-label-container">
         {issueLabels &&

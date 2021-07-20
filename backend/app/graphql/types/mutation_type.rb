@@ -22,5 +22,6 @@ module Types
 		field :accept_invite, mutation: Mutations::AcceptInvite
 		field :leave_group, mutation: Mutations::LeaveGroup
 		field :invite, mutation: Mutations::Invite
+		field :add_user_to_board, mutation: Mutations::AddUserToBoard
 	end
 end

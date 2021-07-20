@@ -29,6 +29,12 @@
 	font-size: 1.4rem;
 }
 
+#invite-form{
+	position: absolute;
+	right: 15rem;
+	height: 3.5rem;
+}
+
 .user{
 	display: flex;
 	flex-direction: row;

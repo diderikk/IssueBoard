@@ -32,7 +32,9 @@ export const IssueBoardList: React.FC<Props> = ({
   }, [issueBoardListProps]);
 
   const handleIssueBoardClick = (issueBoardId: string) => {
-    history.push(`/issue-board/${issueBoardId}`);
+    groupId
+      ? history.push(`/group/${groupId}/issue-board/${issueBoardId}`)
+      : history.push(`/issue-board/${issueBoardId}`);
   };
 
   const handleDelete = async (issueBoard: IssueBoardResultType) => {
