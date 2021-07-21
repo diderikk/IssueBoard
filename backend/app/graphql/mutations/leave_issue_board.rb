@@ -1,16 +1,14 @@
 module Mutations
-	class AddUserToBoard < GraphQL::Schema::Mutation
-		graphql_name "AddUserToBoard"
+	class LeaveIssueBoard < GraphQL::Schema::Mutation
+		graphql_name "LeaveIssueBoard"
 
-		argument :email, String, required: true
 		argument :issue_board_id, ID, required: true, loads: IssueBoard
 
 		field :success, Boolean, null: false
 
-		def resolve(email:, issue_board:)
-			user = User.find_by(email: email);
-			return {success: false} if(email == context[:current_user].email || user.nil?) 
-			issue_board.users << user
+		def resolve(issue_board:)
+			return {success: false} if(issue_board.owner == context[:current_user] || !issue_board.group.nil?)
+			issue_board.users.delete(context[:current_user])
 
 			if issue_board.save!
 				{
@@ -29,7 +27,7 @@ module Mutations
 
 		private
 
-		def authorized?(email:, issue_board:)
+		def authorized?(issue_board:)
 			issue_board.users.include? context[:current_user]
 		end
 

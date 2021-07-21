@@ -72,12 +72,12 @@ export const IssueBoardList: React.FC<Props> = ({
             >
               <h3>{issueBoard!.name}</h3>
             </div>
-            <div
+            {issueBoard?.isOwner && <div
               className="delete-board-card"
               onClick={() => handleDelete(issueBoard)}
             >
               <strong>Delete</strong>
-            </div>
+            </div>}
           </div>
         );
       })}

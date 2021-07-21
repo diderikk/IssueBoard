@@ -16,6 +16,7 @@ module Types
 		field :delete_issue_label, mutation: Mutations::Delete::DeleteIssueLabel
 		field :delete_issue, mutation: Mutations::Delete::DeleteIssue
 		field :login, mutation: Mutations::Login
+		field :logout, mutation: Mutations::Logout
 		field :move_issue, mutation: Mutations::MoveIssue
 		field :move_issue_label, mutation: Mutations::MoveIssueLabel
 		field :decline_invite, mutation: Mutations::DeclineInvite
@@ -23,5 +24,6 @@ module Types
 		field :leave_group, mutation: Mutations::LeaveGroup
 		field :invite, mutation: Mutations::Invite
 		field :add_user_to_board, mutation: Mutations::AddUserToBoard
+		field :leave_issue_board, mutation: Mutations::LeaveIssueBoard
 	end
 end

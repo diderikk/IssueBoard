@@ -1,7 +1,8 @@
 query IssueBoards{
   notGroupIssueBoards{
-    name
     id
+    name
+    isOwner
   }
 }
 
@@ -9,6 +10,7 @@ query IssueBoard($id: ID!){
   issueBoard(issueBoardId:$id){
     id
     name
+    isOwner
     users{
       name
       email
@@ -35,6 +37,12 @@ mutation CreateIssueBoard($attributes: IssueBoardInputType!){
       id
       name
     }
+  }
+}
+
+mutation LeaveIssueBoard($issueBoardId: ID!){
+  leaveIssueBoard(issueBoardId: $issueBoardId){
+    success
   }
 }
 

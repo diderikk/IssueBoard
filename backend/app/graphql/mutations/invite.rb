@@ -9,7 +9,7 @@ module Mutations
 		field :success, Boolean, null: false
 
 		def resolve(group:, user_email:)
-			user = User.find_by(email: email);
+			user = User.find_by(email: user_email);
 			return {success: false} if(user_email == context[:current_user].email || user.nil?)
 
 			group.users << user;

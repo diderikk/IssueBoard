@@ -25,9 +25,11 @@ ActiveRecord::Schema.define(version: 2021_06_27_144151) do
   create_table "issue_boards", force: :cascade do |t|
     t.string "name"
     t.bigint "group_id"
+    t.bigint "owner_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["group_id"], name: "index_issue_boards_on_group_id"
+    t.index ["owner_id"], name: "index_issue_boards_on_owner_id"
   end
 
   create_table "issue_boards_users", id: false, force: :cascade do |t|
@@ -85,6 +87,7 @@ ActiveRecord::Schema.define(version: 2021_06_27_144151) do
   end
 
   add_foreign_key "issue_boards", "groups"
+  add_foreign_key "issue_boards", "users", column: "owner_id"
   add_foreign_key "issue_boards_users", "issue_boards"
   add_foreign_key "issue_boards_users", "users"
   add_foreign_key "issue_labels", "issue_boards"

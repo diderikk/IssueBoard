@@ -11,7 +11,9 @@ import { RouteComponentProps, useHistory } from "react-router-dom";
 import { IssueBoardTitle } from "../components/IssueBoardTitle";
 import {
   useAddUserToBoardMutation,
+  useDeleteIssueBoardMutation,
   useIssueBoardQuery,
+  useLeaveIssueBoardMutation,
 } from "../graphql/generated/graphql";
 import { IssueLabelCard } from "../components/IssueLabelCard";
 import { useSnackBar } from "../context/SnackBarContext";
@@ -22,6 +24,7 @@ import { IssueLabelResultType } from "../types/IssueLabelResultTyoe.type";
 import update from "immutability-helper";
 import { UserResultType } from "../types/UserResultType.type";
 import Avatar from "react-avatar";
+import { useApolloClient } from "@apollo/client";
 
 interface Params {
   issueBoardId: string;
@@ -37,6 +40,8 @@ export const IssueBoard: React.FC<Props> = ({ match }) => {
     },
   });
   const [addUserToBoardMutation] = useAddUserToBoardMutation();
+  const [leaveIssueBoardMutation] = useLeaveIssueBoardMutation();
+  const [deleteIssueBoardMutation] = useDeleteIssueBoardMutation();
   const history = useHistory();
   const { dispatch } = useSnackBar();
   const [showLabelForm, setShowLabelForm] = useState<boolean>(false);
@@ -59,6 +64,8 @@ export const IssueBoard: React.FC<Props> = ({ match }) => {
   const handleAddLabel = () => {
     setShowLabelForm(true);
   };
+  const client = useApolloClient();
+  console.log(client.cache);
 
   useEffect(() => {
     if (runDispatch) {
@@ -130,6 +137,50 @@ export const IssueBoard: React.FC<Props> = ({ match }) => {
     setInviteEmail(event.target.value);
   };
 
+  const handleDeleteLeave = async () => {
+    if (data?.issueBoard.isOwner) {
+      // eslint-disable-next-line no-restricted-globals
+      if (confirm("Are you sure you want to delete this issue board?")) {
+        dispatch({ type: "loading" });
+        const response = await deleteIssueBoardMutation({
+          variables: { issueBoardId: issueBoard?.id! },
+          update(cache) {
+            cache.evict({
+              id: "ROOT_QUERY",
+              fieldName: "notGroupIssueBoards",
+            });
+          },
+        });
+        if (!response.data?.deleteIssueBoard?.success) {
+          dispatch({ type: "error", error: "Could not delete issue board" });
+          return;
+        }
+        dispatch({ type: "successful", description: "Issue board deleted" });
+        history.push("/issue-boards");
+      }
+    } else {
+      // eslint-disable-next-line no-restricted-globals
+      if (confirm("Are you sure you want to leave this issue board?")) {
+        dispatch({ type: "loading" });
+        const response = await leaveIssueBoardMutation({
+          variables: { issueBoardId: issueBoard?.id! },
+          update(cache) {
+            cache.evict({
+              id: "ROOT_QUERY",
+              fieldName: "notGroupIssueBoards",
+            });
+          },
+        });
+        if (!response.data?.leaveIssueBoard?.success) {
+          dispatch({ type: "error", error: "Could not leave issue board" });
+          return;
+        }
+        dispatch({ type: "successful" });
+        history.push("/issue-boards");
+      }
+    }
+  };
+
   const issueBoard = useMemo(() => data?.issueBoard, [data?.issueBoard]);
 
   return (
@@ -167,21 +218,32 @@ export const IssueBoard: React.FC<Props> = ({ match }) => {
               ))}
           </div>
         )}
-        {!match.params.groupId && <form id="invite-form" onSubmit={handleSumbit}>
-          <div id="input-icon">
-            <input
-              id="invite-input"
-              type="text"
-              value={inviteEmail}
-              placeholder="Email..."
-              onChange={handleInviteChange}
-            />
-            <button id="invite-button" className="form-button" type="submit">
-              <img id="invite-icon" src={inviteIcon} alt="invite icon" />
-            </button>
-          </div>
-        </form>
-}
+        {!match.params.groupId && (
+          <form id="invite-form" onSubmit={handleSumbit}>
+            <div id="input-icon">
+              <input
+                id="invite-input"
+                type="text"
+                value={inviteEmail}
+                placeholder="Email..."
+                onChange={handleInviteChange}
+              />
+              <button id="invite-button" className="form-button" type="submit">
+                <img id="invite-icon" src={inviteIcon} alt="invite icon" />
+              </button>
+            </div>
+          </form>
+        )}
+
+        {!match.params.groupId && (
+          <button
+            id="leave-button"
+            className="form-button"
+            onClick={handleDeleteLeave}
+          >
+            {data?.issueBoard.isOwner ? "Delete" : "Leave"}
+          </button>
+        )}
       </div>
       <div className="issue-label-container">
         {issueLabels &&

@@ -11,7 +11,6 @@ import {
 } from "../graphql/generated/graphql";
 import Avatar from "react-avatar";
 import { UserResultType } from "../types/UserResultType.type";
-import { useApolloClient } from "@apollo/client";
 
 interface Params {
   groupId: string;
@@ -34,8 +33,6 @@ export const Group: React.FC<Props> = ({ match }) => {
   });
   const { dispatch } = useSnackBar();
   const history = useHistory();
-  const client = useApolloClient()
-  console.log(client.cache);
   
 
   useEffect(() => {

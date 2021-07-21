@@ -26,6 +26,7 @@ query Group($groupId: ID!){
     issueBoards{
       id
       name
+      isOwner
     }
   }
 }
