@@ -1,30 +1,21 @@
-:root {
-	--flex-direction: row;
+#home-container{
+	font-size: 2rem;
 }
 
-#home-container {
-	display: flex;
-	flex-direction: var(--flex-direction);
-	justify-content: center;
-	align-items: center;
-	gap: 30px;
-	height: 80vh;
+#home-container h1{
+	margin-bottom: 0;
+}
+
+#home-button-container{
+	margin-top: 10vh;
 	text-align: center;
-	margin-top: 50px;
+	width: 100%;
 }
 
-.home-icon {
-	height: 100%;
-	width: 75%;
-}
-
-.home-button {
-	margin: 0 20px;
-}
-
-
-@media screen and (max-width: 800px) {
-	:root{
-		--flex-direction: column
-	}
+.home-button{
+	width: 15%;
+	height: 20vh;
+	border-radius: 10px;
+	font-size: 2rem;
+	margin: 0 15px;
 }

@@ -1,0 +1,30 @@
+:root {
+	--flex-direction: row;
+}
+
+#user-home-container {
+	display: flex;
+	flex-direction: var(--flex-direction);
+	justify-content: center;
+	align-items: center;
+	gap: 30px;
+	height: 80vh;
+	text-align: center;
+	margin-top: 50px;
+}
+
+.home-icon {
+	height: 100%;
+	width: 75%;
+}
+
+.user-home-button {
+	margin: 0 20px;
+}
+
+
+@media screen and (max-width: 800px) {
+	:root{
+		--flex-direction: column
+	}
+}

@@ -20,7 +20,7 @@ export const UserMenu: React.FC = () => {
     await logoutMutation();
     setUser!(undefined);
     writeToken(client, "");
-    history.push("login")
+    history.push("/login")
   };
   return (
     <div id="user-menu">

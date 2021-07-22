@@ -7,7 +7,7 @@ import Avatar from "react-avatar";
 import { Link, Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import { UserResultType } from "../types/UserResultType.type";
 import { About } from "../views/About";
-import { Home } from "../views/Home";
+import { UserHome } from "../views/UserHome";
 import { IssueBoard } from "../views/IssueBoard";
 import { YourIssueBoards } from "../views/YourIssueBoards";
 import { UserMenu } from "./UserMenu";
@@ -68,7 +68,7 @@ export const AuthenticatedRouter: React.FC<Props> = ({ loading, user }) => {
       {showUserMenu && <UserMenu />}
 
       <Switch>
-        <Route path="/" exact component={Home} />
+        <Route path="/" exact component={UserHome} />
         <Route path="/about" component={About} />
         <Route path="/issue-boards" component={YourIssueBoards} />
         <Route path="/groups" component={Groups} />
