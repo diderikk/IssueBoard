@@ -48,6 +48,7 @@ export const IssueBoard: React.FC<Props> = ({ match }) => {
   const [selectedIssue, setSelectedIssue] = useState<IssueResultType | null>(
     null
   );
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [inviteEmail, setInviteEmail] = useState<string>("");
   const [issueLabels, setIssueLabels] = useState<IssueLabelResultType[]>(() => {
     if (data?.issueBoard.issueLabels)
@@ -137,6 +138,10 @@ export const IssueBoard: React.FC<Props> = ({ match }) => {
     setInviteEmail(event.target.value);
   };
 
+  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+  };
+
   const handleDeleteLeave = async () => {
     if (data?.issueBoard.isOwner) {
       // eslint-disable-next-line no-restricted-globals
@@ -191,8 +196,10 @@ export const IssueBoard: React.FC<Props> = ({ match }) => {
       <div id="issue-label-header">
         <input
           id="issue-label-search"
+          value={searchQuery}
           type="text"
           placeholder="Search or filter results..."
+          onChange={handleSearchChange}
         />
         <IssueBoardTitle
           issueBoardTitle={issueBoard?.name!}
@@ -256,6 +263,8 @@ export const IssueBoard: React.FC<Props> = ({ match }) => {
                 setSelectedIssue={setSelectedIssue}
                 issueLabel={issueLabel}
                 key={issueLabel.id}
+                searchQuery={searchQuery}
+                color={issueLabel.color!}
               />
             );
           })}

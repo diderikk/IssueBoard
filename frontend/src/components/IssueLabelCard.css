@@ -30,6 +30,7 @@
 }
 
 .issue-label {
+  position: relative;
   display: inline-block;
   vertical-align: top;
   border: 2px solid grey;
@@ -38,6 +39,17 @@
   margin: 5px;
   padding: 10px;
   overflow-y: auto;
+}
+
+#issue-label-color{
+  position: absolute;
+  width: 90%;
+  height: 3%;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  border-radius: 0 0 10px 10px;
 }
 
 #label-form {
