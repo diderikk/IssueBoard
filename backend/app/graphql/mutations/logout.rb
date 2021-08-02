@@ -7,7 +7,7 @@ module Mutations
 		field :success, Boolean, null: false
 
 		def resolve()
-			logout(context[:cookies]);
+			logout(context[:cookies], context[:current_user]);
 			{
 				success: true
 			}

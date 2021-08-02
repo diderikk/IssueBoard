@@ -11,23 +11,27 @@ import { NonAuthenticatedRouter } from "./components/NonAuthenticatedRouter";
 function App() {
   const { state } = useSnackBar();
   const [user, setUser] = useState<UserResultType | undefined>(undefined);
-  // const [isLoading, setIsLoading] = useState<boolean>(true);
   const { data, loading } = useCurrentUserQuery();
   const authenticated: boolean = user ? true : false;
+  const [prevAuth, setPrevAuth] = useState<boolean>(authenticated);
 
   useEffect(() => {
     if (data?.currentUser) {
       setUser(data.currentUser);
     }
-    // setIsLoading(loading)
   }, [data?.currentUser, loading]);
+
+  useEffect(() =>  {
+    if(prevAuth === authenticated) return;
+    setPrevAuth(authenticated);
+  }, [authenticated, prevAuth]);
 
   if(loading) return <div></div>
 
   return (
     <div>
       <UserContext.Provider value={{ user, setUser }}>
-        {authenticated ? (
+        {prevAuth ? (
           <AuthenticatedRouter loading={loading} user={user} />
         ) : (
           <NonAuthenticatedRouter loading={loading} />

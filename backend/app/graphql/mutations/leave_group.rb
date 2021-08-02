@@ -12,8 +12,8 @@ module Mutations
 
 
 			if member.destroy
-			group = Group.includes(:users).find(group_id);
-			group.destroy if group.users.size == 0;
+				group = Group.includes(:users).find(group_id);
+				group.destroy if group.users.size == 0;
 				{
 					success: true
 				}

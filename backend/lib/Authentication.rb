@@ -36,8 +36,10 @@ module Authentication
 		!!logged_in_user(request)
 	end
 
-	def logout(cookies)
+	def logout(cookies, current_user)
 		cookies.delete(:refresh_token)
+		current_user.token_version += 1;
+		current_user.save!
 	end
 
 end

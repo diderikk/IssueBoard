@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import "./UserMenu.css";
 import profileIcon from "../assets/profile.png";
 import logOutIcon from "../assets/logout.png";
@@ -13,15 +13,19 @@ import { useApolloClient } from "@apollo/client";
 export const UserMenu: React.FC = () => {
   const history = useHistory();
   const [logoutMutation] = useLogoutMutation();
-  const { setUser } = useContext(UserContext);
+  const { setUser, user } = useContext(UserContext);
   const client = useApolloClient();
 
   const handleLogout = async () => {
     await logoutMutation();
     setUser!(undefined);
     writeToken(client, "");
-    history.push("/login")
   };
+
+  useEffect(() => {
+    if(!user) history.push("/login");
+  }, [user, history]);
+
   return (
     <div id="user-menu">
       <div>

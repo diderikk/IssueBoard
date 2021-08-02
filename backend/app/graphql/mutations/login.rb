@@ -13,6 +13,8 @@ module Mutations
 
 		def resolve(email:, password:)
 			user_token = authenticate(email, password, context[:cookies])
+
+			return {errors: ["Email or password is wrong"]} unless user_token;
 			
 			{
 				access_token: user_token["access_token"],

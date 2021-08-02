@@ -12,7 +12,7 @@ export const UserHome: React.FC = () => {
       <div>
         <h2 className="home-label">Your boards</h2>
         <button
-          className="home-button"
+          className="user-home-button"
           onClick={() => history.push("/issue-boards")}
         >
           <img className="home-icon" src={boardIcon} alt="board icon" />

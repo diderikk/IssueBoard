@@ -2,10 +2,10 @@ import React, {
   ChangeEvent,
   Dispatch,
   SetStateAction,
+  useEffect,
   useRef,
   useState,
 } from "react";
-import { useEffect } from "react";
 import { useSnackBar } from "../context/SnackBarContext";
 import { useCreateGroupMutation } from "../graphql/generated/graphql";
 import { GroupsRefetchType } from "../types/GroupsRefetchType.type";

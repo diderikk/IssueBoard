@@ -13,6 +13,7 @@ import { useSnackBar } from "../context/SnackBarContext";
 import { UserContext } from "../context/UserContext";
 import { writeToken } from "../util/readAndWriteToken";
 import { useApolloClient } from "@apollo/client";
+import { useEffect } from "react";
 
 interface RegisterForm {
   username: string;
@@ -34,7 +35,7 @@ export const Register: React.FC = () => {
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordErrror] = useState<string>("");
   const [confirmPasswordError, setConfirmPasswordError] = useState<string>("");
-  const {setUser} = useContext(UserContext);
+  const {setUser, user} = useContext(UserContext);
   const client = useApolloClient();
   const history = useHistory();
   const [register] = useCreateUserMutation();
@@ -55,7 +56,6 @@ export const Register: React.FC = () => {
     });
 
     const errors = response.data?.createUser?.errors;
-    console.log(response.data?.createUser);
 
     if (errors) {
       dispatch({ type: "error", error: "Your email is already taken" });
@@ -67,9 +67,11 @@ export const Register: React.FC = () => {
     writeToken(client, response.data?.createUser?.accessToken!);
 
     setUser!(response.data?.createUser?.user!)
-
-    history.push("/");
   };
+
+  useEffect(() => {
+    if(user) history.push("/");
+  },[user, history]);
 
   const validateAll = () => {
     let valid = true;

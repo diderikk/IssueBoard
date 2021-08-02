@@ -24,7 +24,6 @@ import { IssueLabelResultType } from "../types/IssueLabelResultTyoe.type";
 import update from "immutability-helper";
 import { UserResultType } from "../types/UserResultType.type";
 import Avatar from "react-avatar";
-import { useApolloClient } from "@apollo/client";
 
 interface Params {
   issueBoardId: string;
@@ -65,8 +64,6 @@ export const IssueBoard: React.FC<Props> = ({ match }) => {
   const handleAddLabel = () => {
     setShowLabelForm(true);
   };
-  const client = useApolloClient();
-  console.log(client.cache);
 
   useEffect(() => {
     if (runDispatch) {
@@ -97,7 +94,6 @@ export const IssueBoard: React.FC<Props> = ({ match }) => {
     (dragIndex: number, hoverIndex: number) => {
       if (issueLabels.length <= 1) return;
       const dragIssueLabel = issueLabels[dragIndex];
-      console.log(dragIssueLabel);
       setIssueLabels(
         update(issueLabels, {
           $splice: [
