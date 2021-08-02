@@ -16,7 +16,7 @@ class IssueBoardTest < ActiveSupport::TestCase
   end
 
   test "should save issue board" do
-    issue_board = IssueBoard.new(name: "Test", group_id: groups(:group1).id)
+    issue_board = IssueBoard.new(name: "Test", group_id: groups(:group1).id, owner: users(:one))
     assert issue_board.save, "Issue board saved"
   end
 

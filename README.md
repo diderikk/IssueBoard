@@ -60,5 +60,9 @@ The web application is made with React, this is developers first time using this
 
 * **Group logo**. Not yet implemented is a group logo. Users should be able to create groups with logos that will be displayed on each group card. Need to look into [Cloudinary](https://cloudinary.com/), where images can be stored, and save the link in database.
 
+## CI
+
 ## ER diagram
 ![](./assets/ER-diagram1.png)
+
+## Installation manual
