@@ -9,3 +9,10 @@ mutation Login($email: String!, $password: String!)
 		errors
 	}
 }
+
+mutation Logout
+{
+	logout{
+		success
+	}
+}

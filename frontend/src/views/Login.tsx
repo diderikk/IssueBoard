@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Login.css";
 import userIcon from "../assets/user.png";
 import lockIcon from "../assets/lock.png";
@@ -23,8 +23,7 @@ export const Login: React.FC = () => {
   const history = useHistory();
   const { dispatch } = useSnackBar();
   const client = useApolloClient();
-  const {setUser} = useContext(UserContext);
-
+  const { setUser, user } = useContext(UserContext);
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
   const [login] = useLoginMutation();
@@ -42,7 +41,6 @@ export const Login: React.FC = () => {
       });
 
       const errors = response.data?.login?.errors;
-      console.log(response.errors)
 
       if (errors) {
         dispatch({ type: "error", error: "Wrong email or password" });
@@ -54,12 +52,12 @@ export const Login: React.FC = () => {
       writeToken(client, response.data?.login?.accessToken!);
 
       setUser!(response.data?.login?.user!);
-      
-      history.push("/");
     }
   };
 
-  
+  useEffect(() => {
+    if (user) history.push("/");
+  }, [user, history]);
 
   const validateForm = (): boolean => {
     let valid = true;

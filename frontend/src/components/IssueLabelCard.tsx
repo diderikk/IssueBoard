@@ -30,6 +30,8 @@ interface Props {
   setSelectedIssue: Dispatch<SetStateAction<IssueResultType | null>>;
   refetch: IssueBoardRefetch;
   moveIssueLabel: (dragIndex: number, hoverIndex: number) => void;
+  searchQuery: string;
+  color: string | undefined;
 }
 
 export const IssueLabelCard: React.FC<Props> = ({
@@ -38,12 +40,19 @@ export const IssueLabelCard: React.FC<Props> = ({
   setSelectedIssue,
   refetch,
   moveIssueLabel,
+  searchQuery,
+  color,
 }) => {
   const [showIssueForm, setShowIssueForm] = useState<boolean>(false);
   const [deleteIssueLabel] = useDeleteIssueLabelMutation();
   const [moveIssueLabelMutation] = useMoveIssueLabelMutation();
   const [moveIssue] = useMoveIssueMutation();
-  const [issues, setIssues] = useState<IssueResultType[]>(issueLabel.issues.slice().sort((a,b) => a.order - b.order));
+  const [issues, setIssues] = useState<IssueResultType[]>(
+    issueLabel.issues
+      .slice()
+      .filter((issue) => issue.title.startsWith(searchQuery))
+      .sort((a, b) => a.order - b.order)
+  );
   const [hoveringIssue, setHoveringIssue] = useState<IssueResultType | null>(
     null
   );
@@ -54,8 +63,15 @@ export const IssueLabelCard: React.FC<Props> = ({
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setIssues(issueLabel.issues.slice().sort((a,b) => a.order - b.order));
-  }, [issueLabel.issues]);
+    setIssues(
+      issueLabel.issues
+        .slice()
+        .filter((issue) =>
+          issue.title.toUpperCase().startsWith(searchQuery.toUpperCase())
+        )
+        .sort((a, b) => a.order - b.order)
+    );
+  }, [issueLabel.issues, searchQuery]);
 
   const moveIssueCard = async (issue: IssueResultType) => {
     await moveIssue({
@@ -163,13 +179,13 @@ export const IssueLabelCard: React.FC<Props> = ({
     DragIssueLabelItem
   >({
     accept: "IssueLabelCard",
-    drop({issueLabelId}) {
+    drop({ issueLabelId }) {
       moveIssueLabelMutation({
         variables: {
           issueLabelId: issueLabelId!,
-          newOrder: index + 1
-        }
-      })
+          newOrder: index + 1,
+        },
+      });
     },
     hover(item) {
       if (!ref.current) return;
@@ -195,6 +211,10 @@ export const IssueLabelCard: React.FC<Props> = ({
       ref={ref}
       style={{ opacity: isDragging ? 0 : 1 }}
     >
+      <div
+        id="issue-label-color"
+        style={{ background: color ? color : "" }}
+      ></div>
       <div id="issue-label-card-header">
         <div className="issue-label-card-header-part">
           <h2>{issueLabel.name}</h2>

@@ -26,6 +26,7 @@ query Group($groupId: ID!){
     issueBoards{
       id
       name
+      isOwner
     }
   }
 }
@@ -33,6 +34,12 @@ query Group($groupId: ID!){
 mutation CreateGroup($attributes: GroupInputType!){
   createGroup(attributes: $attributes){
     errors
+  }
+}
+
+mutation LeaveGroup($groupId: ID!) {
+  leaveGroup(groupId: $groupId) {
+    success
   }
 }
 

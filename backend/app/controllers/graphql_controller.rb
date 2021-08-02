@@ -9,8 +9,8 @@ class GraphqlController < ApplicationController
     variables = prepare_variables(params[:variables])
     query = params[:query]
     operation_name = params[:operationName]
-    # current_user = (cookies.encrypted[:refresh_token]) ? logged_in_user(request) : nil
-    current_user = User.find(1)
+    current_user = (cookies.encrypted[:refresh_token]) ? logged_in_user(request) : nil
+    # current_user = User.find(2)
     context = {
       current_user: current_user,
       cookies: cookies

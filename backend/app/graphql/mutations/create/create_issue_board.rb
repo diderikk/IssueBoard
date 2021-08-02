@@ -7,7 +7,7 @@ module Mutations
 		field :errors, [String], null: true
 
 		def resolve(attributes:)
-			issue_board = IssueBoard.new(name: attributes.name, group_id: attributes.group_id)
+			issue_board = IssueBoard.new(name: attributes.name, group_id: attributes.group_id, owner: context[:current_user])
 			
 			if(!attributes.group_id)
 				issue_board.users << context[:current_user]

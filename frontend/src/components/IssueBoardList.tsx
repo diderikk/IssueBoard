@@ -32,7 +32,9 @@ export const IssueBoardList: React.FC<Props> = ({
   }, [issueBoardListProps]);
 
   const handleIssueBoardClick = (issueBoardId: string) => {
-    history.push(`/issue-board/${issueBoardId}`);
+    groupId
+      ? history.push(`/group/${groupId}/issue-board/${issueBoardId}`)
+      : history.push(`/issue-board/${issueBoardId}`);
   };
 
   const handleDelete = async (issueBoard: IssueBoardResultType) => {
@@ -70,12 +72,12 @@ export const IssueBoardList: React.FC<Props> = ({
             >
               <h3>{issueBoard!.name}</h3>
             </div>
-            <div
+            {issueBoard?.isOwner && <div
               className="delete-board-card"
               onClick={() => handleDelete(issueBoard)}
             >
               <strong>Delete</strong>
-            </div>
+            </div>}
           </div>
         );
       })}

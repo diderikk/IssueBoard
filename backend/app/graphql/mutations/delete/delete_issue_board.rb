@@ -21,7 +21,7 @@ module Mutations
 		private
 
 		def authorized?(issue_board_id:)
-			issue_board_authorized?(issue_board_id, context);
+			IssueBoard.find(issue_board_id).owner == context[:current_user]
 		end
 
 	end

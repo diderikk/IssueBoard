@@ -17,6 +17,29 @@
 	margin: 0 3%;
 }
 
+#user-list{
+	margin-left: 20px;
+	display: flex;
+	align-items: center;
+	position: relative;
+}
+
+.user-avatar{
+	position: absolute;
+}
+
+#leave-button{
+	position: absolute;
+	right: 5rem;
+	background-color: red;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	width: 7rem;
+	height: 3.5rem;
+	font-size: 1.4rem;
+}
+
 @media screen and (max-width: 500px) {
 
 	#issue_label_search{

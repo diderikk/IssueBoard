@@ -3,7 +3,9 @@
 issue_board1:
   name: MyString
   group: group1
+  owner: one
 
 issue_board2:
   name: MyString
   group: group1
+  owner: one

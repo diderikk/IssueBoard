@@ -1,9 +1,9 @@
 import homeIcon from "../assets/home.png";
 import { Link, Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import { About } from "../views/About";
-import { Home } from "../views/Home";
 import { Login } from "../views/Login";
 import { Register } from "../views/Register";
+import { Home } from "../views/Home";
 
 interface Props {
   loading: boolean;

@@ -1,13 +1,31 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import "./UserMenu.css";
 import profileIcon from "../assets/profile.png";
 import logOutIcon from "../assets/logout.png";
 import boardIcon from "../assets/board.png";
 import groupsIcon from "../assets/groups.png";
 import { useHistory } from "react-router";
+import { useLogoutMutation } from "../graphql/generated/graphql";
+import { UserContext } from "../context/UserContext";
+import { writeToken } from "../util/readAndWriteToken";
+import { useApolloClient } from "@apollo/client";
 
 export const UserMenu: React.FC = () => {
   const history = useHistory();
+  const [logoutMutation] = useLogoutMutation();
+  const { setUser, user } = useContext(UserContext);
+  const client = useApolloClient();
+
+  const handleLogout = async () => {
+    await logoutMutation();
+    setUser!(undefined);
+    writeToken(client, "");
+  };
+
+  useEffect(() => {
+    if(!user) history.push("/login");
+  }, [user, history]);
+
   return (
     <div id="user-menu">
       <div>
@@ -33,7 +51,7 @@ export const UserMenu: React.FC = () => {
           Groups
         </div>
       </div>
-      <div className="user-menu-item">
+      <div className="user-menu-item" onClick={handleLogout}>
         <img className="user-menu-icon" src={logOutIcon} alt="log out icon" />
         Log out
       </div>

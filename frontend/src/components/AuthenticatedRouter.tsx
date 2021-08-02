@@ -1,13 +1,12 @@
 import { useState } from "react";
 import homeIcon from "../assets/home.png";
 import boardIcon from "../assets/board.png";
-import informationIcon from "../assets/information.png";
-import groupsIcon from "../assets/groups.png"
+import groupsIcon from "../assets/groups.png";
 import Avatar from "react-avatar";
 import { Link, Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import { UserResultType } from "../types/UserResultType.type";
 import { About } from "../views/About";
-import { Home } from "../views/Home";
+import { UserHome } from "../views/UserHome";
 import { IssueBoard } from "../views/IssueBoard";
 import { YourIssueBoards } from "../views/YourIssueBoards";
 import { UserMenu } from "./UserMenu";
@@ -41,26 +40,20 @@ export const AuthenticatedRouter: React.FC<Props> = ({ loading, user }) => {
           <h1>Issue Board</h1>
 
           <div className="nav-bar-icons">
-            <Link className="nav-bar-link" to="/about">
-              <img
-                id="about-icon"
-                src={informationIcon}
-                alt="information icon"
-              />
-            </Link>
-
             <button
               className="nav-bar-link"
               onClick={() => setShowUserMenu(!showUserMenu)}
             >
-              <Avatar
-                name={user!.name}
-                email={user!.email}
-                round="20px"
-                size="2.2rem"
-                textSizeRatio={2.2}
-                color="grey"
-              />
+              {user && (
+                <Avatar
+                  name={user.name}
+                  email={user.email}
+                  round="20px"
+                  size="2.2rem"
+                  textSizeRatio={2.2}
+                  color="grey"
+                />
+              )}
             </button>
           </div>
         </nav>
@@ -68,11 +61,15 @@ export const AuthenticatedRouter: React.FC<Props> = ({ loading, user }) => {
       {showUserMenu && <UserMenu />}
 
       <Switch>
-        <Route path="/" exact component={Home} />
+        <Route path="/" exact component={UserHome} />
         <Route path="/about" component={About} />
         <Route path="/issue-boards" component={YourIssueBoards} />
         <Route path="/groups" component={Groups} />
         <Route path="/issue-board/:issueBoardId" component={IssueBoard} />
+        <Route
+          path="/group/:groupId/issue-board/:issueBoardId"
+          component={IssueBoard}
+        />
         <Route path="/group/:groupId" component={Group} />
         {!loading && <Route render={() => <h1>404: Page not found</h1>} />}
       </Switch>
