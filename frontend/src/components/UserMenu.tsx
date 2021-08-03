@@ -18,8 +18,9 @@ export const UserMenu: React.FC = () => {
 
   const handleLogout = async () => {
     await logoutMutation();
-    setUser!(undefined);
     writeToken(client, "");
+    client.cache.gc();
+    setUser!(undefined);
   };
 
   useEffect(() => {

@@ -35,7 +35,7 @@ export const Register: React.FC = () => {
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordErrror] = useState<string>("");
   const [confirmPasswordError, setConfirmPasswordError] = useState<string>("");
-  const {setUser, user} = useContext(UserContext);
+  const { setUser, user } = useContext(UserContext);
   const client = useApolloClient();
   const history = useHistory();
   const [register] = useCreateUserMutation();
@@ -66,12 +66,12 @@ export const Register: React.FC = () => {
 
     writeToken(client, response.data?.createUser?.accessToken!);
 
-    setUser!(response.data?.createUser?.user!)
+    setUser!(response.data?.createUser?.user!);
   };
 
   useEffect(() => {
-    if(user) history.push("/");
-  },[user, history]);
+    if (user) history.push("/");
+  }, [user, history]);
 
   const validateAll = () => {
     let valid = true;
@@ -80,6 +80,14 @@ export const Register: React.FC = () => {
       valid = false;
     if (!validateEmail(inputValues.email, setEmailError)) valid = false;
     if (!validatePassword(inputValues.password, setPasswordErrror))
+      valid = false;
+    if (
+      !validateConfirmPassword(
+        inputValues.password,
+        inputValues.confirmPassword,
+        setConfirmPasswordError
+      )
+    )
       valid = false;
 
     return valid;
