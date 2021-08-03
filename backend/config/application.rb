@@ -24,6 +24,7 @@ module Backend
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
     config.autoload_paths << "#{Rails.root}/lib" 
+    Rails.autoloaders.main.ignore(Rails.root.join('//lib/x86_64-linux-gnu'))
 
     config.middleware.use ActionDispatch::Cookies
     config.api_only = true
