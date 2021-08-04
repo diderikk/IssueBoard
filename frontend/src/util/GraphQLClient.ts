@@ -11,7 +11,8 @@ import { IssueLabelResultType } from "../types/IssueLabelResultTyoe.type";
 import { readToken, writeToken } from "./readAndWriteToken";
 
 const httpLink = createHttpLink({
-  uri: "https://named-purpose-313911.ey.r.appspot.com/graphql",
+  uri: "https://issueboard-gr75g3sfyq-lz.a.run.app/graphql",
+  // uri: "http://localhost:4000/graphql",
   credentials: "include",
 });
 
