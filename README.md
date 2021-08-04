@@ -1,6 +1,7 @@
 # IssueBoard
 Copy of Git Issue Board using Ruby on Rails, PostgreSQL, React, GraphQL  
-Made by: Diderik Kramer
+Made by: Diderik Kramer  
+URL: [https://issueboard.netlify.app/](https://issueboard.netlify.app/)
 
 ## Content
 1. [Introduction](#introduction)
@@ -8,6 +9,7 @@ Made by: Diderik Kramer
 3. [Future work](#future-work)
 4. [Continous Integration](#continous-integration)
 5. [ER diagram](#er-diagram)
+6. [Deployment](#deployment)
 
 ## Introduction
 IssueBoard is a web application made to store issues for projects in boards. Users are able to create their own boards or join groups for collaborative work. All members of the group are able to add new issue boards and invite new members to that group. A user is also able to add members to a non group issue board that they own. Issue board functionality described later.
@@ -90,3 +92,13 @@ Currently only implemented for backend. CI runs everytime development branch is 
 ![](./assets/ER-diagram1.png)
 ### Current version (ERD created with pgAdmin)
 ![](./assets/ERD.png)
+
+
+## Deployment
+### Frontend
+The frontend part of the application is hosted on [Netlify](https://www.netlify.com). 
+
+
+### Backend
+For learning/cost purposes, the database is run on a Virtual Machine hosted on Google Cloud. The VM runs a cron job every 15 minutes to store a backup of the current database. This will automatically be used during errors or data corruption. Can also be done manually. May change hosting to Google later, if cheaper.
+The backend application is also hosted on Google Cloud, on a Cloud Run Instance. Only runs the application when a request is being sent, resulting in increased response time, but costs less. Initially used App Engine, but it is more expensive as it is always running the application, even when there are no requests.

@@ -2,6 +2,8 @@ require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
+  config.force_ssl = true
+  Rails.application.config.action_dispatch.cookies_same_site_protection = :none
 
   # Code is not reloaded between requests.
   config.cache_classes = true
