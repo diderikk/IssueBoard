@@ -4,6 +4,7 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
   config.force_ssl = true
   Rails.application.config.action_dispatch.cookies_same_site_protection = :none
+  config.consider_all_requests_local = true
 
   # Code is not reloaded between requests.
   config.cache_classes = true

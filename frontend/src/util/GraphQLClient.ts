@@ -3,6 +3,8 @@ import {
   createHttpLink,
   gql,
   InMemoryCache,
+  NextLink,
+  Operation,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
@@ -10,32 +12,52 @@ import { IssueBoardResultType } from "../types/IssueBoardResultType.type";
 import { IssueLabelResultType } from "../types/IssueLabelResultTyoe.type";
 import { readToken, writeToken } from "./readAndWriteToken";
 
+const uri = "https://issueboard-gr75g3sfyq-lz.a.run.app";
+
 const httpLink = createHttpLink({
-  uri: "https://issueboard-gr75g3sfyq-lz.a.run.app/graphql",
+  uri: uri + "/graphql",
   // uri: "http://localhost:4000/graphql",
   credentials: "include",
 });
 
-const errorLink = onError(
-  ({ graphQLErrors, operation, forward })=> {
-    if (graphQLErrors && graphQLErrors[0]) {
-      const message = graphQLErrors[0].message;
+let counter = 0;
 
-      if (message.startsWith("new_token: ")) {
-        const token = message.replace("new_token: ", "");
-        const oldHeaders = operation.getContext().headers;
-        operation.setContext({
-          headers: {
-            ...oldHeaders,
-            Authorization: token,
-          },
-        });
-        writeToken(client, token);
-        return forward(operation);
-      }
-    }
+const errorLink = onError(({ graphQLErrors, operation, forward }) => {
+  if (graphQLErrors) {
+    counter++;
+    if(counter % 2 === 0) return;
+    fetchNewAccessToken({ operation, forward });
   }
-);
+});
+
+const fetchNewAccessToken = async (obj: { operation: Operation, forward: NextLink }) => {
+  const response = await fetch(uri + "/access_token", {
+    method: "GET",
+    mode: "cors",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (response.status === 200) {
+    const oldHeaders = obj.operation.getContext().headers;
+    response.json().then((data) => {
+      const token = data.access_token;
+      if (!token) return false;
+      obj.operation.setContext({
+        headers: {
+          ...oldHeaders,
+          Authorization: token,
+        },
+      });
+      writeToken(client, token);
+      obj.forward(obj.operation);
+      return true;
+    });
+  }
+  return false;
+};
+
 const authLink = setContext((_, { headers }) => {
   const token = readToken(client);
 

@@ -22,11 +22,7 @@ module Authentication
 	end
 
 	def logged_in_user(request)
-		begin
-			access_token = decode_access_token(get_token_from_header(request))
-		rescue ArgumentError => e
-			handle_expired_access_token
-		end
+		access_token = decode_access_token(get_token_from_header(request))
 		user = User.find(access_token[0]['user_id'])
 		return user if user.email == access_token[0]['sub']
 		raise "Bad token"
