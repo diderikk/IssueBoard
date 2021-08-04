@@ -33,3 +33,4 @@ config/config.properties.rb
 app.yaml
 
 .idea/
+.ruby.version
