@@ -44,6 +44,7 @@ const fetchNewAccessToken = async (obj: {
     const oldHeaders = obj.operation.getContext().headers;
     response.json().then((data) => {
       const token = data.access_token;
+      console.log(token);
       if (!token) return false;
       obj.operation.setContext({
         headers: {
@@ -52,6 +53,8 @@ const fetchNewAccessToken = async (obj: {
         },
       });
       writeToken(client, token);
+      console.log("Forward");
+      
       obj.forward(obj.operation);
       return true;
     });
