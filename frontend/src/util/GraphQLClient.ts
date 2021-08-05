@@ -3,8 +3,7 @@ import {
   createHttpLink,
   gql,
   InMemoryCache,
-  NextLink,
-  Operation,
+  Observable,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
@@ -25,39 +24,39 @@ let counter = 0;
 const errorLink = onError(({ operation, forward }) => {
   counter++;
   if (counter % 2 === 0) return;
-  fetchNewAccessToken(operation, forward);
-});
+  return new Observable(observer => {
+    fetch(uri + "/access_token", {
+      method: "GET",
+      mode: "cors",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((response) => {
+      if (response.status === 200) {
+        response.json().then((data) => {
+          const token = data.access_token;
+          const oldHeaders = operation.getContext().headers;
+          operation.setContext({
+            headers: {
+              ...oldHeaders,
+              Authorization: token,
+            },
+          });
+          writeToken(client, token);
 
-const fetchNewAccessToken = async (operation: Operation, forward: NextLink) => {
-  const response = await fetch(uri + "/access_token", {
-    method: "GET",
-    mode: "cors",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  if (response.status === 200) {
-    const oldHeaders = operation.getContext().headers;
-    response.json().then((data) => {
-      const token = data.access_token;
-      if (!token) return false;
-      operation.setContext({
-        headers: {
-          ...oldHeaders,
-          Authorization: token,
-        },
-      });
-      writeToken(client, token);
-      console.log(operation)
+          const subscriber = {
+            next: observer.next.bind(observer),
+            error: observer.error.bind(observer),
+            complete: observer.complete.bind(observer),
+          };
 
-      forward(operation);
-      console.log("DOne")
-      return true;
+          forward(operation).subscribe(subscriber);
+        });
+      }
     });
-  }
-  return false;
-};
+  });
+});
 
 const authLink = setContext((_, { headers }) => {
   const token = readToken(client);
