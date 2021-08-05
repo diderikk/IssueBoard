@@ -59,6 +59,13 @@ body {
   align-items: center;
 }
 
+#loading-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+}
+
 #home-icon{
   width: 2rem;
   height: 2rem;
