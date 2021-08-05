@@ -9,7 +9,6 @@ export const Home: React.FC = () => {
       <h1>Issue boards</h1>
       <p>Issue boards for developers!</p>
 	  <div id="home-button-container">
-		  <button className="home-button" onClick={() => history.push("/demo")}>Demo</button>
 		  <button className="home-button" onClick={() => history.push("/register")}>Register</button>
 		  <button className="home-button" onClick={() => history.push("/login")}>Login</button>
 	  </div>
