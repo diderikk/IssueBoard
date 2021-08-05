@@ -5,7 +5,7 @@ module Jwt
 
 	def encode_access_token(user_id, user_email = "")
 		iat = Time.now.to_i # Issued at
-		exp = Time.now.to_i + 30 # Expiration 5 minutes
+		exp = Time.now.to_i + 5*60 # Expiration 5 minutes
 		payload = {user_id: user_id, iat: iat, exp: exp, sub: user_email}
 		JWT.encode payload, Jwt::ACCESS_TOKEN_SECRET, 'HS512'
 	end

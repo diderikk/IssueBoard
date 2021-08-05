@@ -22,15 +22,16 @@ const httpLink = createHttpLink({
 
 let counter = 0;
 
-const errorLink = onError(({ graphQLErrors, operation, forward }) => {
-  if (graphQLErrors) {
-    counter++;
-    if(counter % 2 === 0) return;
-    fetchNewAccessToken({ operation, forward });
-  }
+const errorLink = onError(({ operation, forward }) => {
+  counter++;
+  if (counter % 2 === 0) return;
+  fetchNewAccessToken({ operation, forward });
 });
 
-const fetchNewAccessToken = async (obj: { operation: Operation, forward: NextLink }) => {
+const fetchNewAccessToken = async (obj: {
+  operation: Operation;
+  forward: NextLink;
+}) => {
   const response = await fetch(uri + "/access_token", {
     method: "GET",
     mode: "cors",
