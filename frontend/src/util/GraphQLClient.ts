@@ -25,13 +25,10 @@ let counter = 0;
 const errorLink = onError(({ operation, forward }) => {
   counter++;
   if (counter % 2 === 0) return;
-  fetchNewAccessToken({ operation, forward });
+  fetchNewAccessToken(operation, forward);
 });
 
-const fetchNewAccessToken = async (obj: {
-  operation: Operation;
-  forward: NextLink;
-}) => {
+const fetchNewAccessToken = async (operation: Operation, forward: NextLink) => {
   const response = await fetch(uri + "/access_token", {
     method: "GET",
     mode: "cors",
@@ -41,21 +38,20 @@ const fetchNewAccessToken = async (obj: {
     },
   });
   if (response.status === 200) {
-    const oldHeaders = obj.operation.getContext().headers;
+    const oldHeaders = operation.getContext().headers;
     response.json().then((data) => {
       const token = data.access_token;
-      console.log(token);
       if (!token) return false;
-      obj.operation.setContext({
+      operation.setContext({
         headers: {
           ...oldHeaders,
           Authorization: token,
         },
       });
       writeToken(client, token);
-      console.log("Forward");
-      
-      obj.forward(obj.operation);
+      console.log(operation)
+
+      forward(operation);
       return true;
     });
   }

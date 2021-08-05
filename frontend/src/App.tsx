@@ -53,10 +53,10 @@ function App() {
   return (
     <div>
       <UserContext.Provider value={{ user, setUser }}>
-        {user ? (
-          <AuthenticatedRouter loading={isLoading} user={user} />
+        {prevAuth ? (
+          <AuthenticatedRouter loading={loading} user={user} />
         ) : (
-          <NonAuthenticatedRouter loading={isLoading} />
+          <NonAuthenticatedRouter loading={loading} />
         )}
       </UserContext.Provider>
       {(state.show || state.fadeOut) && (
