@@ -52,6 +52,7 @@ const fetchNewAccessToken = async (operation: Operation, forward: NextLink) => {
       console.log(operation)
 
       forward(operation);
+      console.log("DOne")
       return true;
     });
   }
