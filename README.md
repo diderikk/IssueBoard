@@ -1,7 +1,7 @@
 # IssueBoard
 Copy of Git Issue Board using Ruby on Rails, PostgreSQL, React, GraphQL  
 Made by: Diderik Kramer  
-URL: [https://issueboard.netlify.app/](https://issueboard.netlify.app/)
+URL: [https://issueboard.netlify.app/](https://issueboard.netlify.app/) (NB! Slow cold start, let it load for 20-30sec)
 
 ## Content
 1. [Introduction](#introduction)
