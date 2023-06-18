@@ -25,14 +25,16 @@ module Backend
     config.load_defaults 6.1
     config.autoload_paths << "#{Rails.root}/lib" 
     Rails.autoloaders.main.ignore(Rails.root.join('//lib/x86_64-linux-gnu'))
-    config.hosts << "issueboard-gr75g3sfyq-lz.a.run.app"
     config.hosts << "localhost"
+    config.hosts << "issueboard.diderikk.dev"
+    config.hosts << "issueboard.elixirapi.me:30000"
+    config.hosts << "issueboard.elixirapi.me"
 
     config.middleware.use ActionDispatch::Cookies
     config.api_only = true
     config.middleware.insert_before 0, Rack::Cors do
       allow do
-         origins ['http://localhost:3000','http://localhost:5000', 'https://issueboard.netlify.app']
+         origins ['http://localhost:3000', 'https://issueboard.diderikk.dev', 'https://issueboard.elixirapi.me:30000']
          resource '*', :headers => :any, :methods => [:get, :post, :options, :delete, :put, :patch], credentials: true
        end
     end 

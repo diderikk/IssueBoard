@@ -18,7 +18,10 @@ interface Props {
   user: UserResultType | undefined;
 }
 
-export const AuthenticatedRouter: React.FC<Props> = ({ loading, user }) => {
+export const AuthenticatedRouter: React.FC<Props> = ({
+  loading,
+  user,
+}) => {
   const [showUserMenu, setShowUserMenu] = useState<boolean>(false);
   return (
     <Router>
@@ -44,7 +47,7 @@ export const AuthenticatedRouter: React.FC<Props> = ({ loading, user }) => {
               className="nav-bar-link"
               onClick={() => setShowUserMenu(!showUserMenu)}
             >
-              {user && (
+              {user && 
                 <Avatar
                   name={user.name}
                   email={user.email}
@@ -52,8 +55,8 @@ export const AuthenticatedRouter: React.FC<Props> = ({ loading, user }) => {
                   size="2.2rem"
                   textSizeRatio={2.2}
                   color="grey"
-                />
-              )}
+                /> 
+              }
             </button>
           </div>
         </nav>
