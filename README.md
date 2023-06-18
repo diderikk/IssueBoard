@@ -1,7 +1,7 @@
 # IssueBoard
 Copy of Git Issue Board using Ruby on Rails, PostgreSQL, React, GraphQL  
 Made by: Diderik Kramer  
-URL: [https://issueboard.netlify.app/](https://issueboard.netlify.app/) (NB! Slow cold start, let it load for 20-30sec)
+URL: [https://issueboard.diderikk.dev/](https://issueboard.diderikk.dev/)
 
 ## Content
 1. [Introduction](#introduction)
@@ -14,7 +14,7 @@ URL: [https://issueboard.netlify.app/](https://issueboard.netlify.app/) (NB! Slo
 ## Introduction
 IssueBoard is a web application made to store issues for projects in boards. Users are able to create their own boards or join groups for collaborative work. All members of the group are able to add new issue boards and invite new members to that group. A user is also able to add members to a non group issue board that they own. Issue board functionality described later.
 
-The web application is made with React, this is developers first time using this framework. It was selected for it's popularity and online support. For styling, the app is made with solely CSS, and not with a CSS-framework. For the backend part of the application, Ruby on Rails is being used. Both backend and frontend will be hosted, but only available from 09:00 - 19:00 GMT+2 / UTC+01:00.
+The web application is made with React, this is developers first time using this framework. It was selected for it's popularity and online support. For styling, the app is made with solely CSS, and not with a CSS-framework. For the backend part of the application, Ruby on Rails is being used.
 
 ## Functionality
 
@@ -95,10 +95,4 @@ Currently only implemented for backend. CI runs everytime development branch is 
 
 
 ## Deployment
-### Frontend
-The frontend part of the application is hosted on [Netlify](https://www.netlify.com). 
-
-
-### Backend
-For learning/cost purposes, the database is run on a Virtual Machine hosted on Google Cloud. The VM runs a cron job every 15 minutes to store a backup of the current database. This will automatically be used during errors or data corruption. Can also be done manually. May change hosting to Google later, if cheaper.
-The backend application is also hosted on Google Cloud, on a Cloud Run Instance. Only runs the application when a request is being sent, resulting in increased response time, but costs less. Initially used App Engine, but it is more expensive as it is always running the application, even when there are no requests.
+Both hosted in personal Kubernetes cluster behind a reverse proxy.
