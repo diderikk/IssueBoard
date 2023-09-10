@@ -1,6 +1,6 @@
 # IssueBoard
 Copy of Git Issue Board using Ruby on Rails, PostgreSQL, React, GraphQL  
-Made by: Diderik Kramer  
+Made by: [diderikk](https://github.com/diderikk)
 URL: [https://issueboard.diderikk.dev/](https://issueboard.diderikk.dev/)
 
 ## Content
