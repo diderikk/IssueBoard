@@ -11,7 +11,7 @@ import { IssueBoardResultType } from "../types/IssueBoardResultType.type";
 import { IssueLabelResultType } from "../types/IssueLabelResultTyoe.type";
 import { readToken, writeToken } from "./readAndWriteToken";
 
-const uri = "https://issueboard.elixirapi.me:30000";
+const uri = "https://issueboard.diderikk.dev";
 
 const httpLink = createHttpLink({
   uri: uri + "/graphql",

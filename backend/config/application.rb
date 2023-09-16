@@ -28,7 +28,6 @@ module Backend
     config.hosts << "localhost"
     config.hosts << "issueboard.diderikk.dev"
     config.hosts << "issueboard.elixirapi.me:30000"
-    config.hosts << "issueboard.elixirapi.me"
 
     config.middleware.use ActionDispatch::Cookies
     config.api_only = true
