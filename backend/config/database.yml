@@ -26,4 +26,4 @@ production:
   host: <%= ENV.fetch("DB_HOST") %>
   database: <%= ENV.fetch("DB_NAME") %>
   username: <%= ENV.fetch("DB_USERNAME") %> 
-  password: <%= Rails.application.credentials.db_password %>
+  password: <%= ENV.fetch("DB_PASSWORD") %>

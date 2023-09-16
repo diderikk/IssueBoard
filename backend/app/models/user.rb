@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  self.table_name = "users1"
   has_and_belongs_to_many :issue_boards
 	has_many :members
 	has_many :groups, through: :members

@@ -32,13 +32,13 @@ ActiveRecord::Schema.define(version: 2021_06_27_144151) do
     t.index ["owner_id"], name: "index_issue_boards_on_owner_id"
   end
 
-  create_table "issue_boards_users", id: false, force: :cascade do |t|
+  create_table "issue_boards_users1", id: false, force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "issue_board_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["issue_board_id"], name: "index_issue_boards_users_on_issue_board_id"
-    t.index ["user_id"], name: "index_issue_boards_users_on_user_id"
+    t.index ["issue_board_id"], name: "index_issue_boards_users1_on_issue_board_id"
+    t.index ["user_id"], name: "index_issue_boards_users1_on_user_id"
   end
 
   create_table "issue_labels", force: :cascade do |t|
@@ -76,20 +76,21 @@ ActiveRecord::Schema.define(version: 2021_06_27_144151) do
     t.index ["user_id"], name: "index_members_on_user_id"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users1", force: :cascade do |t|
     t.string "name", null: false
     t.string "email", null: false
     t.string "password_digest"
     t.integer "token_version", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["email"], name: "index_users1_on_email", unique: true
   end
 
   add_foreign_key "issue_boards", "groups"
-  add_foreign_key "issue_boards", "users", column: "owner_id"
-  add_foreign_key "issue_boards_users", "issue_boards"
-  add_foreign_key "issue_boards_users", "users"
+  add_foreign_key "issue_boards", "users1", column: "owner_id"
+  add_foreign_key "issue_boards_users1", "issue_boards"
+  add_foreign_key "issue_boards_users1", "users1", column: "user_id"
   add_foreign_key "issue_labels", "issue_boards"
   add_foreign_key "issues", "issue_labels"
+  add_foreign_key "members", "users1", column: "user_id"
 end
