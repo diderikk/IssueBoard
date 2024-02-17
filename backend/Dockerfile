@@ -21,5 +21,8 @@ ENV RAILS_MASTER_KEY=${MASTER_KEY}
 
 RUN echo $RAILS_MASTER_KEY >> config/master.key
 
+RUN mkdir /tmp/cache --mode=666
+
+
 EXPOSE $PORT
 CMD ["rails", "server", "-b", "0.0.0.0", "-p", "8080", "-e", "production"]
