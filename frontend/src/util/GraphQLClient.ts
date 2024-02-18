@@ -11,8 +11,7 @@ import { IssueBoardResultType } from "../types/IssueBoardResultType.type";
 import { IssueLabelResultType } from "../types/IssueLabelResultTyoe.type";
 import { readToken, writeToken } from "./readAndWriteToken";
 
-//  
-const uri = process.env.GRAPHQL_URI || "http://localhost:4000/graphql";
+const uri = "https://issueboard.diderikk.dev";
 
 const httpLink = createHttpLink({
   uri: uri + "/graphql",
