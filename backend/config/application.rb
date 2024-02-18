@@ -27,13 +27,13 @@ module Backend
     Rails.autoloaders.main.ignore(Rails.root.join('//lib/x86_64-linux-gnu'))
     config.hosts << "localhost"
     config.hosts << "issueboard.diderikk.dev"
-    config.hosts << "issueboard.elixirapi.me:30000"
+    config.hosts << "issueboard.diderikk.com:30000"
 
     config.middleware.use ActionDispatch::Cookies
     config.api_only = true
     config.middleware.insert_before 0, Rack::Cors do
       allow do
-         origins ['http://localhost:3000', 'https://issueboard.diderikk.dev', 'https://issueboard.elixirapi.me:30000']
+         origins ['http://localhost:3000', 'https://issueboard.diderikk.dev', 'https://issueboard.diderikk.com:30000']
          resource '*', :headers => :any, :methods => [:get, :post, :options, :delete, :put, :patch], credentials: true
        end
     end 
